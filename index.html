@@ -3,72 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prezi: Kultuuriinkubaator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>Magistritöö Kaitsmine: Kultuuriinkubaator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --ut-blue: #003d7c;
-            --accent-teal: #11caa0;
-            --bg-color: #e2e8f0;
+            --mint: #11caa0;
+            --bg-color: #f4f7f6;
+            --text-main: #334155;
+            --slide-width: 1400px;
+            --slide-height: 800px;
         }
 
-        /* 1. PÕHISTIILID - Ekraan ja Lõuend */
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; /* Peidab kerimisribad */
-            font-family: 'Montserrat', sans-serif;
+            margin: 0; padding: 0;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
             background-color: var(--bg-color);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
         }
 
         #viewport {
-            position: absolute; width: 100vw; height: 100vh;
-            background-image: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 100%);
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: radial-gradient(circle at center, #ffffff 0%, var(--bg-color) 100%);
+            perspective: 1000px;
         }
 
-        /* Lõuend asub täpselt ekraani keskel. Siin liigutame "kaamerat" */
         #canvas {
-            position: absolute; top: 50%; left: 50%; width: 0; height: 0;
-            transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
         }
 
-        /* 2. SLAIDIDE DISAIN */
         .slide {
             position: absolute;
-            width: 1280px; height: 720px;
-            background: white; border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            padding: 80px; box-sizing: border-box;
-            display: flex; flex-direction: column; justify-content: center;
-            /* Sujuv üleminek aktiivsele slaidile */
-            opacity: 0.4; transition: opacity 1s, box-shadow 1s;
+            width: var(--slide-width);
+            height: var(--slide-height);
+            margin-left: calc(var(--slide-width) / -2);
+            margin-top: calc(var(--slide-height) / -2);
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 61, 124, 0.08);
+            padding: 80px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.2;
+            transition: opacity 0.8s, transform 0.8s, box-shadow 0.8s;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .slide.active {
             opacity: 1;
-            box-shadow: 0 30px 80px rgba(17, 202, 160, 0.3);
+            box-shadow: 0 40px 120px rgba(0, 61, 124, 0.15);
         }
 
-        h1 { font-family: 'Poppins', sans-serif; font-size: 60px; color: var(--ut-blue); line-height: 1.1; margin-bottom: 20px;}
-        h2 { font-family: 'Poppins', sans-serif; font-size: 45px; color: var(--ut-blue); margin-bottom: 40px; border-left: 8px solid var(--accent-teal); padding-left: 20px; }
-        p, li { font-size: 24px; color: #475569; line-height: 1.6; }
+        h1 { font-family: 'Poppins', sans-serif; font-size: 60px; color: var(--ut-blue); margin-bottom: 20px; line-height: 1.1; }
+        h2 { font-family: 'Poppins', sans-serif; font-size: 45px; color: var(--ut-blue); margin-bottom: 40px; border-left: 10px solid var(--mint); padding-left: 25px; }
+        p, li { font-size: 24px; line-height: 1.6; margin-bottom: 15px; }
+        strong { color: var(--ut-blue); }
 
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .card { background: #f8fafc; padding: 40px; border-radius: 20px; border-bottom: 5px solid var(--accent-teal); text-align: center; }
-        .card i { font-size: 50px; color: var(--accent-teal); margin-bottom: 20px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        
+        .box { background: #f8fafc; padding: 40px; border-radius: 20px; border-bottom: 5px solid var(--mint); text-align: center; height: 100%; box-sizing: border-box;}
+        .box i { font-size: 45px; color: var(--mint); margin-bottom: 20px; }
 
-        /* 3. NAVIGATSIOON NUPUD */
+        .tag { display: inline-block; background: var(--ut-blue); color: white; padding: 10px 20px; border-radius: 50px; font-weight: 600; font-size: 18px; margin-bottom: 20px; letter-spacing: 2px;}
+
         #nav {
             position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
             display: flex; gap: 20px; z-index: 1000;
+            background: rgba(255,255,255,0.95); padding: 15px 30px; border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .nav-btn {
-            background: var(--ut-blue); color: white; border: none;
-            padding: 15px 30px; border-radius: 30px; font-size: 18px; font-weight: bold;
-            cursor: pointer; transition: 0.3s;
+        button {
+            background: var(--ut-blue); color: white; border: none; padding: 15px 30px;
+            border-radius: 30px; font-size: 18px; font-weight: 600; font-family: 'Montserrat', sans-serif;
+            cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px;
         }
-        .nav-btn:hover { background: var(--accent-teal); }
-        .nav-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+        button:hover { background: var(--mint); transform: translateY(-2px); }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+        .btn-red { background: #f43f5e; }
+        .btn-red:hover { background: #e11d48; }
+
+        ul.styled-list { list-style: none; padding: 0; }
+        ul.styled-list li { position: relative; padding-left: 45px; margin-bottom: 25px; }
+        ul.styled-list li i { position: absolute; left: 0; top: 5px; color: var(--mint); font-size: 28px; }
+
     </style>
 </head>
 <body>
@@ -76,116 +103,195 @@
 <div id="viewport">
     <div id="canvas">
 
-        <div class="slide" data-x="0" data-y="0" data-scale="1" style="left: 50%; top: 50%; transform: translate(-50%, -50%) translate(0px, 0px) scale(1);">
-            <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: bold;">TARTU ÜLIKOOL 2026</p>
-            <h1>Kultuuriinkubaatori mudeli arendamine</h1>
-            <p style="font-size: 30px;">Õppija agentsuse ja loovuse toetamiseks formaalhariduses</p>
-            <div style="margin-top: 60px;">
-                <p><strong>Meelis Külaots</strong> | Magistritöö</p>
+        <div class="slide" data-x="0" data-y="0" data-scale="1">
+            <div style="text-align: center;">
+                <span class="tag">MAGISTRITÖÖ KAITSMINE 2026</span>
+                <h1>Kultuuriinkubaatori mudeli arendamine</h1>
+                <p style="font-size: 32px; color: var(--ut-blue); margin-bottom: 60px;">Õppija agentsuse ja loovuse toetamiseks formaalhariduses</p>
+                
+                <div style="display: inline-block; text-align: left; background: #f8fafc; padding: 40px 60px; border-radius: 20px; border-left: 8px solid var(--ut-blue);">
+                    <p style="margin: 0 0 10px 0;"><strong>Autor:</strong> Meelis Külaots</p>
+                    <p style="margin: 0 0 10px 0;"><strong>Juhendajad:</strong> Kristina Kuznetsova-Bogdanovits, Astrid Külaots</p>
+                    <p style="margin: 0; font-size: 20px; opacity: 0.7;">Tartu Ülikool | Haridusinnovatsiooni õppekava</p>
+                </div>
             </div>
         </div>
 
-        <div class="slide" data-x="1600" data-y="0" data-scale="1" style="left: 50%; top: 50%; transform: translate(-50%, -50%) translate(1600px, 0px) scale(1);">
-            <h2>Teoreetiline fookus</h2>
-            <div class="grid-3">
-                <div class="card"><i class="fa-solid fa-brain"></i><p><strong>Agentsus:</strong> Suutlikkus õppimist suunata.</p></div>
-                <div class="card"><i class="fa-solid fa-lightbulb"></i><p><strong>Loovus:</strong> Uute seoste loomine.</p></div>
-                <div class="card"><i class="fa-solid fa-users"></i><p><strong>Koostöö:</strong> Sotsiaalne toetus.</p></div>
+        <div class="slide" data-x="2200" data-y="0" data-scale="1">
+            <h2>Teoreetiline raamistik</h2>
+            <div class="grid-4">
+                <div class="box">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <p><strong>Õppija agentsus</strong></p>
+                    <p style="font-size: 18px;">Suutlikkus oma õppimist tähenduslikult suunata.</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <p><strong>Loov õppimine</strong></p>
+                    <p style="font-size: 18px;">Katsetuspõhine ja avatud õppimisviis.</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <p><strong>Projektõpe</strong></p>
+                    <p style="font-size: 18px;">Kogukondlik mõõde ja reaalsed väljakutsed.</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-shield-heart"></i>
+                    <p><strong>Sotsiaalne tugi</strong></p>
+                    <p style="font-size: 18px;">Koostöökultuur ja emotsionaalne raamistik.</p>
+                </div>
             </div>
         </div>
 
-        <div class="slide" data-x="1600" data-y="1000" data-scale="1" style="left: 50%; top: 50%; transform: translate(-50%, -50%) translate(1600px, 1000px) scale(1);">
-            <h2>Uurimisprobleem</h2>
-            <p style="font-size: 35px; color: var(--ut-blue); font-weight: bold;">Süsteemsuse puudus hariduses</p>
-            <p>Formaalhariduses puuduvad terviklikud mudelid, mis toetaksid loovust ja agentsust süsteemselt, mitte ainult üksikute projektide raames.</p>
-        </div>
-
-        <div class="slide" data-x="0" data-y="1000" data-scale="0.8" style="left: 50%; top: 50%; transform: translate(-50%, -50%) translate(0px, 1000px) scale(0.8);">
-            <h2>Arendusuuringu protsess</h2>
-            <div style="display: flex; justify-content: space-between; margin-top: 50px; text-align: center;">
-                <div><div class="card" style="padding: 20px;">1. Teooria</div></div>
-                <div><div class="card" style="padding: 20px;">2. Intervjuud</div></div>
-                <div><div class="card" style="padding: 20px; border-bottom-color: var(--ut-blue);">3. Pilootkatsetus</div></div>
-                <div><div class="card" style="padding: 20px;">4. Eksperdid</div></div>
+        <div class="slide" data-x="2200" data-y="1200" data-scale="1">
+            <div class="grid-2">
+                <div>
+                    <h2 style="border-color: #f43f5e;">Uurimisprobleem</h2>
+                    <p style="font-size: 30px; font-weight: bold; color: #f43f5e;">Süsteemsuse puudumine</p>
+                    <p>Formaalhariduses puuduvad terviklikud, teoreetiliselt põhjendatud ja praktiliselt rakendatavad mudelid, mis toetaksid süsteemselt õppija agentsuse, loovuse ja tähendusliku õppimise arengut.</p>
+                </div>
+                <div style="background: var(--ut-blue); padding: 50px; border-radius: 30px; color: white;">
+                    <h2 style="color: white; border-color: var(--mint);">Eesmärk</h2>
+                    <p style="color: white;">Arendada ja empiirilise sisendi põhjal täpsustada kultuuriinkubaatori mudelit, mis toetab formaalhariduses õppija agentsuse ja loovuse arengut.</p>
+                </div>
             </div>
         </div>
 
-        <div class="slide" data-x="-1600" data-y="1000" data-scale="1" style="left: 50%; top: 50%; transform: translate(-50%, -50%) translate(-1600px, 1000px) scale(1);">
-            <h2>Peamised tulemused</h2>
-            <ul>
-                <li style="margin-bottom: 20px;"><strong>Huvipõhisus:</strong> Isiklik huvi on kriitiline käivitaja.</li>
-                <li style="margin-bottom: 20px;"><strong>Mentorlus:</strong> Õpetaja peab olema toetaja, mitte kontrollija.</li>
-                <li><strong>Aeg:</strong> Paindlik ajakasutus on loovuse eeldus.</li>
+        <div class="slide" data-x="0" data-y="1200" data-scale="1">
+            <h2>Uurimisküsimused</h2>
+            <ul class="styled-list">
+                <li><i class="fa-regular fa-circle-question"></i>Kuidas mõtestavad osalejad kultuuriinkubaatori tähendust koolikeskkonnas?</li>
+                <li><i class="fa-regular fa-circle-question"></i>Millised tähelepanekud ja ettepanekud ilmnesid kultuuriinkubaatori mudeli edasiarendamiseks?</li>
+                <li><i class="fa-regular fa-circle-question"></i>Millised tegurid mõjutavad kultuuriinkubaatori rakendamist formaalhariduses?</li>
             </ul>
         </div>
 
-        <div class="slide" data-x="-1600" data-y="0" data-scale="1" style="left: 50%; top: 50%; transform: translate(-50%, -50%) translate(-1600px, 0px) scale(1);">
-            <h2 style="border: none; text-align: center; font-size: 60px;">Järeldused</h2>
-            <div style="background: var(--ut-blue); padding: 50px; border-radius: 20px; color: white; text-align: center;">
-                <p style="color: white; font-size: 35px;">Kultuuriinkubaator on toimiv valikkursus gümnaasiumis, mis seob süsteemselt huvi, loovuse ja praktika.</p>
+        <div class="slide" data-x="-2200" data-y="1200" data-scale="1">
+            <h2>Metoodika: Arendusuuring</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 50px;">
+                <div class="box" style="flex: 1; margin: 0 10px;"><p style="font-weight:bold; font-size: 30px; color: var(--ut-blue);">1</p><p>Teooria ja eelsisend</p></div>
+                <i class="fa-solid fa-arrow-right" style="font-size: 30px; color: #cbd5e1;"></i>
+                <div class="box" style="flex: 1; margin: 0 10px;"><p style="font-weight:bold; font-size: 30px; color: var(--ut-blue);">2</p><p>Intervjuud ja fookusgrupp</p></div>
+                <i class="fa-solid fa-arrow-right" style="font-size: 30px; color: #cbd5e1;"></i>
+                <div class="box" style="flex: 1; margin: 0 10px; border-color: var(--ut-blue);"><p style="font-weight:bold; font-size: 30px; color: var(--mint);">3</p><p>Pilootkatsetus koolis</p></div>
+                <i class="fa-solid fa-arrow-right" style="font-size: 30px; color: #cbd5e1;"></i>
+                <div class="box" style="flex: 1; margin: 0 10px;"><p style="font-weight:bold; font-size: 30px; color: var(--ut-blue);">4</p><p>Eksperthinnang</p></div>
+            </div>
+            <p style="text-align: center; margin-top: 40px; font-weight: 600;">Andmeanalüüs: Temaatiline analüüs ja iteratiivne arendusprotsess</p>
+        </div>
+
+        <div class="slide" data-x="-2200" data-y="0" data-scale="1">
+            <span class="tag">TULEMUSED</span>
+            <div class="grid-2">
+                <div>
+                    <h3>Kultuuriinkubaatori tähendus</h3>
+                    <ul class="styled-list">
+                        <li><i class="fa-solid fa-check"></i>Õppija huvist lähtuv lähenemine</li>
+                        <li><i class="fa-solid fa-check"></i>Loov ja praktiline tegutsemine</li>
+                        <li><i class="fa-solid fa-check"></i>Autonoomia, vastutus ja koostöö</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Mudeli edasiarendamine</h3>
+                    <ul class="styled-list">
+                        <li><i class="fa-solid fa-gears"></i>Selgem protsessiloogika</li>
+                        <li><i class="fa-solid fa-clock"></i>Paindlik ajakasutus</li>
+                        <li><i class="fa-solid fa-user-tie"></i>Toetav mentorlus</li>
+                        <li><i class="fa-solid fa-puzzle-piece"></i>Modulaarne ülesehitus</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <div class="slide" data-x="0" data-y="400" data-scale="3.5" style="left: 50%; top: 50%; transform: translate(-50%, -50%) translate(0px, 400px) scale(3.5); background: transparent; box-shadow: none;">
-            <h1 style="text-align: center; font-size: 80px; margin-top: 800px;">AITÄH! KÜSIMUSED?</h1>
+        <div class="slide" data-x="-2200" data-y="-1200" data-scale="1">
+            <h2>Rakendamist mõjutavad tegurid</h2>
+            <div class="grid-4">
+                <div class="box" style="background: var(--ut-blue); color: white;">
+                    <i class="fa-solid fa-heart" style="color: var(--mint);"></i>
+                    <p style="color: white; font-weight: 600;">Õppija isiklik huvi</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-sitemap"></i>
+                    <p>Selge protsessistruktuur</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <p>Paindlik ajakasutus</p>
+                </div>
+                <div class="box" style="background: var(--ut-blue); color: white;">
+                    <i class="fa-solid fa-hands-holding-child" style="color: var(--mint);"></i>
+                    <p style="color: white; font-weight: 600;">Juhendaja toetav roll</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-x="0" data-y="-1200" data-scale="1.5">
+            <h1 style="text-align: center;">Järeldused</h1>
+            <div style="background: var(--mint); padding: 40px; border-radius: 20px; margin-bottom: 40px;">
+                <p style="color: white; font-size: 32px; font-weight: 600; text-align: center; margin: 0;">Mudeli väärtus seisneb huvi, loovuse ja praktilise tegutsemise sidumises.</p>
+            </div>
+            <ul class="styled-list">
+                <li><i class="fa-solid fa-star"></i><strong>Põhiformaat:</strong> Toimib kõige paremini gümnaasiumi valikkursusena.</li>
+                <li><i class="fa-solid fa-star"></i><strong>Mõju:</strong> Õppija agentsust saab toetada formaalhariduse sees õppimisloogikat muutes.</li>
+                <li><i class="fa-solid fa-arrow-trend-up"></i><strong>Edasised sammud:</strong> Mudeli testimine erinevates koolides, moodulite lõimimine õppetöösse ja pikaajalise mõju uurimine.</li>
+            </ul>
         </div>
 
     </div>
 </div>
 
 <div id="nav">
-    <button class="nav-btn" id="prev-btn" onclick="muudaSlaidi(-1)"><i class="fa-solid fa-arrow-left"></i> Eelmisele</button>
-    <button class="nav-btn" id="next-btn" onclick="muudaSlaidi(1)">Järgmisele <i class="fa-solid fa-arrow-right"></i></button>
+    <button onclick="liigu(-1)" id="btn-prev"><i class="fa-solid fa-arrow-left"></i> EELMINE</button>
+    <button onclick="uldvaade()" class="btn-red"><i class="fa-solid fa-map"></i> ÜLDVAADE</button>
+    <button onclick="liigu(1)" id="btn-next">JÄRGMINE <i class="fa-solid fa-arrow-right"></i></button>
 </div>
 
 <script>
-    const slaidid = document.querySelectorAll('.slide');
     const canvas = document.getElementById('canvas');
-    let aktiivneIndeks = 0;
+    const slaidid = document.querySelectorAll('.slide');
+    let indeks = 0;
+    let onUldvaade = false;
 
-    // Funktsioon, mis liigutab "kaamerat" (ehk lõuendit) vastavalt aktiivsele slaidile
-    function uuendaVaadet() {
-        // Võtame aktiivse slaidi andmed
-        const sihtmärk = slaidid[aktiivneIndeks];
-        const x = parseFloat(sihtmärk.getAttribute('data-x'));
-        const y = parseFloat(sihtmärk.getAttribute('data-y'));
-        const scale = parseFloat(sihtmärk.getAttribute('data-scale'));
+    function uuenda() {
+        if(onUldvaade) return;
 
-        // Liigutame ja suumime LÕUENDIT vastassuunas, et slaid jääks ekraani keskele!
-        canvas.style.transform = `scale(${1 / scale}) translate(${-x}px, ${-y}px)`;
+        const s = slaidid[indeks];
+        const x = Number(s.getAttribute('data-x'));
+        const y = Number(s.getAttribute('data-y'));
+        const scale = Number(s.getAttribute('data-scale'));
 
-        // Visuaalne tagasiside (teeme aktiivse slaidi eredamaks)
-        slaidid.forEach((slaid, i) => {
-            if (i === aktiivneIndeks) {
-                slaid.classList.add('active');
-            } else {
-                slaid.classList.remove('active');
-            }
+        canvas.style.transform = `scale(${1/scale}) translate(${-x}px, ${-y}px)`;
+
+        slaidid.forEach((el, i) => {
+            if(i === indeks) el.classList.add('active');
+            else el.classList.remove('active');
         });
 
-        // Nuppude olekute kontroll
-        document.getElementById('prev-btn').disabled = (aktiivneIndeks === 0);
-        document.getElementById('next-btn').disabled = (aktiivneIndeks === slaidid.length - 1);
+        document.getElementById('btn-prev').disabled = indeks === 0;
+        document.getElementById('btn-next').disabled = indeks === slaidid.length - 1;
     }
 
-    // Nuppude funktsioon
-    function muudaSlaidi(suund) {
-        let uusIndeks = aktiivneIndeks + suund;
-        // Kontrollime, et ei läheks piiridest välja
-        if (uusIndeks >= 0 && uusIndeks < slaidid.length) {
-            aktiivneIndeks = uusIndeks;
-            uuendaVaadet();
+    function liigu(suund) {
+        onUldvaade = false;
+        let uus = indeks + suund;
+        if(uus >= 0 && uus < slaidid.length) {
+            indeks = uus;
+            uuenda();
         }
     }
 
-    // Klaviatuuri tugi (Nooled paremale/vasakule)
-    document.addEventListener('keydown', (e) => {
-        if (e.key === "ArrowRight" || e.key === " ") muudaSlaidi(1);
-        if (e.key === "ArrowLeft") muudaSlaidi(-1);
+    function uldvaade() {
+        onUldvaade = true;
+        canvas.style.transform = `scale(0.2) translate(0px, 0px)`;
+        slaidid.forEach(el => el.classList.add('active'));
+    }
+
+    document.addEventListener('keydown', e => {
+        if(e.key === "ArrowRight" || e.key === " ") liigu(1);
+        if(e.key === "ArrowLeft") liigu(-1);
     });
 
-    // Käivitame esimese slaidi laadimisel
-    window.onload = uuendaVaadet;
+    window.onload = uuenda;
 </script>
 
 </body>
