@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kultuuriinkubaator | Mõttekaart-Esitlus</title>
+    <title>Kultuuriinkubaator | Sõnapilv-Esitlus</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -12,7 +12,8 @@
         :root {
             --ut-blue: #003d7c;
             --accent-teal: #11caa0;
-            --bg-canvas: #f0f4f8;
+            --accent-pink: #f43f5e;
+            --bg-canvas: #f8fafc;
             --text-dark: #0f172a;
             --text-gray: #475569;
         }
@@ -29,8 +30,7 @@
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             overflow: hidden;
-            background: 
-                radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 100%);
+            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 100%);
             perspective: 1000px;
         }
 
@@ -42,7 +42,7 @@
             transition: transform 1.6s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
 
-        /* SLAIDIDE STIILID */
+        /* SLAIDID */
         .slide {
             position: absolute;
             width: 1280px;
@@ -52,46 +52,46 @@
             background: white;
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
             border-radius: 30px;
-            padding: 60px 80px 150px 80px; /* Alumine vaba ruum nuppudele */
+            padding: 60px 80px 150px 80px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            opacity: 0.02;
-            transition: opacity 1s, transform 1s;
+            opacity: 0.01;
+            transition: opacity 1s, filter 1s;
             border: 1px solid rgba(0,0,0,0.05);
             backface-visibility: hidden;
         }
 
         .slide.active { opacity: 1; }
 
-        /* MÕTTEKAARDI MÄRKSÕNAD (ainult eelvaates) */
-        .keyword-label {
+        /* SÕNAPILVE ELEMENDID */
+        .cloud-word {
             position: absolute;
-            top: -120px;
-            left: 50%;
-            transform: translateX(-50%);
             font-family: 'Poppins';
             font-weight: 800;
-            font-size: 80px;
-            color: var(--ut-blue);
+            text-transform: uppercase;
             white-space: nowrap;
             opacity: 0;
-            transition: opacity 0.5s;
+            transition: opacity 0.8s, transform 0.8s;
             pointer-events: none;
-            text-shadow: 0 10px 30px rgba(255,255,255,0.8);
+            z-index: 5000;
         }
 
         /* EELVAATE REŽIIM */
-        .overview-active .slide { opacity: 0.6 !important; }
-        .overview-active .keyword-label { opacity: 1; }
-        .overview-active .slide p, .overview-active .slide li, .overview-active .slide h3 { opacity: 0; }
+        .overview-active .slide { 
+            opacity: 0.2 !important; 
+            filter: blur(5px);
+        }
+        .overview-active .cloud-word { 
+            opacity: 1; 
+        }
 
         h1, h2, h3 { font-family: 'Poppins', sans-serif; color: var(--ut-blue); margin: 0; }
         h1 { font-size: 64px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
         h2 { font-size: 48px; margin-bottom: 30px; border-left: 12px solid var(--accent-teal); padding-left: 30px; }
         h3 { font-size: 28px; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; }
         
-        p, li { font-size: 24px; color: var(--text-gray); line-height: 1.5; margin-bottom: 15px; transition: opacity 0.5s; }
+        p, li { font-size: 24px; color: var(--text-gray); line-height: 1.5; margin-bottom: 15px; }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -101,13 +101,13 @@
             border-bottom: 6px solid var(--accent-teal); height: 100%; box-sizing: border-box;
         }
 
-        /* KOMPAKTNE NAVIGATSIOON */
+        /* NAVIGATSIOON */
         #ui-layer {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 2000;
+            z-index: 6000;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -138,33 +138,33 @@
             background: var(--ut-blue);
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: 0.3s;
-            font-size: 14px;
+            font-size: 12px;
         }
         .mini-btn:hover { background: var(--accent-teal); }
         .mini-btn:disabled { background: #e2e8f0; cursor: not-allowed; }
 
         #overview-btn {
             background: var(--text-dark);
-            padding: 0 20px;
+            padding: 0 15px;
             border-radius: 20px;
             width: auto;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         #progress-tag {
             position: fixed; top: 20px; right: 20px;
             background: rgba(255,255,255,0.8);
-            padding: 5px 15px; border-radius: 15px;
-            font-weight: 700; color: var(--ut-blue); font-size: 14px;
+            padding: 5px 12px; border-radius: 12px;
+            font-weight: 700; color: var(--ut-blue); font-size: 13px;
         }
     </style>
 </head>
@@ -175,133 +175,113 @@
 <div id="viewport">
     <div id="canvas">
         
+        <div class="cloud-word" style="font-size: 180px; color: var(--ut-blue); top: -200px; left: -400px;">AGENTSUS</div>
+        <div class="cloud-word" style="font-size: 140px; color: var(--accent-pink); top: 100px; left: -300px;">LOOVUS</div>
+        <div class="cloud-word" style="font-size: 110px; color: var(--accent-teal); top: 400px; left: -100px;">MÕJU</div>
+        <div class="cloud-word" style="font-size: 80px; color: var(--ut-blue); top: -350px; left: 200px;">VASTUTUS</div>
+        <div class="cloud-word" style="font-size: 70px; color: var(--text-gray); top: 250px; left: 500px;">KOOSTÖÖ</div>
+        <div class="cloud-word" style="font-size: 55px; color: var(--accent-teal); top: -100px; left: 600px;">MENTORLUS</div>
+        <div class="cloud-word" style="font-size: 50px; color: var(--ut-blue); top: 550px; left: -500px;">PROJEKTÕPE</div>
+        <div class="cloud-word" style="font-size: 45px; color: var(--accent-pink); top: -450px; left: -600px;">REFLEKSION</div>
+        <div class="cloud-word" style="font-size: 40px; color: var(--text-gray); top: 600px; left: 400px;">TURVALISUS</div>
+        <div class="cloud-word" style="font-size: 60px; color: var(--ut-blue); top: -500px; left: -100px;">HUVI</div>
+        <div class="cloud-word" style="font-size: 35px; color: var(--accent-teal); top: 150px; left: -800px;">VALIK</div>
+
         <div class="slide" data-x="0" data-y="0" data-rotate="0" data-scale="12">
-            <div class="keyword-label">AVAKUVA</div>
             <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: 800;">MAGISTRITÖÖ 2026</p>
             <h1>Kultuuriinkubaatori mudeli arendamine</h1>
-            <p style="font-size: 30px; color: var(--ut-blue);">Õppija agentsuse toetamiseks formaalhariduses</p>
-            <p style="margin-top: 50px;"><strong>Meelis Külaots</strong><br>Juhendajad: Kristina Kuznetsova-Bogdanovits, Astrid Külaots</p>
+            <p style="font-size: 30px; color: var(--ut-blue);">Meelis Külaots | Haridusinnovatsioon</p>
+            <p style="margin-top: 40px;">Magistritöö eesmärk on arendada välja süsteemne mudel õppija agentsuse ja loovuse toetamiseks formaalhariduses.</p>
         </div>
 
         <div class="slide" data-x="2500" data-y="1500" data-rotate="160" data-scale="1">
-            <div class="keyword-label">PROBLEEM</div>
             <h2>Uurimisprobleem</h2>
             <div class="card" style="border-bottom-color: #f43f5e;">
-                <p style="font-size: 32px; font-weight: 600;">Süsteemsuse puudus formaalhariduses.</p>
-                <p>Puuduvad terviklikud mudelid, mis toetaksid õppija loovust ja agentsust pidevalt, mitte ainult üksikute projektide raames.</p>
+                <p style="font-size: 30px; font-weight: 600;">Formaalhariduses puudub süsteemsus.</p>
+                <p>Projektid on tihti üksikud saared. Puudub terviklik mudel, mis toetaks õppijat agentsuse teekonnal pidevalt.</p>
             </div>
         </div>
 
-        <div class="slide" data-x="1500" data-y="0" data-rotate="0" data-scale="1">
-            <div class="keyword-label">TEOORIA</div>
-            <h2>Teoreetiline fookus</h2>
+        <div class="slide" data-x="1800" data-y="0" data-rotate="0" data-scale="1">
+            <h2>Teoreetiline raamistik</h2>
             <div class="grid-2">
-                <div class="card"><h3>Agentsus</h3><p>Õppija suutlikkus ja tahe oma õppimist tähenduslikult suunata.</p></div>
-                <div class="card"><h3>Loovus</h3><p>Katsetuspõhine lähenemine uute seoste loomiseks.</p></div>
-                <div class="card"><h3>Projektõpe</h3><p>Seotus päriselu probleemide ja praktilise väljundiga.</p></div>
-                <div class="card"><h3>Koostöö</h3><p>Sotsiaal-emotsionaalne tugi ühise tegutsemiseni.</p></div>
+                <div class="card"><h3>Agentsus</h3><p>Vastutuse võtmine oma õpiteekonna eest.</p></div>
+                <div class="card"><h3>Loovus</h3><p>Uute seoste ja lahenduste leidmine.</p></div>
+                <div class="card"><h3>Koostöö</h3><p>Õppimine koos teiste ja teistelt.</p></div>
+                <div class="card"><h3>Projektõpe</h3><p>Praktiline väljund ja reaalne mõju.</p></div>
             </div>
         </div>
 
-        <div class="slide" data-x="1500" data-y="-1200" data-rotate="90" data-scale="1">
-            <div class="keyword-label">EESMÄRK</div>
-            <h2>Eesmärk</h2>
+        <div class="slide" data-x="1800" data-y="-1200" data-rotate="90" data-scale="1">
+            <h2>Magistritöö eesmärk</h2>
             <div style="background: var(--ut-blue); color: white; padding: 40px; border-radius: 20px;">
-                <p style="font-size: 32px; font-weight: 800; margin: 0;">Arendada ja täpsustada mudelit, mis toetab formaalhariduses õppija agentsust.</p>
+                <p style="font-size: 32px; font-weight: 700; margin: 0;">Arendada ja täpsustada Kultuuriinkubaatori mudelit õppija agentsuse toetamiseks.</p>
             </div>
-            <h3 style="margin-top: 30px;">Küsimused:</h3>
-            <ul>
-                <li>Kuidas inkubaatorit koolis mõtestatakse?</li>
-                <li>Millised on ettepanekud edasiarenduseks?</li>
-                <li>Mis mõjutab rakendamist?</li>
-            </ul>
         </div>
 
         <div class="slide" data-x="0" data-y="-1200" data-rotate="0" data-scale="1">
-            <div class="keyword-label">METOODIKA</div>
-            <h2>Metoodika</h2>
+            <h2>Metoodika: Arendusuuring</h2>
             <div class="grid-2">
-                <div class="card">
-                    <h3>Arendusuuring</h3>
-                    <p>Easterday jt (2018) mudel: Teooria -> Intervjuud -> Piloot -> Mudel.</p>
-                </div>
-                <div class="card">
-                    <h3>Valim</h3>
-                    <p>Elva Gümnaasiumi juhtkond (n=3) ja õpilaste fookusgrupp (n=9).</p>
-                </div>
+                <div class="card"><h3>Valim</h3><p>Elva Gümnaasiumi juhtkond, õpetajad ja fookusgrupp (n=12).</p></div>
+                <div class="card"><h3>Protsess</h3><p>Teooria analüüs, intervjuud ja piloteerimine koolikeskkonnas.</p></div>
             </div>
         </div>
 
-        <div class="slide" data-x="-1500" data-y="-1200" data-rotate="0" data-scale="1">
-            <div class="keyword-label">ANALÜÜS</div>
+        <div class="slide" data-x="-1800" data-y="-1200" data-rotate="0" data-scale="1">
             <h2>Andmeanalüüs</h2>
-            <p>Temaatiline analüüs (Braun & Clarke loogika):</p>
-            <div class="grid-2">
-                <div class="card">
-                    <p><strong>Kodeerimine:</strong> Tähenduslike üksuste leidmine (nt "turvatunne").</p>
-                </div>
-                <div class="card">
-                    <p><strong>Süntees:</strong> Teemade seostamine teoreetilise raamistikuga.</p>
-                </div>
-            </div>
-            <p style="margin-top: 20px; font-style: italic;">Usaldusväärsus tagati andmete triangulatsiooni abil.</p>
+            <p>Kasutati temaatilist analüüsi (Braun & Clarke):</p>
+            <ul>
+                <li>Induktiivne kodeerimine</li>
+                <li>Teemade kujundamine mustrite põhjal</li>
+                <li>Süntees teoreetilise raamistikuga</li>
+            </ul>
         </div>
 
-        <div class="slide" data-x="-1500" data-y="0" data-rotate="-90" data-scale="1">
-            <div class="keyword-label">TULEMUSED</div>
+        <div class="slide" data-x="-1800" data-y="0" data-rotate="-90" data-scale="1">
             <h2>Tulemused: Tähendus</h2>
             <div class="grid-2">
-                <div class="card"><h3>Huvipõhisus</h3><p>Isiklik huvi on kriitilisim õppimise käivitaja.</p></div>
-                <div class="card"><h3>Autonoomia</h3><p>Õppijal on suurem kontroll ja vastutus.</p></div>
-                <div class="card"><h3>Koostöö</h3><p>Ühine loomine on protsessi tuum.</p></div>
-                <div class="card"><h3>Mentorlus</h3><p>Õpetaja roll on olla toetav teekaaslane.</p></div>
+                <div class="card"><h3>Huvi</h3><p>Isiklik huvi on kõige tugevam mootor.</p></div>
+                <div class="card"><h3>Vabadus</h3><p>Autonoomia ja vastutuse tasakaal.</p></div>
             </div>
         </div>
 
-        <div class="slide" data-x="-1500" data-y="1200" data-rotate="0" data-scale="1">
-            <div class="keyword-label">MÕJURID</div>
-            <h2>Edu soodustavad tegurid</h2>
+        <div class="slide" data-x="-1800" data-y="1200" data-rotate="0" data-scale="1">
+            <h2>Mõjutavad tegurid</h2>
             <div class="grid-3">
-                <div class="card"><h3>Aeg</h3><p>Paindlik ajakasutus lubab süveneda.</p></div>
-                <div class="card"><h3>Struktuur</h3><p>Selge protsess annab turvatunde.</p></div>
-                <div class="card"><h3>Toetus</h3><p>Organisatsiooniline tugi on vältimatu.</p></div>
+                <div class="card"><h3>Aeg</h3><p>Paindlikkus süvenemiseks.</p></div>
+                <div class="card"><h3>Mentor</h3><p>Toetav roll, mitte kontroll.</p></div>
+                <div class="card"><h3>Keskkond</h3><p>Psühholoogiline turvatunne.</p></div>
             </div>
         </div>
 
         <div class="slide" data-x="0" data-y="1200" data-rotate="0" data-scale="1">
-            <div class="keyword-label">MUDEL</div>
             <h2>Mudeli 6 etappi</h2>
             <div class="grid-3" style="font-size: 16px;">
-                <div class="card"><strong>1. Enesepeegeldus</strong></div>
-                <div class="card"><strong>2. Ideestamine</strong></div>
-                <div class="card"><strong>3. Disain</strong></div>
-                <div class="card"><strong>4. Planeerimine</strong></div>
-                <div class="card"><strong>5. Katsetamine</strong></div>
-                <div class="card"><strong>6. Jagamine</strong></div>
+                <div class="card">1. Enesepeegeldus</div>
+                <div class="card">2. Ideestamine</div>
+                <div class="card">3. Disain</div>
+                <div class="card">4. Planeerimine</div>
+                <div class="card">5. Katsetamine</div>
+                <div class="card">6. Jagamine</div>
             </div>
-            <p style="margin-top: 30px; font-weight: 700;">Mudel on modulaarne ja kohandatav.</p>
         </div>
 
-        <div class="slide" data-x="1500" data-y="1200" data-rotate="0" data-scale="1">
-            <div class="keyword-label">JÄRELDUSED</div>
-            <h2>Peamised järeldused</h2>
+        <div class="slide" data-x="1800" data-y="1200" data-rotate="0" data-scale="1">
+            <h2>Järeldused</h2>
             <div class="card" style="background: #f1f5f9; border-left: 10px solid var(--ut-blue);">
-                <p style="font-size: 26px;"><strong>Kultuuriinkubaator on parim gümnaasiumi valikkursusena.</strong></p>
+                <p style="font-size: 26px;"><strong>Agentsus nõuab tähenduslikku õpiteekonda.</strong></p>
             </div>
-            <p style="margin-top: 20px;">Agentsus ei teki valikuvabaduse kaudu, vaid toetatud õpiteekonnas.</p>
+            <p style="margin-top: 20px;">Inkubaatori mudel sobib ideaalselt gümnaasiumi valikkursuseks.</p>
         </div>
 
-        <div class="slide" data-x="3000" data-y="0" data-rotate="90" data-scale="0.8">
-            <div class="keyword-label">EDASI</div>
+        <div class="slide" data-x="3600" data-y="0" data-rotate="90" data-scale="0.8">
             <h2>Edasised sammud</h2>
-            <div class="grid-2">
-                <div class="card"><h3>Piirangud</h3><p>Uuring põhines ühel koolil ja lühikesel perioodil.</p></div>
-                <div class="card"><h3>Tulevik</h3><p>Terviklik piloteerimine ja rakendamine uutes koolides.</p></div>
+            <div class="card">
+                <p>Mudeli laiem rakendamine Eesti koolides ja pikaajalise mõju uurimine õppija enesetõhususele.</p>
             </div>
         </div>
 
         <div class="slide" data-x="0" data-y="0" data-rotate="0" data-scale="12">
-            <div class="keyword-label">LÕPP</div>
             <h1 style="text-align: center; font-size: 150px; margin-top: 150px;">AITÄH!</h1>
             <p style="text-align: center; font-size: 40px; color: var(--accent-teal); font-weight: 700;">Küsimused?</p>
         </div>
@@ -370,8 +350,8 @@
         document.body.classList.toggle('overview-active', isOverview);
         
         if (isOverview) {
-            // See väärtus suumib välja nii, et kõik märksõnad on korraga näha
-            canvas.style.transform = `scale(0.08) translate(-500px, -200px)`;
+            // Suumib kaugele välja, et sõnapilv mahuks ekraanile
+            canvas.style.transform = `scale(0.08) translate(-400px, -200px)`;
         } else {
             goToSlide(currentIndex);
         }
