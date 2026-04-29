@@ -52,7 +52,8 @@
             background: white;
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
             border-radius: 30px;
-            padding: 80px;
+            /* Suurendatud alumine padding, et nupud ei kataks sisu! */
+            padding: 80px 80px 120px 80px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -62,6 +63,9 @@
         }
 
         .slide.active { opacity: 1; }
+        
+        /* Eelvaate režiimis näitame kõiki slaide */
+        .overview-active .slide { opacity: 0.9 !important; pointer-events: none; }
 
         h1, h2, h3 { font-family: 'Poppins', sans-serif; color: var(--ut-blue); margin: 0; }
         h1 { font-size: 64px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
@@ -80,22 +84,56 @@
         }
         .card i { font-size: 40px; color: var(--accent-teal); margin-bottom: 20px; display: block; }
 
-        #nav {
-            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 20px; z-index: 1000;
+        /* UUS KOONDATUD NAVIGATSIOONIPANEEL */
+        #bottom-panel {
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 15px; 
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 15px 30px;
+            border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
         }
+
+        #dot-nav {
+            display: flex; 
+            gap: 12px;
+        }
+
+        .dot {
+            width: 14px; height: 14px; background: #cbd5e1; border-radius: 50%;
+            cursor: pointer; transition: 0.3s;
+        }
+        .dot:hover { background: #94a3b8; }
+        .dot.active { background: var(--ut-blue); transform: scale(1.4); }
+
+        #btn-group { display: flex; gap: 20px; }
+
         .nav-btn {
-            background: var(--ut-blue); color: white; border: none; padding: 16px 32px;
-            border-radius: 50px; font-size: 18px; cursor: pointer; font-family: 'Poppins';
-            font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: 0.3s;
+            background: var(--ut-blue); color: white; border: none; padding: 12px 28px;
+            border-radius: 50px; font-size: 16px; cursor: pointer; font-family: 'Poppins';
+            font-weight: 600; transition: 0.3s;
         }
         .nav-btn:hover { background: var(--accent-teal); transform: scale(1.05); }
-        .nav-btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+        .nav-btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+
+        /* EELVAATE NUPP */
+        #overview-btn {
+            position: fixed; right: 30px; bottom: 30px; z-index: 1100;
+            background: var(--text-dark); box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
 
         #progress {
-            position: fixed; top: 40px; right: 40px; font-weight: 700;
-            font-size: 20px; color: var(--ut-blue); background: rgba(255,255,255,0.7);
-            padding: 10px 25px; border-radius: 30px;
+            position: fixed; top: 30px; right: 30px; font-weight: 700;
+            font-size: 20px; color: var(--ut-blue); background: rgba(255,255,255,0.8);
+            padding: 10px 25px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
     </style>
 </head>
@@ -106,7 +144,7 @@
 <div id="viewport">
     <div id="canvas">
         
-        <div class="slide" data-x="0" data-y="0" data-rotate="0" data-scale="1">
+        <div class="slide" data-x="0" data-y="0" data-rotate="0" data-scale="12">
             <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: 800;">MAGISTRITÖÖ 2026</p>
             <h1>Kultuuriinkubaatori mudeli arendamine</h1>
             <p style="font-size: 36px; color: var(--ut-blue); font-weight: 300;">Õppija agentsuse ja loovuse toetamiseks formaalhariduses</p>
@@ -123,7 +161,7 @@
             </div>
         </div>
 
-        <div class="slide" data-x="2500" data-y="1200" data-rotate="160" data-scale="0.02">
+        <div class="slide" data-x="2500" data-y="1200" data-rotate="160" data-scale="1">
             <h2>Uurimisprobleem</h2>
             <div class="card" style="border-bottom-color: #f43f5e; padding: 60px;">
                 <p style="font-size: 32px; font-weight: 600;">Formaalhariduses puuduvad terviklikud mudelid, mis toetaksid süsteemselt õppija agentsuse ja loovuse arengut.</p>
@@ -242,21 +280,29 @@
     </div>
 </div>
 
-<div id="nav">
-    <button class="nav-btn" id="btn-prev" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> Eelmine</button>
-    <button class="nav-btn" id="btn-next" onclick="nextSlide()">Järgmine <i class="fa-solid fa-arrow-right"></i></button>
+<div id="bottom-panel">
+    <div id="dot-nav"></div>
+    <div id="btn-group">
+        <button class="nav-btn" id="btn-prev" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> Eelmine</button>
+        <button class="nav-btn" id="btn-next" onclick="nextSlide()">Järgmine <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
 </div>
+
+<button class="nav-btn" id="overview-btn" onclick="toggleOverview()"><i class="fa-solid fa-expand"></i> EELVAADE</button>
 
 <script>
     const canvas = document.getElementById('canvas');
     const slidesElements = document.querySelectorAll('.slide');
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
+    const dotNav = document.getElementById('dot-nav');
     const progress = document.getElementById('progress');
     
     let currentIndex = 0;
+    let isOverview = false;
     const slidesData = [];
 
+    // Genereerime täpid ja loeme andmed sisse
     slidesElements.forEach((el, index) => {
         const x = parseFloat(el.dataset.x) || 0;
         const y = parseFloat(el.dataset.y) || 0;
@@ -264,6 +310,15 @@
         const scale = parseFloat(el.dataset.scale) || 1;
         slidesData.push({ x, y, rotate, scale });
         el.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(${scale})`;
+
+        // Loome täpi
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (index === 0 ? ' active' : '');
+        dot.onclick = () => { 
+            if(isOverview) toggleOverview(); 
+            goToSlide(index); 
+        };
+        dotNav.appendChild(dot);
     });
 
     function goToSlide(index) {
@@ -278,17 +333,35 @@
             else el.classList.remove('active');
         });
 
+        document.querySelectorAll('.dot').forEach((dot, i) => {
+            if(i === currentIndex) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+
         progress.innerText = `${currentIndex + 1} / ${slidesData.length}`;
         btnPrev.disabled = currentIndex === 0;
         btnNext.disabled = currentIndex === slidesData.length - 1;
     }
 
-    function nextSlide() { goToSlide(currentIndex + 1); }
-    function prevSlide() { goToSlide(currentIndex - 1); }
+    function toggleOverview() {
+        isOverview = !isOverview;
+        document.body.classList.toggle('overview-active', isOverview);
+        
+        if (isOverview) {
+            // Suumime välja, et näha kogu pilti (väike skaala)
+            canvas.style.transform = `scale(0.06) translate(-500px, -500px)`;
+        } else {
+            goToSlide(currentIndex);
+        }
+    }
+
+    function nextSlide() { if(isOverview) toggleOverview(); goToSlide(currentIndex + 1); }
+    function prevSlide() { if(isOverview) toggleOverview(); goToSlide(currentIndex - 1); }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === "ArrowRight" || e.key === " ") nextSlide();
         if (e.key === "ArrowLeft") prevSlide();
+        if (e.key === "o" || e.key === "O") toggleOverview();
     });
 
     window.onload = () => goToSlide(0);
