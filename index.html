@@ -42,6 +42,23 @@
             transition: transform 1.6s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
 
+        /* EELVAATE KIHT */
+        #overview-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            z-index: 4000;
+            display: none; /* Alguses peidus */
+            justify-content: center;
+            align-items: center;
+        }
+        #overview-layer img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
         /* SLAIDID */
         .slide {
             position: absolute;
@@ -52,7 +69,6 @@
             background: white;
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
             border-radius: 30px;
-            /* Suurendatud alumine puhver, et nupud ei kataks kunagi teksti */
             padding: 60px 80px 180px 80px;
             box-sizing: border-box;
             display: flex;
@@ -82,7 +98,7 @@
             border-bottom: 6px solid var(--accent-teal); height: 100%; box-sizing: border-box;
         }
 
-        /* MINI-NAVIGATSIOON */
+        /* NAVIGATSIOON */
         #ui-layer {
             position: fixed;
             bottom: 20px;
@@ -141,12 +157,17 @@
             padding: 6px 18px; border-radius: 20px;
             font-weight: 700; color: var(--ut-blue); font-size: 14px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            z-index: 6000;
         }
     </style>
 </head>
 <body>
 
-<div id="progress-tag">1 / 10</div>
+<div id="progress-tag">1 / 13</div>
+
+<div id="overview-layer">
+    <img src="sonapilv.png" alt="Eelvaade sõnapilv">
+</div>
 
 <div id="viewport">
     <div id="canvas">
@@ -289,6 +310,7 @@
 <script>
     const canvas = document.getElementById('canvas');
     const slidesElements = document.querySelectorAll('.slide');
+    const overviewLayer = document.getElementById('overview-layer');
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
     const dotNav = document.getElementById('dot-nav');
@@ -298,14 +320,12 @@
     let isOverview = false;
     const slidesData = [];
 
-    // Loeme andmed sisse ja genereerime täpid
     slidesElements.forEach((el, index) => {
         const x = parseFloat(el.dataset.x) || 0;
         const y = parseFloat(el.dataset.y) || 0;
         const rotate = parseFloat(el.dataset.rotate) || 0;
         const scale = parseFloat(el.dataset.scale) || 1;
         slidesData.push({ x, y, rotate, scale });
-        
         el.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(${scale})`;
 
         const dot = document.createElement('div');
@@ -321,7 +341,6 @@
         if (index < 0 || index >= slidesData.length) return;
         currentIndex = index;
         const target = slidesData[currentIndex];
-        
         canvas.style.transform = `scale(${1 / target.scale}) rotate(${-target.rotate}deg) translate(${-target.x}px, ${-target.y}px)`;
 
         slidesElements.forEach((el, i) => {
@@ -341,18 +360,15 @@
         isOverview = !isOverview;
         
         if (isOverview) {
-            // Suumime nii kaugele välja, et näeks ka kõige äärmisi slaide
-            canvas.style.transform = `scale(0.08) translate(-500px, -200px)`;
-            slidesElements.forEach(el => {
-                el.style.opacity = '0.7';
-                el.style.pointerEvents = 'none';
-            });
+            // Näitame eelvaate pilti
+            overviewLayer.style.display = 'flex';
+            // Peidame sisu
+            canvas.style.opacity = '0';
         } else {
-            // Taastame normaalse oleku
-            slidesElements.forEach(el => {
-                el.style.opacity = '';
-                el.style.pointerEvents = '';
-            });
+            // Peidame eelvaate pildi
+            overviewLayer.style.display = 'none';
+            // Toome sisu tagasi
+            canvas.style.opacity = '1';
             goToSlide(currentIndex);
         }
     }
@@ -366,7 +382,6 @@
         if (e.key === "o" || e.key === "O") toggleOverview();
     });
 
-    // Käivitab esimese slaidi (Sõnapilv) kohe laadimisel
     window.onload = () => goToSlide(0);
 </script>
 
