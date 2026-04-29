@@ -65,26 +65,6 @@
 
         .slide.active { opacity: 1; }
 
-        /* SÕNAPILVE DISAIN */
-        .word-cloud {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .word {
-            position: absolute;
-            font-family: 'Poppins';
-            font-weight: 800;
-            text-transform: uppercase;
-            white-space: nowrap;
-            line-height: 1;
-            transition: transform 0.3s;
-        }
-
         /* TÜPOGRAAFIA */
         h1, h2, h3 { font-family: 'Poppins', sans-serif; color: var(--ut-blue); margin: 0; }
         h1 { font-size: 60px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
@@ -102,7 +82,7 @@
             border-bottom: 6px solid var(--accent-teal); height: 100%; box-sizing: border-box;
         }
 
-        /* MINI-NAVIGATSIOON (EI KATA SLAIDE) */
+        /* MINI-NAVIGATSIOON */
         #ui-layer {
             position: fixed;
             bottom: 20px;
@@ -166,43 +146,13 @@
 </head>
 <body>
 
-<div id="progress-tag">1 / 13</div>
+<div id="progress-tag">1 / 10</div>
 
 <div id="viewport">
     <div id="canvas">
         
-        <div class="slide" data-x="-3000" data-y="0" data-rotate="0" data-scale="1">
-            <div class="word-cloud">
-                <div class="word" style="font-size: 140px; color: var(--ut-blue); top: 35%; left: 20%;">AGENTSUS</div>
-                <div class="word" style="font-size: 130px; color: var(--accent-pink); top: 50%; left: 35%;">LOOVUS</div>
-                
-                <div class="word" style="font-size: 80px; color: var(--accent-teal); top: 20%; left: 15%;">AUTONOOMIA</div>
-                <div class="word" style="font-size: 80px; color: var(--ut-blue); top: 25%; left: 60%;">VASTUTUS</div>
-                <div class="word" style="font-size: 75px; color: var(--text-gray); top: 65%; left: 15%;">LOOMINE</div>
-                <div class="word" style="font-size: 75px; color: var(--accent-teal); top: 65%; left: 60%;">KOOSTÖÖ</div>
-                <div class="word" style="font-size: 85px; color: var(--ut-blue); top: 80%; left: 35%;">MÕJU</div>
-                <div class="word" style="font-size: 70px; color: var(--text-gray); top: 40%; left: 5%;">PROTOTÜÜP</div>
-                <div class="word" style="font-size: 70px; color: var(--accent-pink); top: 10%; left: 45%;">REFLEKSIOON</div>
-                <div class="word" style="font-size: 75px; color: var(--ut-blue); top: 40%; left: 75%;">MENTORLUS</div>
-
-                <div class="word" style="font-size: 40px; color: var(--text-gray); top: 10%; left: 30%;">PROBLEEM</div>
-                <div class="word" style="font-size: 45px; color: var(--accent-pink); top: 15%; left: 10%;">VALIK</div>
-                <div class="word" style="font-size: 40px; color: var(--ut-blue); top: 85%; left: 15%;">IDEE</div>
-                <div class="word" style="font-size: 45px; color: var(--accent-teal); top: 80%; left: 65%;">LAHENDUS</div>
-                <div class="word" style="font-size: 40px; color: var(--text-gray); top: 55%; left: 80%;">TAGASISIDE</div>
-                <div class="word" style="font-size: 35px; color: var(--accent-teal); top: 5%; left: 70%;">OTSUSTAMINE</div>
-
-                <div class="word" style="font-size: 45px; color: var(--ut-blue); top: 30%; left: 5%;">MOTIVATSIOON</div>
-                <div class="word" style="font-size: 40px; color: var(--text-gray); top: 75%; left: 5%;">ENESETÕHUSUS</div>
-                <div class="word" style="font-size: 45px; color: var(--accent-pink); top: 90%; left: 45%;">SEOTUS</div>
-                <div class="word" style="font-size: 50px; color: var(--accent-teal); top: 10%; left: 85%;">TURVALISUS</div>
-                <div class="word" style="font-size: 45px; color: var(--text-gray); top: 90%; left: 65%;">KOGUKOND</div>
-
-                <div class="word" style="font-size: 50px; color: var(--accent-teal); top: 5%; left: 15%;">KATSETAMINE</div>
-                <div class="word" style="font-size: 40px; color: var(--accent-pink); top: 95%; left: 25%;">VIGADEST ÕPPIMINE</div>
-                <div class="word" style="font-size: 55px; color: var(--ut-blue); top: 75%; left: 75%;">PROJEKTÕPE</div>
-                <div class="word" style="font-size: 45px; color: var(--text-gray); top: 25%; left: 85%;">DISAINMÕTLEMINE</div>
-            </div>
+        <div class="slide" data-x="-3000" data-y="0" data-rotate="0" data-scale="1" style="padding: 0; overflow: hidden;">
+            <img src="sonapilv.png" alt="Agentsus ja Loovus sõnapilv" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
 
         <div class="slide" data-x="0" data-y="0" data-rotate="0" data-scale="1">
