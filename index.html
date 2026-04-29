@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kultuuriinkubaator | Magistritöö</title>
+    <title>Kultuuriinkubaator | Magistritöö 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -52,8 +52,8 @@
             background: white;
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
             border-radius: 30px;
-            /* Suurendatud alumine padding, et nupud ei kataks kunagi teksti */
-            padding: 60px 80px 160px 80px;
+            /* Suurendatud alumine puhver, et nupud ei kataks kunagi teksti */
+            padding: 60px 80px 180px 80px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -65,8 +65,8 @@
 
         .slide.active { opacity: 1; }
 
-        /* SÕNAPILVE SLAIDI ERISTIIL */
-        .word-cloud-container {
+        /* SÕNAPILVE DISAIN */
+        .word-cloud {
             position: relative;
             width: 100%;
             height: 100%;
@@ -75,13 +75,14 @@
             justify-content: center;
         }
 
-        .cloud-word {
+        .word {
             position: absolute;
             font-family: 'Poppins';
             font-weight: 800;
             text-transform: uppercase;
             white-space: nowrap;
             line-height: 1;
+            transition: transform 0.3s;
         }
 
         /* TÜPOGRAAFIA */
@@ -101,7 +102,7 @@
             border-bottom: 6px solid var(--accent-teal); height: 100%; box-sizing: border-box;
         }
 
-        /* KOMPAKTNE NAVIGATSIOON (EI KATA SLAIDE) */
+        /* MINI-NAVIGATSIOON (EI KATA SLAIDE) */
         #ui-layer {
             position: fixed;
             bottom: 20px;
@@ -111,7 +112,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         #dot-nav {
@@ -121,7 +122,7 @@
             padding: 8px 15px;
             border-radius: 30px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .dot {
@@ -130,17 +131,17 @@
         }
         .dot.active { background: var(--ut-blue); transform: scale(1.4); }
 
-        .mini-btn-group {
+        .btn-group {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
-        .mini-btn {
+        .nav-btn {
             background: var(--ut-blue);
             color: white;
             border: none;
             padding: 8px 20px;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -148,11 +149,11 @@
             transition: 0.3s;
             font-family: 'Poppins';
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             box-shadow: 0 8px 20px rgba(0, 30, 60, 0.15);
         }
-        .mini-btn:hover { background: var(--accent-teal); transform: translateY(-2px); }
-        .mini-btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+        .nav-btn:hover { background: var(--accent-teal); transform: translateY(-2px); }
+        .nav-btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
 
         #progress-tag {
             position: fixed; top: 20px; right: 20px;
@@ -171,19 +172,37 @@
     <div id="canvas">
         
         <div class="slide" data-x="-3000" data-y="0" data-rotate="0" data-scale="1">
-            <div class="word-cloud-container">
-                <div class="cloud-word" style="font-size: 140px; color: var(--ut-blue); top: 10%; left: 10%;">AGENTSUS</div>
-                <div class="cloud-word" style="font-size: 110px; color: var(--accent-pink); top: 35%; left: 20%;">LOOVUS</div>
-                <div class="cloud-word" style="font-size: 90px; color: var(--accent-teal); top: 60%; left: 15%;">MÕJU</div>
-                <div class="cloud-word" style="font-size: 60px; color: var(--ut-blue); top: 15%; left: 60%;">VASTUTUS</div>
-                <div class="cloud-word" style="font-size: 55px; color: var(--text-gray); top: 40%; left: 65%;">KOOSTÖÖ</div>
-                <div class="cloud-word" style="font-size: 45px; color: var(--accent-teal); top: 65%; left: 55%;">MENTORLUS</div>
-                <div class="cloud-word" style="font-size: 40px; color: var(--accent-pink); top: 80%; left: 30%;">REFLEKSIOON</div>
-                <div class="cloud-word" style="font-size: 35px; color: var(--text-gray); top: 5%; left: 40%;">TURVALISUS</div>
-                <div class="cloud-word" style="font-size: 50px; color: var(--ut-blue); top: 85%; left: 70%;">PROJEKTÕPE</div>
-                <div class="cloud-word" style="font-size: 40px; color: var(--accent-teal); top: 30%; left: 50%;">HUVI</div>
+            <div class="word-cloud">
+                <div class="word" style="font-size: 140px; color: var(--ut-blue); top: 35%; left: 20%;">AGENTSUS</div>
+                <div class="word" style="font-size: 130px; color: var(--accent-pink); top: 50%; left: 35%;">LOOVUS</div>
+                
+                <div class="word" style="font-size: 80px; color: var(--accent-teal); top: 20%; left: 15%;">AUTONOOMIA</div>
+                <div class="word" style="font-size: 80px; color: var(--ut-blue); top: 25%; left: 60%;">VASTUTUS</div>
+                <div class="word" style="font-size: 75px; color: var(--text-gray); top: 65%; left: 15%;">LOOMINE</div>
+                <div class="word" style="font-size: 75px; color: var(--accent-teal); top: 65%; left: 60%;">KOOSTÖÖ</div>
+                <div class="word" style="font-size: 85px; color: var(--ut-blue); top: 80%; left: 35%;">MÕJU</div>
+                <div class="word" style="font-size: 70px; color: var(--text-gray); top: 40%; left: 5%;">PROTOTÜÜP</div>
+                <div class="word" style="font-size: 70px; color: var(--accent-pink); top: 10%; left: 45%;">REFLEKSIOON</div>
+                <div class="word" style="font-size: 75px; color: var(--ut-blue); top: 40%; left: 75%;">MENTORLUS</div>
+
+                <div class="word" style="font-size: 40px; color: var(--text-gray); top: 10%; left: 30%;">PROBLEEM</div>
+                <div class="word" style="font-size: 45px; color: var(--accent-pink); top: 15%; left: 10%;">VALIK</div>
+                <div class="word" style="font-size: 40px; color: var(--ut-blue); top: 85%; left: 15%;">IDEE</div>
+                <div class="word" style="font-size: 45px; color: var(--accent-teal); top: 80%; left: 65%;">LAHENDUS</div>
+                <div class="word" style="font-size: 40px; color: var(--text-gray); top: 55%; left: 80%;">TAGASISIDE</div>
+                <div class="word" style="font-size: 35px; color: var(--accent-teal); top: 5%; left: 70%;">OTSUSTAMINE</div>
+
+                <div class="word" style="font-size: 45px; color: var(--ut-blue); top: 30%; left: 5%;">MOTIVATSIOON</div>
+                <div class="word" style="font-size: 40px; color: var(--text-gray); top: 75%; left: 5%;">ENESETÕHUSUS</div>
+                <div class="word" style="font-size: 45px; color: var(--accent-pink); top: 90%; left: 45%;">SEOTUS</div>
+                <div class="word" style="font-size: 50px; color: var(--accent-teal); top: 10%; left: 85%;">TURVALISUS</div>
+                <div class="word" style="font-size: 45px; color: var(--text-gray); top: 90%; left: 65%;">KOGUKOND</div>
+
+                <div class="word" style="font-size: 50px; color: var(--accent-teal); top: 5%; left: 15%;">KATSETAMINE</div>
+                <div class="word" style="font-size: 40px; color: var(--accent-pink); top: 95%; left: 25%;">VIGADEST ÕPPIMINE</div>
+                <div class="word" style="font-size: 55px; color: var(--ut-blue); top: 75%; left: 75%;">PROJEKTÕPE</div>
+                <div class="word" style="font-size: 45px; color: var(--text-gray); top: 25%; left: 85%;">DISAINMÕTLEMINE</div>
             </div>
-            <p style="text-align: center; font-weight: 700; color: var(--ut-blue); opacity: 0.5;">MAGISTRITÖÖ MÄRKSÕNAD</p>
         </div>
 
         <div class="slide" data-x="0" data-y="0" data-rotate="0" data-scale="1">
@@ -191,14 +210,8 @@
             <h1>Kultuuriinkubaatori mudeli arendamine</h1>
             <p style="font-size: 30px; color: var(--ut-blue); font-weight: 300;">Õppija agentsuse ja loovuse toetamiseks formaalhariduses</p>
             <div class="grid-2" style="margin-top: 60px;">
-                <div>
-                    <h3>Autor:</h3>
-                    <p>Meelis Külaots</p>
-                </div>
-                <div>
-                    <h3>Juhendajad:</h3>
-                    <p>Kristina Kuznetsova-Bogdanovits<br>Astrid Külaots</p>
-                </div>
+                <div><h3>Autor:</h3><p>Meelis Külaots</p></div>
+                <div><h3>Juhendajad:</h3><p>Kristina Kuznetsova-Bogdanovits, Astrid Külaots</p></div>
             </div>
         </div>
 
@@ -250,14 +263,9 @@
             <h2>Andmeanalüüs</h2>
             <p>Temaatiline analüüs (Braun & Clarke):</p>
             <div class="grid-2">
-                <div class="card">
-                    <p><strong>Kodeerimine:</strong> Tähenduslike üksuste esiletõstmine (nt "omaalgatus").</p>
-                </div>
-                <div class="card">
-                    <p><strong>Süntees:</strong> Teemade seostamine teoreetilise süsteemiga.</p>
-                </div>
+                <div class="card"><p><strong>Kodeerimine:</strong> Tähenduslike üksuste esiletõstmine (nt "omaalgatus").</p></div>
+                <div class="card"><p><strong>Süntees:</strong> Teemade seostamine teoreetilise süsteemiga.</p></div>
             </div>
-            <p style="margin-top: 30px; font-style: italic;">Usaldusväärsus tagati triangulatsiooni ja auditeerimisjälje abil.</p>
         </div>
 
         <div class="slide" data-x="-1800" data-y="0" data-rotate="-90" data-scale="1">
@@ -271,23 +279,23 @@
         </div>
 
         <div class="slide" data-x="-1800" data-y="-1200" data-rotate="0" data-scale="1">
-            <h2>Ettepanekud arenduseks</h2>
+            <h2>Mõjutavad tegurid</h2>
             <div class="grid-3">
                 <div class="card"><h3>Aeg</h3><p>Paindlikkus on süvenemise peamine eeldus.</p></div>
                 <div class="card"><h3>Selgus</h3><p>Protsessiloogika peab olema arusaadav.</p></div>
-                <div class="card"><h3>Motivatsioon</h3><p>Kujuneb sotsiaalses tähenduslikus tegevuses.</p></div>
+                <div class="card"><h3>Sotsiaalsus</h3><p>Motivatsioon kujuneb ühises tegevuses.</p></div>
             </div>
         </div>
 
         <div class="slide" data-x="0" data-y="-1200" data-rotate="0" data-scale="1">
-            <h2>Mudeli 6-astmeline protsess</h2>
+            <h2>Mudeli 6 etappi</h2>
             <div class="grid-3" style="font-size: 16px;">
-                <div class="card"><strong>1. Enesepeegeldus</strong> Tugevuste kaardistamine.</div>
-                <div class="card) "><strong>2. Ideestamine</strong> Küsimuse leidmine.</div>
-                <div class="card"><strong>3. Disain</strong> Lahendussuund.</div>
-                <div class="card"><strong>4. Planeerimine</strong> Partnerid ja kava.</div>
-                <div class="card"><strong>5. Katsetamine</strong> Prototüüpimine.</div>
-                <div class="card"><strong>6. Jagamine</strong> Mõtestamine maailmale.</div>
+                <div class="card"><strong>1. Enesepeegeldus</strong></div>
+                <div class="card"><strong>2. Ideestamine</strong></div>
+                <div class="card"><strong>3. Disain</strong></div>
+                <div class="card"><strong>4. Planeerimine</strong></div>
+                <div class="card"><strong>5. Katsetamine</strong></div>
+                <div class="card"><strong>6. Jagamine</strong></div>
             </div>
         </div>
 
@@ -321,9 +329,10 @@
 
 <div id="ui-layer">
     <div id="dot-nav"></div>
-    <div class="mini-btn-group">
-        <button class="mini-btn" id="btn-prev" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> Eelmine</button>
-        <button class="mini-btn" id="btn-next" onclick="nextSlide()">Järgmine <i class="fa-solid fa-arrow-right"></i></button>
+    <div class="btn-group">
+        <button class="nav-btn" id="btn-prev" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> Eelmine</button>
+        <button class="nav-btn" id="overview-btn" onclick="toggleOverview()"><i class="fa-solid fa-expand"></i> EELVAADE</button>
+        <button class="nav-btn" id="btn-next" onclick="nextSlide()">Järgmine <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 </div>
 
@@ -336,9 +345,10 @@
     const progressTag = document.getElementById('progress-tag');
     
     let currentIndex = 0;
+    let isOverview = false;
     const slidesData = [];
 
-    // Genereerime täpid ja loeme andmed
+    // Loeme andmed sisse ja genereerime täpid
     slidesElements.forEach((el, index) => {
         const x = parseFloat(el.dataset.x) || 0;
         const y = parseFloat(el.dataset.y) || 0;
@@ -350,7 +360,10 @@
 
         const dot = document.createElement('div');
         dot.className = 'dot' + (index === 0 ? ' active' : '');
-        dot.onclick = () => goToSlide(index);
+        dot.onclick = () => { 
+            if(isOverview) toggleOverview(); 
+            goToSlide(index); 
+        };
         dotNav.appendChild(dot);
     });
 
@@ -374,19 +387,38 @@
         btnNext.disabled = currentIndex === slidesData.length - 1;
     }
 
-    function nextSlide() { goToSlide(currentIndex + 1); }
-    function prevSlide() { goToSlide(currentIndex - 1); }
+    function toggleOverview() {
+        isOverview = !isOverview;
+        
+        if (isOverview) {
+            // Suumime nii kaugele välja, et näeks ka kõige äärmisi slaide
+            canvas.style.transform = `scale(0.08) translate(-500px, -200px)`;
+            slidesElements.forEach(el => {
+                el.style.opacity = '0.7';
+                el.style.pointerEvents = 'none';
+            });
+        } else {
+            // Taastame normaalse oleku
+            slidesElements.forEach(el => {
+                el.style.opacity = '';
+                el.style.pointerEvents = '';
+            });
+            goToSlide(currentIndex);
+        }
+    }
+
+    function nextSlide() { if(isOverview) toggleOverview(); goToSlide(currentIndex + 1); }
+    function prevSlide() { if(isOverview) toggleOverview(); goToSlide(currentIndex - 1); }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === "ArrowRight" || e.key === " ") nextSlide();
         if (e.key === "ArrowLeft") prevSlide();
+        if (e.key === "o" || e.key === "O") toggleOverview();
     });
 
+    // Käivitab esimese slaidi (Sõnapilv) kohe laadimisel
     window.onload = () => goToSlide(0);
 </script>
 
 </body>
 </html>
-
-
-See versioon on nüüd GitHubi-valmis. Sõnapilv on esimesena nähtav, navigatsioon on täiuslik ja efektid on täpselt sellised, mida soovisid!
