@@ -13,6 +13,8 @@
             --ut-blue: #003d7c;
             --accent-teal: #11caa0;
             --bg-canvas: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-gray: #475569;
         }
 
         body, html {
@@ -52,26 +54,377 @@
             background: white;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
             border-radius: 20px;
-            padding: 70px;
+            padding: 60px 80px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            opacity: 0.2;
+            justify-content: flex-start;
+            opacity: 0.1;
             transition: opacity 1s;
         }
 
         .slide.active { opacity: 1; }
 
-        h1, h2 { font-family: 'Poppins', sans-serif; color: var(--ut-blue); margin: 0; }
-        h1 { font-size: 60px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
-        h2 { font-size: 45px; margin-bottom: 40px; border-left: 8px solid var(--accent-teal); padding-left: 20px; }
-        p, li { font-size: 22px; color: #475569; line-height: 1.6; margin-bottom: 15px; }
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; color: var(--ut-blue); margin: 0; }
+        h1 { font-size: 54px; font-weight: 800; line-height: 1.1; margin-bottom: 15px; }
+        h2 { font-size: 40px; margin-bottom: 30px; border-left: 10px solid var(--accent-teal); padding-left: 25px; line-height: 1.2; }
+        h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
         
-        ul { padding-left: 20px; }
+        p, li { font-size: 20px; color: var(--text-gray); line-height: 1.5; margin-bottom: 10px; }
+        strong { color: var(--text-dark); }
+        
+        .small-text { font-size: 16px; line-height: 1.4; }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
         
-        .card { background: #f8fafc; padding: 30px; border-radius: 20px; border-bottom: 5px solid var(--accent-teal); text-align: center; }
-        .card i { font-size: 40px; color: var(--accent-teal); margin-bottom: 15px;
+        .card { 
+            background: #f8fafc; 
+            padding: 25px; 
+            border-radius: 15px; 
+            border-bottom: 4px solid var(--accent-teal); 
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .card i { font-size: 30px; color: var(--accent-teal); margin-bottom: 15px; }
+
+        .step-circle {
+            width: 50px; height: 50px; 
+            background: var(--ut-blue); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 800; 
+            margin-bottom: 15px;
+        }
+
+        #nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        .nav-btn {
+            background: var(--ut-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { background: var(--accent-teal); transform: translateY(-3px); }
+        .nav-btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+
+        #counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--ut-blue);
+        }
+    </style>
+</head>
+<body>
+
+<div id="counter">1 / 12</div>
+
+<div id="viewport">
+    <div id="canvas">
+        
+        <div class="slide" data-x="0" data-y="0" data-rotate="0" data-scale="1">
+            <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: 700;">MAGISTRITÖÖ 2026</p>
+            <h1>Kultuuriinkubaatori mudeli arendamine</h1>
+            <p style="font-size: 28px; color: var(--ut-blue); font-weight: 300;">Õppija agentsuse ja loovuse toetamiseks formaalhariduses</p>
+            
+            <div style="margin-top: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h3>Autor:</h3>
+                    <p>Meelis Külaots</p>
+                    <p class="small-text">Haridusinnovatsiooni õppekava<br>Tartu Ülikool</p>
+                </div>
+                <div>
+                    <h3>Juhendajad:</h3>
+                    <p>Kristina Kuznetsova-Bogdanovits<br>Astrid Külaots</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-x="1800" data-y="0" data-rotate="0" data-scale="1">
+            <h2>Teoreetiline raamistik</h2>
+            <div class="grid-2">
+                <div class="card" style="border-bottom-color: #f43f5e;">
+                    <h3>Uurimisprobleem</h3>
+                    <p>Formaalhariduses puuduvad terviklikud, teoreetiliselt põhjendatud ja praktiliselt rakendatavad mudelid, mis toetaksid süsteemselt õppija agentsuse, loovuse ja tähendusliku õppimise arengut.</p>
+                </div>
+                <div>
+                    <h3>Fookusvaldkonnad:</h3>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Projektõpe:</strong> Seob õppimise päriselu probleemidega.</li>
+                        <li><strong>Õppija agentsus:</strong> Õppija aktiivne roll ja vastutus.</li>
+                        <li><strong>Loov õppimine:</strong> Katsetamine ja vigadest õppimine.</li>
+                        <li><strong>Koostöökultuur:</strong> Ühine tegutsemine ja sotsiaalne tugi.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-x="1800" data-y="1200" data-rotate="90" data-scale="1">
+            <h2>Eesmärk ja uurimisküsimused</h2>
+            <div class="card" style="margin-bottom: 30px; background: var(--ut-blue); color: white;">
+                <h3 style="color: var(--accent-teal);">Eesmärk:</h3>
+                <p style="color: white; font-size: 22px;">Arendada ja empiirilise sisendi põhjal täpsustada kultuuriinkubaatori mudelit, mis toetab formaalhariduses õppija agentsuse ja loovuse arengut.</p>
+            </div>
+            <h3>Uurimisküsimused:</h3>
+            <ol>
+                <li>Kuidas mõtestavad osalejad kultuuriinkubaatori tähendust koolikeskkonnas?</li>
+                <li>Millised tähelepanekud ja ettepanekud ilmnesid mudeli edasiarendamiseks?</li>
+                <li>Millised tegurid mõjutavad kultuuriinkubaatori rakendamist formaalhariduses?</li>
+            </ol>
+        </div>
+
+        <div class="slide" data-x="0" data-y="1200" data-rotate="0" data-scale="1">
+            <h2>Metoodika: Arendusuuring</h2>
+            <p>Lähtusin Easterday jt (2018) kirjeldatud arendusuuringu mudelist.</p>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Põhivalim (Elva Gümnaasium):</h3>
+                    <ul>
+                        <li><strong>Võtmeisikud (n=3):</strong> Direktor, huvijuht, kultuurisuuna õpetaja.</li>
+                        <li><strong>Fookusgrupp (n=9):</strong> 15–18-aastased kultuurisuuna õpilased.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Toetav sisend:</h3>
+                    <ul>
+                        <li>Programm „Noored Loojad“</li>
+                        <li>Eksperthinnang</li>
+                        <li>Uurija refleksiivne päevik</li>
+                        <li>Pilootkatsetuse tagasiside</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-x="-1800" data-y="1200" data-rotate="0" data-scale="1">
+            <h2>Andmeanalüüs</h2>
+            <p>Temaatiline analüüs (Braun & Clarke loogika põhjal):</p>
+            <div class="grid-2">
+                <div class="card">
+                    <p><strong>1. Kodeerimine:</strong> Tähenduslike üksuste esiletõstmine (nt "turvaline õhkkond", "ajapuudus").</p>
+                    <p><strong>2. Teemade kujundamine:</strong> Sarnaste koodide koondamine temaatilisteks kategooriateks.</p>
+                </div>
+                <div class="card">
+                    <p><strong>3. Teooriaga sidumine:</strong> Tulemuste seostamine töö teoreetilise süsteemiga.</p>
+                    <p><strong>4. Usaldusväärsus:</strong> Andmete triangulatsioon (juhtkond, õpetajad, õpilased) ja auditeerimisjälg.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-x="-1800" data-y="0" data-rotate="-90" data-scale="1">
+            <h2>Tulemused: Tähendus koolis</h2>
+            <p>Kuidas osalejad kultuuriinkubaatorit mõtestavad?</p>
+            <div class="grid-2">
+                <div class="card">
+                    <i class="fa-solid fa-heart"></i>
+                    <h3>Huvipõhisus</h3>
+                    <p>Õppimine lähtub isiklikust tähendusest. Isiklik huvi on kõige kriitilisem õppimise käivitaja.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <h3>Autonoomia</h3>
+                    <p>Õppijal on suurem autonoomia ja vastutus oma teekonna eest. Õpetaja on mentor, mitte kontrollija.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-palette"></i>
+                    <h3>Loovus</h3>
+                    <p>Rõhk on looval ja praktilisel tegutsemisel. Koostöö ja ühine loomine on kesksel kohal.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-handshake-angle"></i>
+                    <h3>Koostöö</h3>
+                    <p>Sotsiaalne ja emotsionaalne tugi kogukonnas on vältimatu osa õppeprotsessist.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-x="-1800" data-y="-1200" data-rotate="0" data-scale="1">
+            <h2>Ettepanekud mudeli arendamiseks</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <h3>Aeg</h3>
+                    <p>Ajakasutus peab toetama süvenemist. Paindlikkus on loovuse peamine eeldus.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-route"></i>
+                    <h3>Protsess</h3>
+                    <p>Struktuur peab olema selge ja arusaadav, kuid samas piisavalt paindlik.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <h3>Motivatsioon</h3>
+                    <p>Motivatsioon kujuneb sotsiaalses ja tähenduslikus tegevuses, mitte käskude täitmisel.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-x="0" data-y="-1200" data-rotate="0" data-scale="1">
+            <h2>Kultuuriinkubaatori 6-astmeline protsess</h2>
+            <div class="grid-3" style="font-size: 14px;">
+                <div class="card">
+                    <div class="step-circle">1</div>
+                    <p><strong>Enesepeegeldus:</strong> Kaardista oma tugevused, väärtused ja huvid.</p>
+                </div>
+                <div class="card">
+                    <div class="step-circle">2</div>
+                    <p><strong>Ideede leidmine:</strong> Leia kaaslased ja lahendamist vajav päriseluline küsimus.</p>
+                </div>
+                <div class="card">
+                    <div class="step-circle">3</div>
+                    <p><strong>Disain:</strong> Kasuta disainmõtlemist, et jõuda konkreetse lahenduseni.</p>
+                </div>
+                <div class="card">
+                    <div class="step-circle">4</div>
+                    <p><strong>Planeerimine:</strong> Koosta kava, leia partnerid ja määra vastutus.</p>
+                </div>
+                <div class="card">
+                    <div class="step-circle">5</div>
+                    <p><strong>Katsetamine:</strong> Loo esmane versioon, testi ja õpi vigadest.</p>
+                </div>
+                <div class="card">
+                    <div class="step-circle">6</div>
+                    <p><strong>Jagamine:</strong> Jaga saavutusi maailmaga ja mõtesta oma arengut.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-x="1800" data-y="-1200" data-rotate="0" data-scale="1">
+            <h2>Peamised järeldused</h2>
+            <div class="card" style="background: #f1f5f9; border-left: 10px solid var(--ut-blue);">
+                <p style="font-size: 24px;"><strong>Põhivorm:</strong> Kultuuriinkubaatori kõige põhjendatum põhiformaat on gümnaasiumi valikkursus.</p>
+            </div>
+            <ul style="margin-top: 20px;">
+                <li>Õppija agentsus ei kujune lihtsalt valikuvabaduse kaudu vaid toetatud õppeprotsessis.</li>
+                <li>Mudel on modulaarne – rakendatav ka projektipäevade või laagritena.</li>
+                <li>Väärtus seisneb huvi ja praktilise tegutsemise sidumises tervikuks.</li>
+            </ul>
+        </div>
+
+        <div class="slide" data-x="3600" data-y="-1200" data-rotate="0" data-scale="1">
+            <h2>Edasised sammud</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>Piirangud:</h3>
+                    <p class="small-text">Uuring põhines ühel koolikontekstil (Elva). Pikaajalist mõju agentsusele ei hinnatud veel süsteemselt.</p>
+                </div>
+                <div>
+                    <h3>Tegevuskava:</h3>
+                    <ul>
+                        <li class="small-text">Terviklik piloteerimine valikkursusena.</li>
+                        <li class="small-text">Rakendamine erinevates koolikontekstides.</li>
+                        <li class="small-text">Pikaajalisema mõju uurimine õppijate agentsusele.</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="background: var(--accent-teal); padding: 20px; border-radius: 15px; margin-top: 30px; color: white; text-align: center;">
+                <strong>Agentsus ei kujune pelgalt valikuvabadusest, vaid tähenduslikust õpiteekonnast!</strong>
+            </div>
+        </div>
+
+        <div class="slide" data-x="3600" data-y="0" data-rotate="90" data-scale="0.8">
+            <h2>Kasutatud kirjandus (Valik)</h2>
+            <div style="font-size: 13px; line-height: 1.3; color: var(--text-gray);">
+                <p>Bandura, A. (2001). Social cognitive theory: An agentic perspective.</p>
+                <p>Braun, V., & Clarke, V. (2006). Using thematic analysis in psychology.</p>
+                <p>Brown, T. (2008). Design thinking. Harvard Business Review.</p>
+                <p>Easterday, M. W. jt (2018). The logic of design research.</p>
+                <p>Edmondson, A. C., & Lei, Z. (2014). Psychological safety.</p>
+                <p>Kolb, D. A. (1984). Experiential learning.</p>
+                <p>Ryan, R. M., & Deci, E. L. (2000). Self-determination theory.</p>
+                <p>Schunk, D. H. (2012). Learning theories: An educational perspective.</p>
+                <p>Thomas, J. W. (2000). A review of research on project-based learning.</p>
+            </div>
+        </div>
+
+        <div class="slide" data-x="0" data-y="0" data-rotate="0" data-scale="10">
+            <h1 style="text-align: center; font-size: 120px; color: var(--ut-blue); margin-top: 100px;">AITÄH!</h1>
+            <p style="text-align: center; font-size: 40px; color: var(--accent-teal);">Küsimused ja arutelu</p>
+            <div style="text-align: center; margin-top: 50px;">
+                <p>Meelis Külaots | 2026</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="nav">
+    <button class="nav-btn" id="btn-prev" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> Eelmisele</button>
+    <button class="nav-btn" id="btn-next" onclick="nextSlide()">Järgmisele <i class="fa-solid fa-arrow-right"></i></button>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const slidesElements = document.querySelectorAll('.slide');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const counter = document.getElementById('counter');
+    
+    let currentIndex = 0;
+    const slidesData = [];
+
+    slidesElements.forEach((el, index) => {
+        const x = parseFloat(el.dataset.x) || 0;
+        const y = parseFloat(el.dataset.y) || 0;
+        const rotate = parseFloat(el.dataset.rotate) || 0;
+        const scale = parseFloat(el.dataset.scale) || 1;
+
+        slidesData.push({ x, y, rotate, scale });
+        el.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(${scale})`;
+    });
+
+    function goToSlide(index) {
+        if (index < 0 || index >= slidesData.length) return;
+        currentIndex = index;
+
+        const target = slidesData[currentIndex];
+        
+        canvas.style.transform = `scale(${1 / target.scale}) rotate(${-target.rotate}deg) translate(${-target.x}px, ${-target.y}px)`;
+
+        slidesElements.forEach((el, i) => {
+            if(i === currentIndex) el.classList.add('active');
+            else el.classList.remove('active');
+        });
+
+        counter.innerText = `${currentIndex + 1} / ${slidesData.length}`;
+        btnPrev.disabled = currentIndex === 0;
+        btnNext.disabled = currentIndex === slidesData.length - 1;
+    }
+
+    function nextSlide() { goToSlide(currentIndex + 1); }
+    function prevSlide() { goToSlide(currentIndex - 1); }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "ArrowRight" || e.key === " ") nextSlide();
+        if (e.key === "ArrowLeft") prevSlide();
+    });
+
+    window.onload = () => {
+        goToSlide(0);
+    };
+</script>
+
+</body>
+</html>
