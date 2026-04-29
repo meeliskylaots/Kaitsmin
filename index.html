@@ -1,657 +1,298 @@
-```html
 <!DOCTYPE html>
 <html lang="et">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kultuuriinkubaatori Mudel - Magistritöö Kaitsmine</title>
-  <style>
-    :root {
-      --bg-color: #F4F7F6;
-      --accent-color: #2B4C6A; /* Dark Blue from the poster text */
-      --text-main: #1D1D1F;
-      --text-light: #4A5568;
-      --card-bg: #FFFFFF;
-      
-      /* Model Colors */
-      --color-1: #329994; /* Teal */
-      --color-2: #B8D352; /* Light Green */
-      --color-3: #F8C946; /* Yellow */
-      --color-4: #F38C45; /* Orange */
-      --color-5: #66AEE0; /* Light Blue */
-      --color-6: #355995; /* Dark Blue */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magistritöö Kaitsmine: Kultuuriinkubaator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --ut-blue: #003d7c;
+            --mint: #11caa0;
+            --bg-color: #f4f7f6;
+            --text-main: #334155;
+            --slide-width: 1400px;
+            --slide-height: 800px;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        body, html {
+            margin: 0; padding: 0;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+        }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      overflow: hidden;
-      width: 100vw;
-      height: 100vh;
-    }
+        #viewport {
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: radial-gradient(circle at center, #ffffff 0%, var(--bg-color) 100%);
+            perspective: 1000px;
+        }
 
-    /* Navigation UI */
-    .controls {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      display: flex;
-      gap: 15px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 10px 20px;
-      border-radius: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      backdrop-filter: blur(10px);
-      align-items: center;
-    }
+        #canvas {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+        }
 
-    .slide-counter {
-      font-weight: bold;
-      color: var(--text-light);
-      padding: 0 10px;
-      font-size: 14px;
-    }
+        .slide {
+            position: absolute;
+            width: var(--slide-width);
+            height: var(--slide-height);
+            margin-left: calc(var(--slide-width) / -2);
+            margin-top: calc(var(--slide-height) / -2);
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 61, 124, 0.08);
+            padding: 80px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.2;
+            transition: opacity 0.8s, transform 0.8s, box-shadow 0.8s;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
 
-    button {
-      background: none;
-      border: none;
-      color: var(--accent-color);
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 8px 16px;
-      border-radius: 20px;
-      transition: all 0.2s;
-    }
+        .slide.active {
+            opacity: 1;
+            box-shadow: 0 40px 120px rgba(0, 61, 124, 0.15);
+        }
 
-    button:hover:not(:disabled) {
-      background: var(--accent-color);
-      color: white;
-    }
+        h1 { font-family: 'Poppins', sans-serif; font-size: 60px; color: var(--ut-blue); margin-bottom: 20px; line-height: 1.1; }
+        h2 { font-family: 'Poppins', sans-serif; font-size: 45px; color: var(--ut-blue); margin-bottom: 40px; border-left: 10px solid var(--mint); padding-left: 25px; }
+        p, li { font-size: 24px; line-height: 1.6; margin-bottom: 15px; }
+        strong { color: var(--ut-blue); }
 
-    button:disabled {
-      color: #ccc;
-      cursor: not-allowed;
-    }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        
+        .box { background: #f8fafc; padding: 40px; border-radius: 20px; border-bottom: 5px solid var(--mint); text-align: center; height: 100%; box-sizing: border-box;}
+        .box i { font-size: 45px; color: var(--mint); margin-bottom: 20px; }
 
-    .progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 5px;
-      background: linear-gradient(90deg, var(--color-1), var(--color-2), var(--color-3), var(--color-4), var(--color-5), var(--color-6));
-      transition: width 0.3s ease;
-      z-index: 1000;
-      border-radius: 0 2px 2px 0;
-    }
+        .tag { display: inline-block; background: var(--ut-blue); color: white; padding: 10px 20px; border-radius: 50px; font-weight: 600; font-size: 18px; margin-bottom: 20px; letter-spacing: 2px;}
 
-    /* Zooming Canvas */
-    #viewport {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      perspective: 1000px;
-    }
+        #nav {
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 20px; z-index: 1000;
+            background: rgba(255,255,255,0.95); padding: 15px 30px; border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        button {
+            background: var(--ut-blue); color: white; border: none; padding: 15px 30px;
+            border-radius: 30px; font-size: 18px; font-weight: 600; font-family: 'Montserrat', sans-serif;
+            cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px;
+        }
+        button:hover { background: var(--mint); transform: translateY(-2px); }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+        .btn-red { background: #f43f5e; }
+        .btn-red:hover { background: #e11d48; }
 
-    #canvas {
-      position: absolute;
-      transform: scale(1) translate(0px, 0px);
-      transition: transform 1.2s cubic-bezier(0.64, 0.04, 0.35, 1);
-      transform-style: preserve-3d;
-      width: 0;
-      height: 0;
-    }
+        ul.styled-list { list-style: none; padding: 0; }
+        ul.styled-list li { position: relative; padding-left: 45px; margin-bottom: 25px; }
+        ul.styled-list li i { position: absolute; left: 0; top: 5px; color: var(--mint); font-size: 28px; }
 
-    /* Presentation Steps */
-    .step {
-      position: absolute;
-      width: 550px;
-      transform: translate(-50%, -50%);
-      opacity: 0.15;
-      transition: opacity 0.8s ease, transform 0.8s ease;
-      pointer-events: none;
-    }
-
-    .step.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .card {
-      background: var(--card-bg);
-      padding: 35px;
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.06);
-      border: 2px solid rgba(43, 76, 106, 0.1);
-      position: relative;
-    }
-
-    .step-number {
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 40px;
-      background: var(--color-6);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    h1, h2, h3 {
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--accent-color);
-      text-align: center;
-      text-transform: uppercase;
-      font-size: 1.2rem;
-      letter-spacing: 0.5px;
-    }
-
-    h1 { font-size: 1.8rem; line-height: 1.4; text-transform: none; }
-    
-    p, li {
-      font-size: 1.05rem;
-      line-height: 1.5;
-      color: var(--text-light);
-      margin-bottom: 12px;
-    }
-
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    ul li {
-      position: relative;
-      padding-left: 25px;
-      margin-bottom: 15px;
-    }
-
-    ul li::before {
-      content: '•';
-      position: absolute;
-      left: 0;
-      color: var(--color-6);
-      font-size: 1.5em;
-      line-height: 1;
-      top: -2px;
-    }
-
-    /* Specialized layouts */
-    .grid-2x2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .quadrant {
-      text-align: center;
-      padding: 15px;
-      background: #f8fbfb;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-    }
-    .quadrant strong {
-      display: block;
-      color: var(--accent-color);
-      margin-bottom: 8px;
-    }
-    .quadrant p {
-      font-size: 0.95rem;
-      margin-bottom: 0;
-    }
-
-    .flow {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin: 20px 0;
-      font-weight: 600;
-      color: var(--accent-color);
-    }
-    .flow-step {
-      background: white;
-      padding: 12px 10px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      text-align: center;
-      border: 1px solid #cbd5e1;
-      flex: 1;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-    }
-
-    /* Central Model Styles */
-    .model-container {
-      width: 700px;
-      height: 700px;
-      position: absolute;
-      transform: translate(-50%, -50%);
-    }
-
-    .pie-chart {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: conic-gradient(
-        var(--color-1) 0deg 60deg,
-        var(--color-2) 60deg 120deg,
-        var(--color-3) 120deg 180deg,
-        var(--color-4) 180deg 240deg,
-        var(--color-5) 240deg 300deg,
-        var(--color-6) 300deg 360deg
-      );
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    }
-
-    .pie-inner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 200px;
-      height: 200px;
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      font-weight: bold;
-      color: var(--accent-color);
-      box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
-      z-index: 10;
-    }
-
-    .pie-label {
-      position: absolute;
-      color: white;
-      font-weight: 600;
-      text-align: center;
-      width: 140px;
-      font-size: 0.95rem;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-
-    /* Label positioning inside the pie segments */
-    .lbl-1 { top: 15%; left: 50%; transform: translateX(-50%); }
-    .lbl-2 { top: 35%; right: 5%; }
-    .lbl-3 { bottom: 20%; right: 10%; }
-    .lbl-4 { bottom: 10%; left: 50%; transform: translateX(-50%); }
-    .lbl-5 { bottom: 20%; left: 10%; }
-    .lbl-6 { top: 35%; left: 5%; }
-
-    /* Central Title View */
-    .title-box {
-      text-align: center;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-    }
-
-  </style>
+    </style>
 </head>
 <body>
 
-  <div class="progress" id="progress-bar"></div>
-
-  <div id="viewport">
+<div id="viewport">
     <div id="canvas">
 
-      <!-- ================= BACKGROUND CENTRAL MODEL ================= -->
-      <div class="model-container" id="model-map">
-        <!-- Connecting dotted lines to outer steps (Decorative) -->
-        <svg width="1000" height="1000" style="position:absolute; top:-150px; left:-150px; overflow:visible; z-index:-1; pointer-events:none;">
-          <circle cx="500" cy="500" r="450" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="10 10"/>
-        </svg>
-
-        <div class="pie-chart">
-          <div class="pie-label lbl-1">Eneseteadlikkus:<br><small>huvid, tugevused, väärtused</small></div>
-          <div class="pie-label lbl-2">Päriselulise<br>küsimuse<br>määratlemine</div>
-          <div class="pie-label lbl-3">Ideede<br>loomine</div>
-          <div class="pie-label lbl-4">Disainimine ja<br>arendamine</div>
-          <div class="pie-label lbl-5">Katsetamine ja<br>elluviimine</div>
-          <div class="pie-label lbl-6">Refleksioon<br>ja jagamine</div>
-          <div class="pie-inner">
-            <span style="font-size:1.2rem; line-height:1.2;">KULTUURI-<br>INKUBAATORI<br>MUDEL</span>
-          </div>
+        <div class="slide" data-x="0" data-y="0" data-scale="1">
+            <div style="text-align: center;">
+                <span class="tag">MAGISTRITÖÖ KAITSMINE 2026</span>
+                <h1>Kultuuriinkubaatori mudeli arendamine</h1>
+                <p style="font-size: 32px; color: var(--ut-blue); margin-bottom: 60px;">Õppija agentsuse ja loovuse toetamiseks formaalhariduses</p>
+                
+                <div style="display: inline-block; text-align: left; background: #f8fafc; padding: 40px 60px; border-radius: 20px; border-left: 8px solid var(--ut-blue);">
+                    <p style="margin: 0 0 10px 0;"><strong>Autor:</strong> Meelis Külaots</p>
+                    <p style="margin: 0 0 10px 0;"><strong>Juhendajad:</strong> Kristina Kuznetsova-Bogdanovits, Astrid Külaots</p>
+                    <p style="margin: 0; font-size: 20px; opacity: 0.7;">Tartu Ülikool | Haridusinnovatsiooni õppekava</p>
+                </div>
+            </div>
         </div>
-        
-        <!-- Center Bottom Conclusion Bubble -->
-        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px 30px; border-radius: 30px; border: 2px solid var(--color-5); color: var(--accent-color); font-weight: 600; white-space: nowrap; box-shadow: 0 10px 20px rgba(0,0,0,0.05); z-index: 20;">
-          Mudeli kõige põhjendatum põhiformaat on gümnaasiumi valikkursus.
+
+        <div class="slide" data-x="2200" data-y="0" data-scale="1">
+            <h2>Teoreetiline raamistik</h2>
+            <div class="grid-4">
+                <div class="box">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <p><strong>Õppija agentsus</strong></p>
+                    <p style="font-size: 18px;">Suutlikkus oma õppimist tähenduslikult suunata.</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <p><strong>Loov õppimine</strong></p>
+                    <p style="font-size: 18px;">Katsetuspõhine ja avatud õppimisviis.</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <p><strong>Projektõpe</strong></p>
+                    <p style="font-size: 18px;">Kogukondlik mõõde ja reaalsed väljakutsed.</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-shield-heart"></i>
+                    <p><strong>Sotsiaalne tugi</strong></p>
+                    <p style="font-size: 18px;">Koostöökultuur ja emotsionaalne raamistik.</p>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <!-- ================= PRESENTATION SLIDES (STEPS) ================= -->
-      
-      <!-- 1. Title (Top Left) -->
-      <div class="step card title-box" data-x="-900" data-y="-600" data-scale="1.1" style="width: 600px;">
-        <div class="step-number" style="background:var(--color-1);">1</div>
-        <h2 style="color:var(--color-1);">Pealkiri</h2>
-        <h1>Kultuuriinkubaatori mudeli arendamine õppija agentsuse ja loovuse toetamiseks formaalhariduses</h1>
-        <div style="margin-top: 30px; line-height: 1.6;">
-          <p><strong>Meelis Külaots magistritöö</strong><br>
-          Tartu Ülikool<br>Haridusinnovatsiooni õppekava</p>
-          <p style="margin-top: 15px; font-size: 0.95rem;">
-            Juhendajad: Kristina Kuznetsova-Bogdanovitš, Astrid Külaots
-          </p>
+        <div class="slide" data-x="2200" data-y="1200" data-scale="1">
+            <div class="grid-2">
+                <div>
+                    <h2 style="border-color: #f43f5e;">Uurimisprobleem</h2>
+                    <p style="font-size: 30px; font-weight: bold; color: #f43f5e;">Süsteemsuse puudumine</p>
+                    <p>Formaalhariduses puuduvad terviklikud, teoreetiliselt põhjendatud ja praktiliselt rakendatavad mudelid, mis toetaksid süsteemselt õppija agentsuse, loovuse ja tähendusliku õppimise arengut.</p>
+                </div>
+                <div style="background: var(--ut-blue); padding: 50px; border-radius: 30px; color: white;">
+                    <h2 style="color: white; border-color: var(--mint);">Eesmärk</h2>
+                    <p style="color: white;">Arendada ja empiirilise sisendi põhjal täpsustada kultuuriinkubaatori mudelit, mis toetab formaalhariduses õppija agentsuse ja loovuse arengut.</p>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <!-- 2. Problem (Mid Left) -->
-      <div class="step card" data-x="-1000" data-y="0" data-scale="0.8">
-        <div class="step-number" style="background:var(--color-1);">2</div>
-        <h2>Uurimisprobleem</h2>
-        <p style="font-weight: 600; margin-bottom: 20px;">Formaalhariduses napib terviklikke ja praktiliselt rakendatavaid mudeleid, mis toetaksid õppija agentsust, loovust ja tähenduslikku õppimist.</p>
-        <ul>
-          <li>Õppija roll jääb sageli liiga passiivseks.</li>
-          <li>Loovus ei jõua alati päriselulise tegutsemiseni.</li>
-          <li>Koostöö, refleksioon ja omaalgatus vajavad teadlikku õppedisaini.</li>
-        </ul>
-      </div>
-
-      <!-- 3. Theoretical Framework (Top Center-Left) -->
-      <div class="step card" data-x="-400" data-y="-700" data-scale="0.8" style="width: 650px;">
-        <div class="step-number" style="background:var(--color-1);">3</div>
-        <h2>Teoreetiline Raamistik</h2>
-        <div class="grid-2x2">
-          <div class="quadrant">
-            <strong>Õppija agentsus</strong>
-            <p>Aktiivne roll, vastutus ja mõju oma õpiteekonnale.</p>
-          </div>
-          <div class="quadrant">
-            <strong>Loov ja katsetuspõhine õppimine</strong>
-            <p>Ideede loomine, prototüüpimine ja vigadest õppimine.</p>
-          </div>
-          <div class="quadrant">
-            <strong>Projektõpe ja kogukondlik mõõde</strong>
-            <p>Päriselu probleemid ja praktiline väljund.</p>
-          </div>
-          <div class="quadrant">
-            <strong>Sotsiaal-emotsionaalne raamistik ja koostöökultuur</strong>
-            <p>Turvaline koostöö, vastutus ja ühine tegutsemine.</p>
-          </div>
+        <div class="slide" data-x="0" data-y="1200" data-scale="1">
+            <h2>Uurimisküsimused</h2>
+            <ul class="styled-list">
+                <li><i class="fa-regular fa-circle-question"></i>Kuidas mõtestavad osalejad kultuuriinkubaatori tähendust koolikeskkonnas?</li>
+                <li><i class="fa-regular fa-circle-question"></i>Millised tähelepanekud ja ettepanekud ilmnesid kultuuriinkubaatori mudeli edasiarendamiseks?</li>
+                <li><i class="fa-regular fa-circle-question"></i>Millised tegurid mõjutavad kultuuriinkubaatori rakendamist formaalhariduses?</li>
+            </ul>
         </div>
-      </div>
 
-      <!-- 4. Aim (Top Right) -->
-      <div class="step card" data-x="400" data-y="-700" data-scale="0.8">
-        <div class="step-number" style="background:var(--color-2);">4</div>
-        <h2>Eesmärk</h2>
-        <div style="text-align: center; padding: 20px 0;">
-          <p style="font-size: 1.3rem; font-weight: 500; color: var(--accent-color);">
-            Arendada ja empiirilise sisendi põhjal täpsustada kultuuriinkubaatori mudelit, mis toetab formaalhariduses õppija agentsuse ja loovuse arengut.
-          </p>
+        <div class="slide" data-x="-2200" data-y="1200" data-scale="1">
+            <h2>Metoodika: Arendusuuring</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 50px;">
+                <div class="box" style="flex: 1; margin: 0 10px;"><p style="font-weight:bold; font-size: 30px; color: var(--ut-blue);">1</p><p>Teooria ja eelsisend</p></div>
+                <i class="fa-solid fa-arrow-right" style="font-size: 30px; color: #cbd5e1;"></i>
+                <div class="box" style="flex: 1; margin: 0 10px;"><p style="font-weight:bold; font-size: 30px; color: var(--ut-blue);">2</p><p>Intervjuud ja fookusgrupp</p></div>
+                <i class="fa-solid fa-arrow-right" style="font-size: 30px; color: #cbd5e1;"></i>
+                <div class="box" style="flex: 1; margin: 0 10px; border-color: var(--ut-blue);"><p style="font-weight:bold; font-size: 30px; color: var(--mint);">3</p><p>Pilootkatsetus koolis</p></div>
+                <i class="fa-solid fa-arrow-right" style="font-size: 30px; color: #cbd5e1;"></i>
+                <div class="box" style="flex: 1; margin: 0 10px;"><p style="font-weight:bold; font-size: 30px; color: var(--ut-blue);">4</p><p>Eksperthinnang</p></div>
+            </div>
+            <p style="text-align: center; margin-top: 40px; font-weight: 600;">Andmeanalüüs: Temaatiline analüüs ja iteratiivne arendusprotsess</p>
         </div>
-      </div>
 
-      <!-- 5. Research Questions (Far Top Right) -->
-      <div class="step card" data-x="1000" data-y="-500" data-scale="0.8" style="width: 650px;">
-        <div class="step-number" style="background:var(--color-3);">5</div>
-        <h2>Uurimisküsimused</h2>
-        <ol style="padding-left: 20px; font-size: 1.1rem; line-height: 1.6; color: var(--text-light);">
-          <li style="margin-bottom: 15px;">Kuidas mõtestavad osalejad kultuuriinkubaatori tähendust koolikeskkonnas?</li>
-          <li style="margin-bottom: 15px;">Millised tähelepanekud ja ettepanekud ilmnesid kultuuriinkubaatori mudeli edasiarendamiseks?</li>
-          <li>Millised tegurid mõjutavad kultuuriinkubaatori rakendamist formaalhariduses?</li>
-        </ol>
-      </div>
-
-      <!-- 6. Methodology (Mid Right) -->
-      <div class="step card" data-x="1100" data-y="100" data-scale="0.8" style="width: 750px;">
-        <div class="step-number" style="background:var(--color-4);">6</div>
-        <h2>Metoodika</h2>
-        <div class="flow">
-          <div class="flow-step">Teooria</div> ➔ 
-          <div class="flow-step">Esmane<br>mudel</div> ➔ 
-          <div class="flow-step">Empiiriline<br>sisend</div> ➔ 
-          <div class="flow-step">Analüüs</div> ➔ 
-          <div class="flow-step">Täpsustatud<br>mudel</div>
+        <div class="slide" data-x="-2200" data-y="0" data-scale="1">
+            <span class="tag">TULEMUSED</span>
+            <div class="grid-2">
+                <div>
+                    <h3>Kultuuriinkubaatori tähendus</h3>
+                    <ul class="styled-list">
+                        <li><i class="fa-solid fa-check"></i>Õppija huvist lähtuv lähenemine</li>
+                        <li><i class="fa-solid fa-check"></i>Loov ja praktiline tegutsemine</li>
+                        <li><i class="fa-solid fa-check"></i>Autonoomia, vastutus ja koostöö</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Mudeli edasiarendamine</h3>
+                    <ul class="styled-list">
+                        <li><i class="fa-solid fa-gears"></i>Selgem protsessiloogika</li>
+                        <li><i class="fa-solid fa-clock"></i>Paindlik ajakasutus</li>
+                        <li><i class="fa-solid fa-user-tie"></i>Toetav mentorlus</li>
+                        <li><i class="fa-solid fa-puzzle-piece"></i>Modulaarne ülesehitus</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 20px; font-size: 0.95rem;">
-          <ul style="flex:1;">
-            <li>Arendusuuring</li>
-            <li>Intervjuud Elva Gümnaasiumi võtmeisikutega</li>
-          </ul>
-          <ul style="flex:1;">
-            <li>Õpilaste fookusgrupp</li>
-            <li>Pilootkatsetuse tagasiside</li>
-            <li>Eksperthinnang</li>
-            <li>Uurija refleksiivne päevik</li>
-          </ul>
+
+        <div class="slide" data-x="-2200" data-y="-1200" data-scale="1">
+            <h2>Rakendamist mõjutavad tegurid</h2>
+            <div class="grid-4">
+                <div class="box" style="background: var(--ut-blue); color: white;">
+                    <i class="fa-solid fa-heart" style="color: var(--mint);"></i>
+                    <p style="color: white; font-weight: 600;">Õppija isiklik huvi</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-sitemap"></i>
+                    <p>Selge protsessistruktuur</p>
+                </div>
+                <div class="box">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <p>Paindlik ajakasutus</p>
+                </div>
+                <div class="box" style="background: var(--ut-blue); color: white;">
+                    <i class="fa-solid fa-hands-holding-child" style="color: var(--mint);"></i>
+                    <p style="color: white; font-weight: 600;">Juhendaja toetav roll</p>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <!-- 7. Context (Bottom Right) -->
-      <div class="step card" data-x="1000" data-y="600" data-scale="0.8">
-        <div class="step-number" style="background:var(--color-5);">7</div>
-        <h2>Uurimiskontekst ja Valim</h2>
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h3 style="color: var(--color-6); margin: 10px 0;">ELVA GÜMNAASIUM</h3>
+        <div class="slide" data-x="0" data-y="-1200" data-scale="1.5">
+            <h1 style="text-align: center;">Järeldused</h1>
+            <div style="background: var(--mint); padding: 40px; border-radius: 20px; margin-bottom: 40px;">
+                <p style="color: white; font-size: 32px; font-weight: 600; text-align: center; margin: 0;">Mudeli väärtus seisneb huvi, loovuse ja praktilise tegutsemise sidumises.</p>
+            </div>
+            <ul class="styled-list">
+                <li><i class="fa-solid fa-star"></i><strong>Põhiformaat:</strong> Toimib kõige paremini gümnaasiumi valikkursusena.</li>
+                <li><i class="fa-solid fa-star"></i><strong>Mõju:</strong> Õppija agentsust saab toetada formaalhariduse sees õppimisloogikat muutes.</li>
+                <li><i class="fa-solid fa-arrow-trend-up"></i><strong>Edasised sammud:</strong> Mudeli testimine erinevates koolides, moodulite lõimimine õppetöösse ja pikaajalise mõju uurimine.</li>
+            </ul>
         </div>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; font-size: 0.95rem; text-align: center;">
-          <div style="background: #f0f4f8; padding: 10px; border-radius: 8px;">Direktor</div>
-          <div style="background: #f0f4f8; padding: 10px; border-radius: 8px;">Huvijuht</div>
-          <div style="background: #f0f4f8; padding: 10px; border-radius: 8px;">Kultuurisuuna õpetaja</div>
-          <div style="background: #f0f4f8; padding: 10px; border-radius: 8px;">Õpilaste fookusgrupp<br><small>n = 9, vanus 15–18</small></div>
-        </div>
-        <p style="font-size: 0.9rem; text-align: center; font-style: italic;">
-          Elva Gümnaasium valiti eesmärgipäraselt, sest koolis on olemas kultuurisuund ning sobib formaalhariduse kontekstis mudeli piloteerimiseks ja arendamiseks.
-        </p>
-      </div>
-
-      <!-- 8. Analysis (Bottom Left) -->
-      <div class="step card" data-x="-900" data-y="600" data-scale="0.8" style="width: 750px;">
-        <div class="step-number" style="background:var(--color-6);">8</div>
-        <h2>Andmeanalüüs</h2>
-        <div class="flow" style="margin-bottom: 30px;">
-          <div class="flow-step">Andmetega<br>tutvumine</div> ➔ 
-          <div class="flow-step">Esmane<br>kodeerimine</div> ➔ 
-          <div class="flow-step">Teemade<br>kujundamine</div> ➔ 
-          <div class="flow-step">Teooriaga<br>sidumine</div> ➔ 
-          <div class="flow-step" style="background: #f0f4f8;">Usaldusväärsuse<br>tagamine</div>
-        </div>
-        <p style="text-align: center; font-style: italic; color: var(--accent-color);">
-          Usaldusväärsust toetas andmete triangulatsioon ning uurija refleksiivne päevik.
-        </p>
-      </div>
-
-      <!-- 9. Results I (Bottom Center-Left) -->
-      <div class="step card" data-x="-500" data-y="850" data-scale="0.65">
-        <div class="step-number" style="background:var(--color-1);">9</div>
-        <h2 style="font-size: 1rem;">Tulemused I: Kultuuriinkubaatori tähendus</h2>
-        <ul style="margin-top: 20px;">
-          <li>Huvist lähtuv õppimine</li>
-          <li>Loov ja praktiline tegutsemine</li>
-          <li>Autonoomia ja vastutus</li>
-          <li>Koostöö ja ühine loomine</li>
-        </ul>
-      </div>
-
-      <!-- 10. Results II (Bottom Center) -->
-      <div class="step card" data-x="0" data-y="900" data-scale="0.65" style="width: 500px;">
-        <div class="step-number" style="background:var(--color-2);">10</div>
-        <h2 style="font-size: 1rem;">Tulemused II: Mudeli edasiarendamine</h2>
-        <ul style="margin-top: 20px;">
-          <li>Ajakasutus peab võimaldama süvenemist.</li>
-          <li>Juhendamine peab olema toetav, mitte kontrolliv.</li>
-          <li>Motivatsioon kujuneb sotsiaalses ja tähenduslikus tegevuses.</li>
-          <li>Protsess peab olema selge ja õppijale arusaadav.</li>
-          <li>Mudel peab olema paindlik ja lõimitav.</li>
-        </ul>
-      </div>
-
-      <!-- 11. Results III (Bottom Center-Right) -->
-      <div class="step card" data-x="500" data-y="850" data-scale="0.65">
-        <div class="step-number" style="background:var(--color-4);">11</div>
-        <h2 style="font-size: 1rem;">Tulemused III: Rakendamist mõjutavad tegurid</h2>
-        <ul style="margin-top: 20px;">
-          <li>Õppija isiklik huvi</li>
-          <li>Selge protsessistruktuur</li>
-          <li>Paindlik ajakasutus</li>
-          <li>Juhendaja toetav roll</li>
-          <li>Organisatsiooniline tugi</li>
-        </ul>
-      </div>
-
-      <!-- 12. Refined Model (Center Zoom) -->
-      <div class="step" data-x="0" data-y="0" data-scale="0.75" style="z-index: 10;">
-        <!-- Empty transparent step just to trigger zoom back to the center model -->
-      </div>
-
-      <!-- 13. Conclusions (Far Bottom Left) -->
-      <div class="step card" data-x="-600" data-y="1200" data-scale="0.8" style="width: 600px;">
-        <div class="step-number" style="background:var(--color-5);">13</div>
-        <h2>Järeldused</h2>
-        <ul>
-          <li>Õppija agentsus ei kujune pelgalt valikuvabaduse kaudu, vaid vajab tähenduslikult kujundatud ja toetatud õppeprotsessi.</li>
-          <li>Kultuuriinkubaator seob õppija huvi, loovuse, koostöö ja praktilise tegutsemise terviklikuks õpiteekonnaks.</li>
-          <li>Mudel on rakendatav valikkursusena, kuid kohandatav ka projektipäevade, iseseisva õppepäevade ja laagrite formaati.</li>
-        </ul>
-      </div>
-
-      <!-- 14. Limitations (Far Bottom Center) -->
-      <div class="step card" data-x="0" data-y="1250" data-scale="0.8">
-        <div class="step-number" style="background:var(--color-4);">14</div>
-        <h2>Piirangud</h2>
-        <ul>
-          <li>Uuring põhines ühel koolikontekstil.</li>
-          <li>Pikaajalist mõju ei hinnatud.</li>
-          <li>Piloteeriti valitud tööriistu, mitte kogu mudelit tervikliku õpiteekonnana.</li>
-        </ul>
-      </div>
-
-      <!-- 15. Future development (Far Bottom Right) -->
-      <div class="step card" data-x="600" data-y="1200" data-scale="0.8">
-        <div class="step-number" style="background:var(--color-6);">15</div>
-        <h2>Edasised Sammud</h2>
-        <ul>
-          <li>Mudeli terviklik piloteerimine valikkursusena.</li>
-          <li>Rakendamine erinevates koolikontekstides.</li>
-          <li>Pikaajalisema mõju uurimine.</li>
-        </ul>
-      </div>
-
-      <!-- 16. Final message (Center Overlay) -->
-      <div class="step card" id="final-message" data-x="0" data-y="0" data-scale="0.9" style="width: 800px; text-align: center; z-index: 30; border: 4px solid var(--color-6);">
-        <div class="step-number" style="background:var(--color-6);">16</div>
-        <h2 style="color: var(--color-6);">Lõpusõnum</h2>
-        <h1 style="font-size: 2.2rem; color: var(--text-main); margin: 30px 0;">
-          „Õppija agentsus ei kujune pelgalt valikuvabaduse kaudu, vaid tähenduslikult kujundatud ja toetatud õpiteekonnas.“
-        </h1>
-        <div style="margin-top: 40px; display: inline-block; background: var(--color-6); color: white; padding: 15px 40px; border-radius: 30px; font-weight: bold; font-size: 1.2rem;">
-          ? KÜSIMUSED JA ARUTELU
-        </div>
-      </div>
 
     </div>
-  </div>
+</div>
 
-  <!-- Navigation Controls -->
-  <div class="controls">
-    <button id="btn-prev" onclick="changeStep(-1)" disabled>Eelmine</button>
-    <div class="slide-counter"><span id="current-slide">1</span> / 16</div>
-    <button id="btn-next" onclick="changeStep(1)">Järgmine</button>
-  </div>
+<div id="nav">
+    <button onclick="liigu(-1)" id="btn-prev"><i class="fa-solid fa-arrow-left"></i> EELMINE</button>
+    <button onclick="uldvaade()" class="btn-red"><i class="fa-solid fa-map"></i> ÜLDVAADE</button>
+    <button onclick="liigu(1)" id="btn-next">JÄRGMINE <i class="fa-solid fa-arrow-right"></i></button>
+</div>
 
-  <script>
+<script>
     const canvas = document.getElementById('canvas');
-    const steps = document.querySelectorAll('.step');
-    const btnPrev = document.getElementById('btn-prev');
-    const btnNext = document.getElementById('btn-next');
-    const progressBar = document.getElementById('progress-bar');
-    const slideCounter = document.getElementById('current-slide');
-    
-    let currentStep = 0;
+    const slaidid = document.querySelectorAll('.slide');
+    let indeks = 0;
+    let onUldvaade = false;
 
-    // Set initial positions for all steps so they render correctly on the canvas
-    steps.forEach(step => {
-      const x = step.getAttribute('data-x');
-      const y = step.getAttribute('data-y');
-      step.style.left = `calc(50% + ${x}px)`;
-      step.style.top = `calc(50% + ${y}px)`;
-    });
+    function uuenda() {
+        if(onUldvaade) return;
 
-    function updatePresentation() {
-      // Manage active classes
-      steps.forEach((step, index) => {
-        if (index === currentStep) {
-          step.classList.add('active');
-        } else {
-          step.classList.remove('active');
+        const s = slaidid[indeks];
+        const x = Number(s.getAttribute('data-x'));
+        const y = Number(s.getAttribute('data-y'));
+        const scale = Number(s.getAttribute('data-scale'));
+
+        canvas.style.transform = `scale(${1/scale}) translate(${-x}px, ${-y}px)`;
+
+        slaidid.forEach((el, i) => {
+            if(i === indeks) el.classList.add('active');
+            else el.classList.remove('active');
+        });
+
+        document.getElementById('btn-prev').disabled = indeks === 0;
+        document.getElementById('btn-next').disabled = indeks === slaidid.length - 1;
+    }
+
+    function liigu(suund) {
+        onUldvaade = false;
+        let uus = indeks + suund;
+        if(uus >= 0 && uus < slaidid.length) {
+            indeks = uus;
+            uuenda();
         }
-      });
-
-      // Get target coordinates and scale
-      const target = steps[currentStep];
-      const targetX = parseFloat(target.getAttribute('data-x'));
-      const targetY = parseFloat(target.getAttribute('data-y'));
-      const targetScale = parseFloat(target.getAttribute('data-scale'));
-
-      // Calculate canvas transform: move in the OPPOSITE direction to center the target
-      const inverseScale = 1 / targetScale;
-      const translateX = -targetX;
-      const translateY = -targetY;
-
-      canvas.style.transform = `scale(${inverseScale}) translate(${translateX}px, ${translateY}px)`;
-
-      // Update UI controls
-      btnPrev.disabled = currentStep === 0;
-      btnNext.disabled = currentStep === steps.length - 1;
-      slideCounter.innerText = currentStep + 1;
-
-      // Progress bar
-      const progress = (currentStep / (steps.length - 1)) * 100;
-      progressBar.style.width = `${progress}%`;
     }
 
-    function changeStep(direction) {
-      const newStep = currentStep + direction;
-      if (newStep >= 0 && newStep < steps.length) {
-        currentStep = newStep;
-        updatePresentation();
-      }
+    function uldvaade() {
+        onUldvaade = true;
+        canvas.style.transform = `scale(0.2) translate(0px, 0px)`;
+        slaidid.forEach(el => el.classList.add('active'));
     }
 
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'PageDown') {
-        changeStep(1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        changeStep(-1);
-      }
+    document.addEventListener('keydown', e => {
+        if(e.key === "ArrowRight" || e.key === " ") liigu(1);
+        if(e.key === "ArrowLeft") liigu(-1);
     });
 
-    // Initialize first view
-    updatePresentation();
+    window.onload = uuenda;
+</script>
 
-  </script>
 </body>
 </html>
-
-
-```
