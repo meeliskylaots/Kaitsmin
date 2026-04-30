@@ -37,7 +37,11 @@
             perspective: 1000px; 
         }
 
-        /* FIKSEERITUD SÕNAPILVE KIHT */
+        /* 
+           FIKSEERITUD SÕNAPILVE KIHT 
+           See kiht on ekraanil alati paigal. Kui slaidid taustal vahetuvad, 
+           jäävad sõnad ekraani keskele ja liiguvad ainult Z-teljel (vaataja suunas).
+        */
         #fixed-cloud-layer {
             position: absolute;
             width: 1280px; height: 720px;
@@ -45,7 +49,7 @@
             margin-left: -640px; margin-top: -360px;
             transform-style: preserve-3d;
             z-index: 2000;
-            pointer-events: none; 
+            pointer-events: none; /* Et ei takistaks slaidide klikkimist */
         }
 
         .word {
@@ -55,6 +59,7 @@
             text-transform: uppercase;
             white-space: nowrap;
             line-height: 1;
+            /* Tagasituleku animatsioon */
             transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease-out;
             transition-delay: var(--delay, 0s), var(--delay, 0s);
         }
@@ -65,6 +70,7 @@
             text-transform: none;
         }
 
+        /* 1. AKTIIVNE OLEK (Esileht) */
         body[data-current-slide="0"]:not(.overview-mode) #fixed-cloud-layer .word {
             transform: translate(-50%, -50%) translateZ(0) scale(1);
             opacity: 1;
@@ -72,13 +78,16 @@
             transition-delay: var(--delay, 0s), 0s;
         }
 
+        /* 2. LAHKUMINE (Teisele slaidile minnes) -> Lendab otse vaataja poole */
         body:not([data-current-slide="0"]) #fixed-cloud-layer .word {
             transform: translate(-50%, -50%) translateZ(1500px) scale(4);
             opacity: 0;
+            /* Kiireneb ja hajub viimasel hetkel */
             transition: transform 1.2s ease-in, opacity 0.5s ease-out;
             transition-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.7s);
         }
 
+        /* 3. EELVAATE REŽIIM -> Sõnad kogunevad koheselt kokku */
         body.overview-mode #fixed-cloud-layer .word {
             transform: translate(-50%, -50%) translateZ(0) scale(1) !important;
             opacity: 1 !important;
@@ -86,7 +95,7 @@
             transition-delay: 0s, 0s !important;
         }
 
-        /* LÕUEND */
+        /* LÕUEND (Taustal liikuvad tavaslaidid) */
         #canvas {
             position: absolute;
             top: 50%; left: 50%;
@@ -95,8 +104,9 @@
             transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Kui on eelvaade, peidame taustaslaidid */
         body.overview-mode #canvas {
-            opacity: 0.8;
+            opacity: 0;
         }
 
         /* SLAIDID */
@@ -117,6 +127,7 @@
         }
         .slide.active { opacity: 1; }
 
+        /* Sõnapilve jaoks on tühi nähtamatu slaid, et hoida koordinaate */
         #cloud-slide { background: transparent; box-shadow: none; border: none; padding: 0; opacity: 1 !important; }
 
         /* TÜPOGRAAFIA */
@@ -180,14 +191,13 @@
         <div class="word" style="top: 92%; left: 65%; font-size: 40px; color: var(--accent-teal);">DISAINMÕTLEMINE</div>
     </div>
 
-    <!-- TAVALISED SLAIDID PIDEVA 3D PÖÖRDEGA -->
+    <!-- TAVALISED SLAIDID -->
     <div id="canvas">
         
-        <!-- Slaid 1 -->
+        <!-- Slaid 1 on nüüd tühi kohahoidja, asukoht x=0, y=0 -->
         <div class="slide active" id="cloud-slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1"></div>
 
-        <!-- Slaid 2: Allapoole -->
-        <div class="slide" data-x="0" data-y="1500" data-z="0" data-rotate="0" data-scale="1">
+        <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="0" data-scale="1">
             <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: 800; margin-bottom: 10px;">MAGISTRITÖÖ 2026</p>
             <h1>Kultuuriinkubaatori mudeli arendamine</h1>
             <p style="font-size: 30px; color: var(--ut-blue); font-weight: 300;">Õppija agentsuse ja loovuse toetamiseks formaalhariduses</p>
@@ -197,8 +207,7 @@
             </div>
         </div>
 
-        <!-- Slaid 3: Paremale ja keerab -->
-        <div class="slide" data-x="1500" data-y="1500" data-z="0" data-rotate-y="-90" data-scale="1">
+        <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="160" data-scale="0.02">
             <h2>Uurimisprobleem</h2>
             <div class="card" style="border-bottom-color: var(--accent-pink); padding: 50px;">
                 <p style="font-size: 30px; font-weight: 700;">Süsteemsuse puudus</p>
@@ -206,8 +215,7 @@
             </div>
         </div>
 
-        <!-- Slaid 4: Sissepoole ja keerab selja taha -->
-        <div class="slide" data-x="1500" data-y="1500" data-z="-1500" data-rotate-y="-180" data-scale="1">
+        <div class="slide" data-x="2500" data-y="1200" data-z="0" data-rotate="0" data-scale="1">
             <h2>Teoreetiline fookus</h2>
             <div class="grid-2">
                 <div class="card"><h3>Agentsus</h3><p>Suutlikkus oma õppimist tähenduslikult suunata.</p></div>
@@ -217,8 +225,7 @@
             </div>
         </div>
 
-        <!-- Slaid 5: Allapoole ja pöörab üles -->
-        <div class="slide" data-x="1500" data-y="3000" data-z="-1500" data-rotate-x="-90" data-rotate-y="-180" data-scale="1">
+        <div class="slide" data-x="2500" data-y="2400" data-z="0" data-rotate="90" data-scale="1">
             <h2>Eesmärk ja küsimused</h2>
             <div style="background: var(--ut-blue); color: white; padding: 50px; border-radius: 30px; margin-bottom: 30px;">
                 <p style="font-size: 32px; font-weight: 800; margin: 0; color: var(--accent-teal);">Arendada mudelit, mis toetab õppija agentsust ja loovust.</p>
@@ -230,8 +237,7 @@
             </ol>
         </div>
 
-        <!-- Slaid 6: Vasakule, püsib laes, keerab küljele -->
-        <div class="slide" data-x="0" data-y="3000" data-z="-1500" data-rotate-x="-90" data-rotate-y="-270" data-scale="1">
+        <div class="slide" data-x="0" data-y="2400" data-z="0" data-rotate="0" data-scale="1">
             <h2>Metoodika: Arendusuuring</h2>
             <div class="grid-2">
                 <div class="card">
@@ -245,8 +251,7 @@
             </div>
         </div>
 
-        <!-- Slaid 7: Väljapoole, laes, keerab algsesse suunda -->
-        <div class="slide" data-x="0" data-y="3000" data-z="0" data-rotate-x="-90" data-rotate-y="-360" data-scale="1">
+        <div class="slide" data-x="-1800" data-y="2400" data-z="0" data-rotate="0" data-scale="1">
             <h2>Andmeanalüüs</h2>
             <p>Temaatiline analüüs (Braun & Clarke):</p>
             <div class="grid-2">
@@ -255,8 +260,7 @@
             </div>
         </div>
 
-        <!-- Slaid 8: Vasakule, rullib ennast püstisesse asendisse -->
-        <div class="slide" data-x="-1500" data-y="3000" data-z="0" data-rotate-z="90" data-rotate-y="-360" data-scale="1">
+        <div class="slide" data-x="-1800" data-y="1200" data-z="0" data-rotate="-90" data-scale="1">
             <h2>Tulemused: Tähendus</h2>
             <div class="grid-2">
                 <div class="card"><h3>Huvi</h3><p>Isiklik huvi on kriitiline õppimise käivitaja.</p></div>
@@ -266,8 +270,7 @@
             </div>
         </div>
 
-        <!-- Slaid 9: Ülespoole, kaotab rulli -->
-        <div class="slide" data-x="-1500" data-y="1500" data-z="0" data-rotate-y="-360" data-scale="1">
+        <div class="slide" data-x="-1800" data-y="0" data-z="0" data-rotate="0" data-scale="1">
             <h2>Mõjutavad tegurid</h2>
             <div class="grid-3">
                 <div class="card"><h3>Aeg</h3><p>Paindlikkus on süvenemise peamine eeldus.</p></div>
@@ -276,8 +279,7 @@
             </div>
         </div>
 
-        <!-- Slaid 10: Sissepoole, vaatab põrandale -->
-        <div class="slide" data-x="-1500" data-y="1500" data-z="-1500" data-rotate-x="90" data-scale="1">
+        <div class="slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1">
             <h2>Mudeli 6 etappi</h2>
             <div class="grid-3" style="font-size: 16px;">
                 <div class="card"><strong>1. Enesepeegeldus</strong></div>
@@ -289,8 +291,7 @@
             </div>
         </div>
 
-        <!-- Slaid 11: Paremale, põrandal rullib 90 kraadi -->
-        <div class="slide" data-x="0" data-y="1500" data-z="-1500" data-rotate-x="90" data-rotate-z="-90" data-scale="1">
+        <div class="slide" data-x="1800" data-y="0" data-z="0" data-rotate="0" data-scale="1">
             <h2>Peamised järeldused</h2>
             <div class="card" style="background: #f1f5f9; border-left: 10px solid var(--ut-blue);">
                 <p style="font-size: 26px;"><strong>Kultuuriinkubaatori parim vorm on gümnaasiumi valikkursus.</strong></p>
@@ -298,8 +299,7 @@
             <p style="margin-top: 30px;">Agentsus ei teki iseenesest, vaid nõuab tähenduslikult toetatud õpiteekonda.</p>
         </div>
 
-        <!-- Slaid 12: Üles tagasi, keerab täiesti tagurpidi -->
-        <div class="slide" data-x="0" data-y="0" data-z="-1500" data-rotate-x="180" data-scale="1">
+        <div class="slide" data-x="3600" data-y="1200" data-z="0" data-rotate="90" data-scale="0.8">
             <h2>Allikad ja edasine</h2>
             <p>Bandura (2001), Brown (2008), Easterday jt (2018), Ryan & Deci (2000).</p>
             <div class="card" style="margin-top: 40px;">
@@ -308,8 +308,7 @@
             </div>
         </div>
 
-        <!-- Slaid 13: Tagasi algusesse tsentrisse, tohutu suurusega -->
-        <div class="slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="15">
+        <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="0" data-scale="15">
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
                 <h1 style="font-size: 140px; margin-bottom: 20px;">AITÄH!</h1>
                 <p style="font-size: 48px; color: var(--accent-teal); font-weight: 700;">Küsimused ja arutelu</p>
@@ -341,6 +340,7 @@
     let isOverview = false;
     const slidesData = [];
 
+    // Genereerime juhuslikud CSS viivitused, et sõnad lendaksid kihiliselt
     document.querySelectorAll('.word').forEach(word => {
         word.style.setProperty('--delay', `${Math.random() * 0.4}s`);
     });
@@ -349,13 +349,11 @@
         const x = parseFloat(el.dataset.x) || 0;
         const y = parseFloat(el.dataset.y) || 0;
         const z = parseFloat(el.dataset.z) || 0;
-        const rotateX = parseFloat(el.dataset.rotateX) || 0;
-        const rotateY = parseFloat(el.dataset.rotateY) || 0;
-        const rotateZ = parseFloat(el.dataset.rotateZ) || parseFloat(el.dataset.rotate) || 0;
+        const rotate = parseFloat(el.dataset.rotate) || 0;
         const scale = parseFloat(el.dataset.scale) || 1;
-        slidesData.push({ x, y, z, rotateX, rotateY, rotateZ, scale });
+        slidesData.push({ x, y, z, rotate, scale });
         
-        el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`;
+        el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotate(${rotate}deg) scale(${scale})`;
 
         const dot = document.createElement('div');
         dot.className = 'dot' + (index === 0 ? ' active' : '');
@@ -371,9 +369,11 @@
         currentIndex = index;
         const target = slidesData[currentIndex];
         
+        // Uuendame body atribuuti, et käivitada fikseeritud sõnapilve CSS
         document.body.setAttribute('data-current-slide', index);
         
-        canvas.style.transform = `scale(${1 / target.scale}) rotateZ(${-target.rotateZ}deg) rotateY(${-target.rotateY}deg) rotateX(${-target.rotateX}deg) translate3d(${-target.x}px, ${-target.y}px, ${-target.z}px)`;
+        // Liigutame taustaslaide
+        canvas.style.transform = `scale(${1 / target.scale}) rotate(${-target.rotate}deg) translate3d(${-target.x}px, ${-target.y}px, ${-target.z}px)`;
 
         slidesElements.forEach((el, i) => {
             el.classList.toggle('active', i === currentIndex);
@@ -393,23 +393,8 @@
         
         if (isOverview) {
             document.body.classList.add('overview-mode');
-            // Kaugem vaade, et kogu 3D struktuur mahuks ekraanile
-            canvas.style.transform = `scale(0.06) rotateX(20deg) rotateY(-30deg) translate3d(0px, -1000px, -500px)`;
-            
-            slidesElements.forEach((el) => {
-                if (el.id !== 'cloud-slide') {
-                    el.style.pointerEvents = 'none';
-                }
-            });
         } else {
             document.body.classList.remove('overview-mode');
-            
-            slidesElements.forEach((el) => {
-                if (el.id !== 'cloud-slide') {
-                    el.style.pointerEvents = '';
-                }
-            });
-            goToSlide(currentIndex);
         }
     }
 
