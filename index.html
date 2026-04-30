@@ -28,7 +28,7 @@
             background-color: white; 
         }
 
-        /* Peatab kõik animatsioonid lehe laadimise hetkel */
+        /* Peatab lehe esmasel laadimisel valed animatsioonid */
         .preload * {
             transition: none !important;
         }
@@ -45,7 +45,8 @@
             top: 50%; left: 50%;
             width: 0; height: 0;
             transform-style: preserve-3d;
-            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Kaamera liikumine on sujuv ja pehme */
+            transition: transform 2s ease-in-out;
         }
 
         /* SLAIDID */
@@ -66,7 +67,7 @@
         }
         .slide.active { opacity: 1; }
 
-        /* Sõnapilve slaid */
+        /* Sõnapilve slaid on ise alati läbipaistev ja ilma raamideta */
         #cloud-slide {
             background: transparent;
             box-shadow: none;
@@ -75,7 +76,7 @@
             opacity: 1 !important; 
         }
 
-        /* SÕNAPILVE ANIMATSIOONID */
+        /* SÕNAPILVE KOSMOSEEFEKTI MATEMAATIKA */
         .word-cloud {
             position: relative;
             width: 100%; height: 100%;
@@ -88,8 +89,9 @@
             text-transform: uppercase;
             white-space: nowrap;
             line-height: 1;
-            /* ease-in tagab sujuva alguse ja tugeva kiirenduse kaamera ees */
-            transition: transform 1.2s ease-in, opacity 0.8s ease-in;
+            /* See määrab, kuidas sõnad tagasi algasendisse kogunevad */
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease-out;
+            transition-delay: var(--delay, 0s), var(--delay, 0s);
         }
         .word.script {
             font-family: 'Poppins', sans-serif;
@@ -98,24 +100,27 @@
             text-transform: none;
         }
 
-        /* Algolek (Aktiivne slaid) */
+        /* AKTIIVNE OLEK: Sõnad on rahulikult paigal */
         #cloud-slide.active .word {
-            transform: translate(-50%, -50%) translateZ(0);
+            transform: translate(-50%, -50%) translateZ(0) scale(1);
             opacity: 1;
         }
 
-        /* Väljalend (Slaidilt lahkumine) - Sõnad lendavad 2000px ettepoole, otse kaamerast mööda */
+        /* LAHKUMINE (Kosmose efekt): Sõnad lendavad 2500px ettepoole ja paisuvad, otse vaatajale näkku */
         #cloud-slide:not(.active) .word {
-            transform: translate(-50%, -50%) translateZ(2000px);
+            transform: translate(-50%, -50%) translateZ(2500px) scale(3);
             opacity: 0;
+            /* Eraldame animatsioonid: lend kestab 1.5s (kiirendab lõpus), aga hajumine algab alles 1.1s pärast! */
+            transition: transform 1.5s ease-in, opacity 0.4s ease-out;
+            transition-delay: var(--delay, 0s), calc(var(--delay, 0s) + 1.1s);
         }
 
-        /* EELVAATE REŽIIM */
+        /* EELVAATE REŽIIM: Tõmbab sõnad kohe tagasi oma kohale kokku */
         body.overview-mode #cloud-slide .word {
-            transform: translate(-50%, -50%) translateZ(0) !important;
+            transform: translate(-50%, -50%) translateZ(0) scale(1) !important;
             opacity: 1 !important;
-            transition-delay: 0s !important;
-            transition-duration: 0.8s !important;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out !important;
+            transition-delay: 0s, 0s !important;
         }
 
         /* TÜPOGRAAFIA */
@@ -161,7 +166,6 @@
         }
     </style>
 </head>
-<!-- Lisame preload klassi kohe alguses -->
 <body class="preload">
 
 <div id="progress-tag">1 / 13</div>
@@ -170,7 +174,7 @@
     <div id="canvas">
         
         <!-- SLAID 1: HTML SÕNAPILV -->
-        <div class="slide" id="cloud-slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1">
+        <div class="slide active" id="cloud-slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1">
             <div class="word-cloud">
                 <div class="word" style="top: 40%; left: 50%; font-size: 170px; color: var(--ut-blue);">AGENTSUS</div>
                 <div class="word" style="top: 60%; left: 50%; font-size: 155px; color: var(--accent-pink);">LOOVUS</div>
@@ -203,7 +207,7 @@
             </div>
         </div>
 
-        <!-- TAVASLAIDID (Y=1200) -->
+        <!-- TAVASLAIDID (Alustades Y=1200 altpoolt) -->
         <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="0" data-scale="1">
             <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: 800; margin-bottom: 10px;">MAGISTRITÖÖ 2026</p>
             <h1>Kultuuriinkubaatori mudeli arendamine</h1>
@@ -347,8 +351,10 @@
     let isOverview = false;
     const slidesData = [];
 
+    // Genereerime sõnadele CSS muutuja juhusliku viiteaja jaoks
     document.querySelectorAll('.word').forEach(word => {
-        word.style.transitionDelay = `${Math.random() * 0.4}s`;
+        let delay = Math.random() * 0.4;
+        word.style.setProperty('--delay', `${delay}s`);
     });
 
     slidesElements.forEach((el, index) => {
@@ -390,28 +396,33 @@
         btnNext.disabled = currentIndex === slidesData.length - 1;
     }
 
+    // EELVAATE REŽIIM: Kaamera sõidab algusesse, näitab sõnapilve ja peidab ülejäänud slaidid
     function toggleOverview() {
         isOverview = !isOverview;
         
         if (isOverview) {
             document.body.classList.add('overview-mode');
-            canvas.style.transform = `scale(0.08) translate(-500px, -200px)`;
-            slidesElements.forEach((el, index) => {
-                if (index === slidesElements.length - 1) {
+            // Kaamera läheb asendisse x:0, y:0, z:0 (Sõnapilve asukoht)
+            canvas.style.transform = `scale(1) rotate(0deg) translate3d(0px, 0px, 0px)`;
+            
+            slidesElements.forEach((el) => {
+                if (el.id !== 'cloud-slide') {
+                    // Peidame kõik tavaslaidid
                     el.style.opacity = '0';
-                } else if (el.id !== 'cloud-slide') {
-                    el.style.opacity = '0.7';
+                    el.style.pointerEvents = 'none';
                 }
-                el.style.pointerEvents = 'none';
             });
         } else {
             document.body.classList.remove('overview-mode');
-            slidesElements.forEach((el, index) => {
+            
+            slidesElements.forEach((el) => {
                 if (el.id !== 'cloud-slide') {
+                    // Taastame tavaslaidide nähtavuse
                     el.style.opacity = '';
+                    el.style.pointerEvents = '';
                 }
-                el.style.pointerEvents = '';
             });
+            // Lähme tagasi slaidile, kus enne olime
             goToSlide(currentIndex);
         }
     }
@@ -425,12 +436,12 @@
         if (e.key === "o" || e.key === "O") toggleOverview();
     });
 
-    // Lehe laadimisel lülitame animatsioonid korraks välja ja taastame need viivitusega
+    // Laadimise viivitus, et eemaldada esialgne vale animatsioon
     window.onload = () => {
         goToSlide(0);
         setTimeout(() => {
             document.body.classList.remove('preload');
-        }, 100); // 100ms on piisav, et algne vale animatsioon vahele jätta
+        }, 100); 
     };
 </script>
 
