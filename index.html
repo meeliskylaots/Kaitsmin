@@ -6,7 +6,6 @@
     <title>Kultuuriinkubaator | Magistritöö 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Lisatud Oswald font, mis imiteerib pildil olevat kitsast ja paksu kirja -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:ital,wght@0,400;0,600;0,800;1,600&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -26,15 +25,14 @@
             width: 100%; height: 100%;
             overflow: hidden;
             font-family: 'Montserrat', sans-serif;
-            background-color: white; /* Valge taust, et pilv sulanduks kokku */
+            background-color: white; 
         }
 
         #viewport {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             overflow: hidden;
-            /* Suurendatud perspektiiv, et läbi sõnade lendamine oleks sujuvam */
-            perspective: 800px; 
+            perspective: 1000px; 
         }
 
         #canvas {
@@ -42,23 +40,7 @@
             top: 50%; left: 50%;
             width: 0; height: 0;
             transform-style: preserve-3d;
-            /* Rahulik, aeglane space-zoom üleminek (2.5 sekundit) */
-            transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* EELVAATE KIHT */
-        #overview-layer {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            z-index: 4000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        #overview-layer img {
-            max-width: 100%; max-height: 100%; object-fit: contain;
-            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* SLAIDID */
@@ -79,18 +61,20 @@
         }
         .slide.active { opacity: 1; }
 
-        /* Esimene slaid on läbipaistev, et sõnad hõljuksid ruumis */
+        /* Esimene slaid on läbipaistev ja ei haju kunagi tervikuna */
         #cloud-slide {
             background: transparent;
             box-shadow: none;
             border: none;
             padding: 0;
+            opacity: 1 !important; 
         }
 
-        /* SÕNAPILVE SPETSIIFILINE CSS */
+        /* SÕNAPILVE SPETSIIFILINE CSS ANIMATSIOONIDEKS */
         .word-cloud {
             position: relative;
             width: 100%; height: 100%;
+            transform-style: preserve-3d;
         }
         .word {
             position: absolute;
@@ -99,14 +83,34 @@
             text-transform: uppercase;
             white-space: nowrap;
             line-height: 1;
-            /* Keskpunkt on paigutuse aluseks */
-            transform: translate(-50%, -50%);
+            /* Baasüleminek sõnadele */
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease-in;
         }
         .word.script {
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             font-style: italic;
             text-transform: none;
+        }
+
+        /* Kui esileht on aktiivne, on sõnad omal kohal */
+        #cloud-slide.active .word {
+            transform: translate(-50%, -50%) translateZ(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Kui minnakse teisele lehele, lendavad sõnad kaamerasse (Z-teljel ettepoole) */
+        #cloud-slide:not(.active) .word {
+            transform: translate(-50%, -50%) translateZ(1200px) scale(3);
+            opacity: 0;
+        }
+
+        /* EELVAATE REŽIIM - Sõnad kogunevad koheselt kokku */
+        body.overview-mode #cloud-slide .word {
+            transform: translate(-50%, -50%) translateZ(0) scale(1) !important;
+            opacity: 1 !important;
+            transition-delay: 0s !important;
+            transition-duration: 0.8s !important;
         }
 
         /* TÜPOGRAAFIA TAVASLAIDIDELE */
@@ -156,22 +160,14 @@
 
 <div id="progress-tag">1 / 13</div>
 
-<!-- Eelvaates näidatakse pilti -->
-<div id="overview-layer">
-    <img src="sonapilv.png" alt="Eelvaade sõnapilv">
-</div>
-
 <div id="viewport">
     <div id="canvas">
         
-        <!-- SLAID 1: SÕNAPILV (Z=1500, hõljub kaamera ees) -->
-        <div class="slide" id="cloud-slide" data-x="0" data-y="0" data-z="1500" data-rotate="0" data-scale="1">
+        <!-- SLAID 1: HTML SÕNAPILV -->
+        <div class="slide" id="cloud-slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1">
             <div class="word-cloud">
-                <!-- Keskne fookus -->
                 <div class="word" style="top: 40%; left: 50%; font-size: 170px; color: var(--ut-blue);">AGENTSUS</div>
                 <div class="word" style="top: 60%; left: 50%; font-size: 155px; color: var(--accent-pink);">LOOVUS</div>
-                
-                <!-- Ülemine tsoon -->
                 <div class="word" style="top: 18%; left: 24%; font-size: 80px; color: var(--accent-teal);">AUTONOOMIA</div>
                 <div class="word" style="top: 18%; left: 76%; font-size: 85px; color: var(--accent-teal);">VASTUTUS</div>
                 <div class="word" style="top: 6%; left: 50%; font-size: 40px; color: var(--accent-yellow);">MOTIVATSIOON</div>
@@ -181,20 +177,14 @@
                 <div class="word" style="top: 28%; left: 36%; font-size: 35px; color: var(--accent-teal);">MENTORLUS</div>
                 <div class="word" style="top: 28%; left: 64%; font-size: 35px; color: var(--accent-teal);">MENTORLUS</div>
                 <div class="word" style="top: 32%; left: 50%; font-size: 35px; color: var(--accent-yellow);">KOGUKOND</div>
-
-                <!-- Vasak tiib -->
                 <div class="word" style="top: 31%; left: 16%; font-size: 40px; color: var(--ut-blue);">VALIK</div>
                 <div class="word" style="top: 38%; left: 14%; font-size: 35px; color: var(--accent-pink);">IDEE</div>
                 <div class="word" style="top: 44%; left: 13%; font-size: 35px; color: var(--ut-blue);">PROBLEEM</div>
                 <div class="word" style="top: 55%; left: 12%; font-size: 70px; color: var(--accent-purple);">LOOMINE</div>
-
-                <!-- Parem tiib -->
                 <div class="word" style="top: 31%; left: 84%; font-size: 35px; color: var(--ut-blue);">OTSUSTAMINE</div>
                 <div class="word" style="top: 38%; left: 85%; font-size: 40px; color: var(--accent-pink);">LAHENDUS</div>
                 <div class="word" style="top: 44%; left: 85%; font-size: 35px; color: var(--ut-blue);">PROTOTÜÜP</div>
                 <div class="word" style="top: 55%; left: 86%; font-size: 70px; color: var(--accent-purple);">KOOSTÖÖ</div>
-
-                <!-- Alumine tsoon -->
                 <div class="word" style="top: 70%; left: 17%; font-size: 35px; color: var(--accent-teal);">TAGASISIDE</div>
                 <div class="word" style="top: 75%; left: 35%; font-size: 40px; color: var(--ut-blue);">REFLEKSIOON</div>
                 <div class="word" style="top: 70%; left: 84%; font-size: 40px; color: var(--accent-teal);">REFLEKSIOON</div>
@@ -207,7 +197,7 @@
             </div>
         </div>
 
-        <!-- SLAID 2 (ja edasi asuvad Z=0, tekivad alt) -->
+        <!-- TAVASLAIDID (Alustades Y=1200 altpoolt) -->
         <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="0" data-scale="1">
             <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: 800; margin-bottom: 10px;">MAGISTRITÖÖ 2026</p>
             <h1>Kultuuriinkubaatori mudeli arendamine</h1>
@@ -342,7 +332,6 @@
 <script>
     const canvas = document.getElementById('canvas');
     const slidesElements = document.querySelectorAll('.slide');
-    const overviewLayer = document.getElementById('overview-layer');
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
     const dotNav = document.getElementById('dot-nav');
@@ -352,16 +341,20 @@
     let isOverview = false;
     const slidesData = [];
 
+    // Genereerime igale sõnale juhusliku viivituse ükshaaval lendamise efekti jaoks
+    document.querySelectorAll('.word').forEach(word => {
+        // Viivitus 0 kuni 0.8 sekundit
+        word.style.transitionDelay = `${Math.random() * 0.8}s`;
+    });
+
     slidesElements.forEach((el, index) => {
         const x = parseFloat(el.dataset.x) || 0;
         const y = parseFloat(el.dataset.y) || 0;
-        // Loeb sisse ka Z-telje koordinaadi (vaikimisi 0)
         const z = parseFloat(el.dataset.z) || 0;
         const rotate = parseFloat(el.dataset.rotate) || 0;
         const scale = parseFloat(el.dataset.scale) || 1;
         slidesData.push({ x, y, z, rotate, scale });
         
-        // Paigutab slaidi ruumi 3D-s
         el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotate(${rotate}deg) scale(${scale})`;
 
         const dot = document.createElement('div');
@@ -378,8 +371,6 @@
         currentIndex = index;
         const target = slidesData[currentIndex];
         
-        // Liigutab kogu lõuendit (kaamerat), kaasates Z-telje. 
-        // Et navigeerida Z=1500 pealt Z=0 peale, peab kaamera liikuma tagasi, mis toob sõnad visuaalselt suunas ja üle ekraani ääre.
         canvas.style.transform = `scale(${1 / target.scale}) rotate(${-target.rotate}deg) translate3d(${-target.x}px, ${-target.y}px, ${-target.z}px)`;
 
         slidesElements.forEach((el, i) => {
@@ -399,11 +390,25 @@
         isOverview = !isOverview;
         
         if (isOverview) {
-            overviewLayer.style.display = 'flex';
-            canvas.style.opacity = '0';
+            document.body.classList.add('overview-mode');
+            canvas.style.transform = `scale(0.08) translate(-500px, -200px)`;
+            slidesElements.forEach((el, index) => {
+                // Peidame viimase suure slaidi ära
+                if (index === slidesElements.length - 1) {
+                    el.style.opacity = '0';
+                } else if (el.id !== 'cloud-slide') {
+                    el.style.opacity = '0.7';
+                }
+                el.style.pointerEvents = 'none';
+            });
         } else {
-            overviewLayer.style.display = 'none';
-            canvas.style.opacity = '1';
+            document.body.classList.remove('overview-mode');
+            slidesElements.forEach((el, index) => {
+                if (el.id !== 'cloud-slide') {
+                    el.style.opacity = '';
+                }
+                el.style.pointerEvents = '';
+            });
             goToSlide(currentIndex);
         }
     }
