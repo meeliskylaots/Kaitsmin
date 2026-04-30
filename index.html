@@ -37,11 +37,7 @@
             perspective: 1000px; 
         }
 
-        /* 
-           FIKSEERITUD SÕNAPILVE KIHT 
-           See kiht on ekraanil alati paigal. Kui slaidid taustal vahetuvad, 
-           jäävad sõnad ekraani keskele ja liiguvad ainult Z-teljel (vaataja suunas).
-        */
+        /* FIKSEERITUD SÕNAPILVE KIHT (Hyperspace efekt) */
         #fixed-cloud-layer {
             position: absolute;
             width: 1280px; height: 720px;
@@ -49,7 +45,7 @@
             margin-left: -640px; margin-top: -360px;
             transform-style: preserve-3d;
             z-index: 2000;
-            pointer-events: none; /* Et ei takistaks slaidide klikkimist */
+            pointer-events: none; 
         }
 
         .word {
@@ -59,7 +55,6 @@
             text-transform: uppercase;
             white-space: nowrap;
             line-height: 1;
-            /* Tagasituleku animatsioon */
             transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease-out;
             transition-delay: var(--delay, 0s), var(--delay, 0s);
         }
@@ -78,11 +73,10 @@
             transition-delay: var(--delay, 0s), 0s;
         }
 
-        /* 2. LAHKUMINE (Teisele slaidile minnes) -> Lendab otse vaataja poole */
+        /* 2. LAHKUMINE -> Sõnad lendavad otse kaamerast mööda välja */
         body:not([data-current-slide="0"]) #fixed-cloud-layer .word {
             transform: translate(-50%, -50%) translateZ(1500px) scale(4);
             opacity: 0;
-            /* Kiireneb ja hajub viimasel hetkel */
             transition: transform 1.2s ease-in, opacity 0.5s ease-out;
             transition-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.7s);
         }
@@ -95,18 +89,18 @@
             transition-delay: 0s, 0s !important;
         }
 
-        /* LÕUEND (Taustal liikuvad tavaslaidid) */
+        /* LÕUEND (Taustal liikuvad ja pöörlevad tavaslaidid) */
         #canvas {
             position: absolute;
             top: 50%; left: 50%;
             width: 0; height: 0;
             transform-style: preserve-3d;
+            /* Sujuv ruumiline üleminek */
             transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Kui on eelvaade, peidame taustaslaidid */
         body.overview-mode #canvas {
-            opacity: 0;
+            opacity: 0.8;
         }
 
         /* SLAIDID */
@@ -127,7 +121,6 @@
         }
         .slide.active { opacity: 1; }
 
-        /* Sõnapilve jaoks on tühi nähtamatu slaid, et hoida koordinaate */
         #cloud-slide { background: transparent; box-shadow: none; border: none; padding: 0; opacity: 1 !important; }
 
         /* TÜPOGRAAFIA */
@@ -194,9 +187,10 @@
     <!-- TAVALISED SLAIDID -->
     <div id="canvas">
         
-        <!-- Slaid 1 on nüüd tühi kohahoidja, asukoht x=0, y=0 -->
+        <!-- Slaid 1: Tühi kohahoidja sõnapilve taga -->
         <div class="slide active" id="cloud-slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1"></div>
 
+        <!-- Slaid 2 -->
         <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="0" data-scale="1">
             <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: 800; margin-bottom: 10px;">MAGISTRITÖÖ 2026</p>
             <h1>Kultuuriinkubaatori mudeli arendamine</h1>
@@ -207,6 +201,7 @@
             </div>
         </div>
 
+        <!-- Slaid 3 -->
         <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="160" data-scale="0.02">
             <h2>Uurimisprobleem</h2>
             <div class="card" style="border-bottom-color: var(--accent-pink); padding: 50px;">
@@ -215,7 +210,8 @@
             </div>
         </div>
 
-        <div class="slide" data-x="2500" data-y="1200" data-z="0" data-rotate="0" data-scale="1">
+        <!-- Slaid 4 (ESIMENE ETTE PÖÖRAMINE: Pöörab -90 kraadi alla) -->
+        <div class="slide" data-x="0" data-y="1800" data-z="-600" data-rotate-x="-90" data-scale="1">
             <h2>Teoreetiline fookus</h2>
             <div class="grid-2">
                 <div class="card"><h3>Agentsus</h3><p>Suutlikkus oma õppimist tähenduslikult suunata.</p></div>
@@ -225,7 +221,8 @@
             </div>
         </div>
 
-        <div class="slide" data-x="2500" data-y="2400" data-z="0" data-rotate="90" data-scale="1">
+        <!-- Slaid 5 (TEINE ETTE PÖÖRAMINE: Pöörab edasi -180 kraadi peale, slaid on peapeal!) -->
+        <div class="slide" data-x="0" data-y="2400" data-z="-1200" data-rotate-x="-180" data-scale="1">
             <h2>Eesmärk ja küsimused</h2>
             <div style="background: var(--ut-blue); color: white; padding: 50px; border-radius: 30px; margin-bottom: 30px;">
                 <p style="font-size: 32px; font-weight: 800; margin: 0; color: var(--accent-teal);">Arendada mudelit, mis toetab õppija agentsust ja loovust.</p>
@@ -237,6 +234,7 @@
             </ol>
         </div>
 
+        <!-- Slaid 6 (VISKAB TAGASI PÜSTI Z=0 tasandile) -->
         <div class="slide" data-x="0" data-y="2400" data-z="0" data-rotate="0" data-scale="1">
             <h2>Metoodika: Arendusuuring</h2>
             <div class="grid-2">
@@ -340,20 +338,24 @@
     let isOverview = false;
     const slidesData = [];
 
-    // Genereerime juhuslikud CSS viivitused, et sõnad lendaksid kihiliselt
+    // Genereerime juhuslikud CSS viivitused sõnapilvele
     document.querySelectorAll('.word').forEach(word => {
         word.style.setProperty('--delay', `${Math.random() * 0.4}s`);
     });
 
+    // Loeb uued rotateX ja rotateY atribuudid sisse
     slidesElements.forEach((el, index) => {
         const x = parseFloat(el.dataset.x) || 0;
         const y = parseFloat(el.dataset.y) || 0;
         const z = parseFloat(el.dataset.z) || 0;
-        const rotate = parseFloat(el.dataset.rotate) || 0;
+        const rotateX = parseFloat(el.dataset.rotateX) || 0;
+        const rotateY = parseFloat(el.dataset.rotateY) || 0;
+        const rotateZ = parseFloat(el.dataset.rotateZ) || parseFloat(el.dataset.rotate) || 0;
         const scale = parseFloat(el.dataset.scale) || 1;
-        slidesData.push({ x, y, z, rotate, scale });
+        slidesData.push({ x, y, z, rotateX, rotateY, rotateZ, scale });
         
-        el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotate(${rotate}deg) scale(${scale})`;
+        // Rakendab elementidele täieliku ruumilise transformatsiooni
+        el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`;
 
         const dot = document.createElement('div');
         dot.className = 'dot' + (index === 0 ? ' active' : '');
@@ -369,11 +371,10 @@
         currentIndex = index;
         const target = slidesData[currentIndex];
         
-        // Uuendame body atribuuti, et käivitada fikseeritud sõnapilve CSS
         document.body.setAttribute('data-current-slide', index);
         
-        // Liigutame taustaslaide
-        canvas.style.transform = `scale(${1 / target.scale}) rotate(${-target.rotate}deg) translate3d(${-target.x}px, ${-target.y}px, ${-target.z}px)`;
+        // Pöörame kaamera vastupidises suunas Z, Y, X järjekorras, et slaid oleks otse ees
+        canvas.style.transform = `scale(${1 / target.scale}) rotateZ(${-target.rotateZ}deg) rotateY(${-target.rotateY}deg) rotateX(${-target.rotateX}deg) translate3d(${-target.x}px, ${-target.y}px, ${-target.z}px)`;
 
         slidesElements.forEach((el, i) => {
             el.classList.toggle('active', i === currentIndex);
@@ -393,8 +394,23 @@
         
         if (isOverview) {
             document.body.classList.add('overview-mode');
+            // Isomeetriline vaade: keerame kogu esitlust nii, et näed ka ruumilisi slaide
+            canvas.style.transform = `scale(0.08) rotateX(30deg) rotateY(-20deg) translate3d(500px, -2000px, -1000px)`;
+            
+            slidesElements.forEach((el) => {
+                if (el.id !== 'cloud-slide') {
+                    el.style.pointerEvents = 'none';
+                }
+            });
         } else {
             document.body.classList.remove('overview-mode');
+            
+            slidesElements.forEach((el) => {
+                if (el.id !== 'cloud-slide') {
+                    el.style.pointerEvents = '';
+                }
+            });
+            goToSlide(currentIndex);
         }
     }
 
