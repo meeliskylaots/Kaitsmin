@@ -28,6 +28,11 @@
             background-color: white; 
         }
 
+        /* Peatab kõik animatsioonid lehe laadimise hetkel */
+        .preload * {
+            transition: none !important;
+        }
+
         #viewport {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -61,7 +66,7 @@
         }
         .slide.active { opacity: 1; }
 
-        /* Esimene slaid on läbipaistev ja ei haju kunagi tervikuna */
+        /* Sõnapilve slaid */
         #cloud-slide {
             background: transparent;
             box-shadow: none;
@@ -70,7 +75,7 @@
             opacity: 1 !important; 
         }
 
-        /* SÕNAPILVE SPETSIIFILINE CSS ANIMATSIOONIDEKS */
+        /* SÕNAPILVE ANIMATSIOONID */
         .word-cloud {
             position: relative;
             width: 100%; height: 100%;
@@ -83,8 +88,8 @@
             text-transform: uppercase;
             white-space: nowrap;
             line-height: 1;
-            /* ease-in tagab, et sõna kiirendab vaataja suunas, luues "näkkulendamise" efekti */
-            transition: transform 1.5s ease-in, opacity 1s ease-in;
+            /* ease-in tagab sujuva alguse ja tugeva kiirenduse kaamera ees */
+            transition: transform 1.2s ease-in, opacity 0.8s ease-in;
         }
         .word.script {
             font-family: 'Poppins', sans-serif;
@@ -93,28 +98,27 @@
             text-transform: none;
         }
 
-        /* Kui esileht on aktiivne, on sõnad omal kohal */
+        /* Algolek (Aktiivne slaid) */
         #cloud-slide.active .word {
-            transform: translate(-50%, -50%) translateZ(0) scale(1);
+            transform: translate(-50%, -50%) translateZ(0);
             opacity: 1;
         }
 
-        /* Kui minnakse teisele lehele, lendavad sõnad kaamerasse. 
-           translateZ(2500px) lükkab nad kaugele ekraanist välja, sinust mööda. */
+        /* Väljalend (Slaidilt lahkumine) - Sõnad lendavad 2000px ettepoole, otse kaamerast mööda */
         #cloud-slide:not(.active) .word {
-            transform: translate(-50%, -50%) translateZ(2500px) scale(2);
+            transform: translate(-50%, -50%) translateZ(2000px);
             opacity: 0;
         }
 
-        /* EELVAATE REŽIIM - Sõnad kogunevad koheselt kokku */
+        /* EELVAATE REŽIIM */
         body.overview-mode #cloud-slide .word {
-            transform: translate(-50%, -50%) translateZ(0) scale(1) !important;
+            transform: translate(-50%, -50%) translateZ(0) !important;
             opacity: 1 !important;
             transition-delay: 0s !important;
             transition-duration: 0.8s !important;
         }
 
-        /* TÜPOGRAAFIA TAVASLAIDIDELE */
+        /* TÜPOGRAAFIA */
         h1, h2, h3 { font-family: 'Poppins', sans-serif; color: var(--ut-blue); margin: 0; }
         h1 { font-size: 60px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
         h2 { font-size: 44px; margin-bottom: 35px; border-left: 12px solid var(--accent-teal); padding-left: 25px; }
@@ -157,7 +161,8 @@
         }
     </style>
 </head>
-<body>
+<!-- Lisame preload klassi kohe alguses -->
+<body class="preload">
 
 <div id="progress-tag">1 / 13</div>
 
@@ -198,7 +203,7 @@
             </div>
         </div>
 
-        <!-- TAVASLAIDID (Alustades Y=1200 altpoolt) -->
+        <!-- TAVASLAIDID (Y=1200) -->
         <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="0" data-scale="1">
             <p style="letter-spacing: 5px; color: var(--accent-teal); font-weight: 800; margin-bottom: 10px;">MAGISTRITÖÖ 2026</p>
             <h1>Kultuuriinkubaatori mudeli arendamine</h1>
@@ -342,10 +347,8 @@
     let isOverview = false;
     const slidesData = [];
 
-    // Genereerime igale sõnale juhusliku viivituse ükshaaval lendamise efekti jaoks.
-    // Viivitus on 0 kuni 0.5 sek, et kõik toimuks piisavalt kähku ja võimsalt.
     document.querySelectorAll('.word').forEach(word => {
-        word.style.transitionDelay = `${Math.random() * 0.5}s`;
+        word.style.transitionDelay = `${Math.random() * 0.4}s`;
     });
 
     slidesElements.forEach((el, index) => {
@@ -394,7 +397,6 @@
             document.body.classList.add('overview-mode');
             canvas.style.transform = `scale(0.08) translate(-500px, -200px)`;
             slidesElements.forEach((el, index) => {
-                // Peidame viimase suure slaidi ära
                 if (index === slidesElements.length - 1) {
                     el.style.opacity = '0';
                 } else if (el.id !== 'cloud-slide') {
@@ -423,7 +425,13 @@
         if (e.key === "o" || e.key === "O") toggleOverview();
     });
 
-    window.onload = () => goToSlide(0);
+    // Lehe laadimisel lülitame animatsioonid korraks välja ja taastame need viivitusega
+    window.onload = () => {
+        goToSlide(0);
+        setTimeout(() => {
+            document.body.classList.remove('preload');
+        }, 100); // 100ms on piisav, et algne vale animatsioon vahele jätta
+    };
 </script>
 
 </body>
