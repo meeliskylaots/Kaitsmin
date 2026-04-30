@@ -83,8 +83,8 @@
             text-transform: uppercase;
             white-space: nowrap;
             line-height: 1;
-            /* Baasüleminek sõnadele */
-            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease-in;
+            /* ease-in tagab, et sõna kiirendab vaataja suunas, luues "näkkulendamise" efekti */
+            transition: transform 1.5s ease-in, opacity 1s ease-in;
         }
         .word.script {
             font-family: 'Poppins', sans-serif;
@@ -99,9 +99,10 @@
             opacity: 1;
         }
 
-        /* Kui minnakse teisele lehele, lendavad sõnad kaamerasse (Z-teljel ettepoole) */
+        /* Kui minnakse teisele lehele, lendavad sõnad kaamerasse. 
+           translateZ(2500px) lükkab nad kaugele ekraanist välja, sinust mööda. */
         #cloud-slide:not(.active) .word {
-            transform: translate(-50%, -50%) translateZ(1200px) scale(3);
+            transform: translate(-50%, -50%) translateZ(2500px) scale(2);
             opacity: 0;
         }
 
@@ -341,10 +342,10 @@
     let isOverview = false;
     const slidesData = [];
 
-    // Genereerime igale sõnale juhusliku viivituse ükshaaval lendamise efekti jaoks
+    // Genereerime igale sõnale juhusliku viivituse ükshaaval lendamise efekti jaoks.
+    // Viivitus on 0 kuni 0.5 sek, et kõik toimuks piisavalt kähku ja võimsalt.
     document.querySelectorAll('.word').forEach(word => {
-        // Viivitus 0 kuni 0.8 sekundit
-        word.style.transitionDelay = `${Math.random() * 0.8}s`;
+        word.style.transitionDelay = `${Math.random() * 0.5}s`;
     });
 
     slidesElements.forEach((el, index) => {
