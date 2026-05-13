@@ -136,60 +136,67 @@
         .accent-box { background: var(--ut-blue); color: white; padding: 25px; border-radius: 20px; }
         .accent-box p, .accent-box strong { color: white; margin: 0; }
 
-        /* --- 5. SLAIDI (METOODIKA) TÄPSELT OPTIMEERITUD MÕÕTMED (GARANTEERITUD MAHUTAVUS) --- */
+        /* --- 5. SLAIDI METOODIKA: GARANTEERITUD KATTUMATU SÜSTEEM --- */
         .arch-wrapper {
             position: relative;
-            width: 320px; /* Kompaktne kaar */
-            height: 260px; /* Kaare kogu kõrgus jalgadega */
-            margin-top: 100px; /* Turvaline ruum top-mulli jaoks */
-            margin-left: 230px; /* Jätab täpselt 230px ruumi vasakpoolsetele mullidele */
+            width: 812px; /* Katab kogu vasaku poole */
+            height: 360px; /* Piisav kõrgus alt üles */
+            margin-top: 50px; 
+            margin-left: 0;
         }
         .arch-path {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; overflow: visible;
         }
+        
+        /* Node kasti suurus määrab ringi asukoha */
         .pdf-node {
             position: absolute;
+            width: 72px; height: 72px;
             z-index: 2;
-            transform: translate(-50%, -50%);
         }
         .pdf-circle {
-            width: 72px; height: 72px; 
+            width: 100%; height: 100%; 
             border-radius: 50%;
             background: white;
             border: 1.5px solid #475569;
             display: flex; align-items: center; justify-content: center;
             text-align: center;
-            font-size: 9px; font-weight: 800; line-height: 1.15;
+            font-size: 8.5px; font-weight: 800; line-height: 1.15;
             padding: 3px; box-sizing: border-box;
             position: relative;
             z-index: 2;
             color: var(--ut-blue);
         }
         
-        /* Mullide puhas kollane disain ja vasakjoondus */
+        /* Mullid: fikseeritud laius, vasakjoondus, puhas kollane värv */
         .pdf-bubble {
             position: absolute;
-            width: 220px; /* Laiendatud, et tekst mahuks ideaalselt */
-            border-radius: 12px;
-            padding: 12px 15px; /* Turvaline polsterdus */
-            background: #fef08a; /* Pildile vastav helekollane */
+            width: 175px; /* Kindel laius, et tekst murduks õigel ajal */
+            border-radius: 8px;
+            padding: 10px 12px;
+            background: #fef08a; 
             color: var(--text-dark);
             box-shadow: 0 3px 10px rgba(0,0,0,0.06);
             z-index: 1;
-            text-align: left; /* Vasakjoondus! */
-            font-size: 11.5px; /* Loetav suurus */
-            line-height: 1.4;
-            box-sizing: border-box; /* TAKISTAB ÜLE ÄÄRE VALGUMIST */
+            text-align: left; /* Garanteeritud vasakjoondus */
+            font-size: 10.5px; 
+            line-height: 1.35;
+            box-sizing: border-box;
         }
         .pdf-bubble div { margin-bottom: 4px; } 
         .pdf-bubble div:last-child { margin-bottom: 0; }
 
-        /* Jutumullide asukohad (Täpne ja ohutu kaugus kasti tsentrist) */
-        .bubble-left .pdf-bubble { right: calc(100% + 10px); top: 50%; transform: translateY(-50%); }
-        .bubble-right .pdf-bubble { left: calc(100% + 10px); top: 50%; transform: translateY(-50%); }
-        .bubble-top .pdf-bubble { bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
+        /* Jutumullide nutikas paigutus, mis välistab kattumise */
+        /* Vasaku poole mullid (Node 1, 2, 3) lähevad ringist paremale */
+        .bubble-left .pdf-bubble { left: 85px; top: -10px; }
+        
+        /* Parema poole mullid (Node 5, 6, 7) lähevad ringist vasakule */
+        .bubble-right .pdf-bubble { right: 85px; top: -10px; }
+        
+        /* Keskmine mull (Node 4) läheb ringist ÜLESPOOLE, et mitte põrkuda naabritega */
+        .bubble-top .pdf-bubble { bottom: 85px; left: 50%; transform: translateX(-50%); }
 
         /* Navigatsioon ja nupud */
         #ui-layer { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 5000; display: flex; flex-direction: column; align-items: center; gap: 10px; }
@@ -269,12 +276,11 @@
             </div>
         </div>
 
-        <!-- Slaid 3: Uurimisprobleem ja teoreetiline raamistik (4 SAMBAKS) -->
+        <!-- Slaid 3: Uurimisprobleem ja teoreetiline raamistik -->
         <div class="slide" data-x="1500" data-y="1200" data-z="-1500" data-rotate-y="-180" data-scale="1">
             <h2>Teoreetiline raamistik ja uurimisprobleem</h2>
             
             <div class="grid-4" style="flex-grow: 1;">
-                <!-- Sammas 1 -->
                 <div class="card" style="border-top: 8px solid var(--ut-blue); border-bottom: none; display: flex; flex-direction: column; padding: 15px;">
                     <p style="font-weight: 800; color: var(--ut-blue); font-size: 16px; margin-bottom: 10px; line-height: 1.2;">ÕPPIJA AGENTSUS</p>
                     <div style="flex-grow: 1;">
@@ -282,7 +288,6 @@
                         <p style="font-size: 12px; color: var(--text-gray); font-style: italic; margin-top: 0; margin-bottom: 0;">(Bandura, 2001; Leijen et al., 2020; Schunk, 2012)</p>
                     </div>
                 </div>
-                <!-- Sammas 2 -->
                 <div class="card" style="border-top: 8px solid var(--accent-pink); border-bottom: none; display: flex; flex-direction: column; padding: 15px;">
                     <p style="font-weight: 800; color: var(--accent-pink); font-size: 16px; margin-bottom: 10px; line-height: 1.2;">LOOV JA KATSETUSPÕHINE ÕPPIMINE</p>
                     <div style="flex-grow: 1;">
@@ -290,7 +295,6 @@
                         <p style="font-size: 12px; color: var(--text-gray); font-style: italic; margin-top: 0; margin-bottom: 0;">(Brown, 2008; Kapur, 2008)</p>
                     </div>
                 </div>
-                <!-- Sammas 3 -->
                 <div class="card" style="border-top: 8px solid var(--accent-yellow); border-bottom: none; display: flex; flex-direction: column; padding: 15px;">
                     <p style="font-weight: 800; color: var(--accent-yellow); font-size: 16px; margin-bottom: 10px; line-height: 1.2;">PROJEKTÕPE JA KOGUKONDLIK MÕÕDE</p>
                     <div style="flex-grow: 1;">
@@ -298,7 +302,6 @@
                         <p style="font-size: 12px; color: var(--text-gray); font-style: italic; margin-top: 0; margin-bottom: 0;">(City of Toronto, 2022; ENCC, 2025; Larmer et al., 2015; Thomas, 2000)</p>
                     </div>
                 </div>
-                <!-- Sammas 4 -->
                 <div class="card" style="border-top: 8px solid var(--accent-teal); border-bottom: none; display: flex; flex-direction: column; padding: 15px;">
                     <p style="font-weight: 800; color: var(--accent-teal); font-size: 16px; margin-bottom: 10px; line-height: 1.2;">SOTSIAAL-EMOTSIONAALNE RAAMISTIK JA KOOSTÖÖKULTUUR</p>
                     <div style="flex-grow: 1;">
@@ -308,7 +311,6 @@
                 </div>
             </div>
 
-            <!-- Uurimisprobleemi kast -->
             <div class="card" style="margin: 30px auto 0 auto; height: auto; max-width: 900px; border-bottom: 6px solid var(--accent-pink); padding: 30px 40px; background-color: #fff; border-top: 1px solid #e2e8f0; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; text-align: left;">
                 <h3 style="font-size: 20px; margin-bottom: 10px;">Uurimisprobleem</h3>
                 <p style="font-size: 18px; margin: 0; line-height: 1.5;">Formaalhariduses puuduvad terviklikud, teoreetiliselt põhjendatud ja praktiliselt rakendatavad mudelid, mis toetaksid süsteemselt õppija agentsuse, loovuse ja tähendusliku õppimise arengut.</p>
@@ -332,7 +334,7 @@
             </div>
         </div>
 
-        <!-- Slaid 5: Metoodika ja valim (Ülitäpne ruumiplaneerimine) -->
+        <!-- Slaid 5: Metoodika ja valim (Veatu ja katkumatu paigutus) -->
         <div class="slide" data-x="0" data-y="2400" data-z="-1500" data-rotate-x="-90" data-rotate-y="-270" data-scale="1">
             <h2 style="margin-bottom: 15px;">METOODIKA</h2>
 
@@ -340,20 +342,19 @@
                 <h3 style="font-size: 15px; margin: 0; color: var(--ut-blue); text-align: center;">Arendusuuringu etapid Easterday et al. (2018) järgi käesolevas magistritöös</h3>
             </div>
 
-            <!-- Paindlik grid-süsteem. Vasak plokk on täpselt 780px lai, tagades ruumi nii mullidele kui kaarele. Paremale poole jääb piisavalt ruumi. -->
             <div style="display: flex; gap: 30px; flex-grow: 1;">
                 
-                <!-- Vasak pool: Mahutatud kaar koos mullidega (780px lai turvatsoon) -->
-                <div style="flex: 0 0 780px; position: relative;">
+                <!-- Vasak pool: Garanteeritud ruumiga kaar ja mullid -->
+                <div style="flex: 0 0 812px; position: relative;">
                     
                     <div class="arch-wrapper">
-                        <!-- Joonistame täpse kaare SVG-ga (Pidev tumehall joon, 320x260px mõõdus) -->
-                        <svg class="arch-path" viewBox="0 0 320 260" preserveAspectRatio="none">
-                            <path d="M 0 260 L 0 160 A 160 160 0 0 1 320 160 L 320 260" fill="none" stroke="#475569" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+                        <!-- Pidev tumehall SVG joon -->
+                        <svg class="arch-path" viewBox="0 0 740 284" preserveAspectRatio="none">
+                            <path d="M 36 284 L 36 150 Q 36 0 370 0 Q 704 0 704 150 L 704 284" fill="none" stroke="#475569" stroke-width="1.5" vector-effect="non-scaling-stroke" />
                         </svg>
 
-                        <!-- 1. Mõistmine -->
-                        <div class="pdf-node bubble-left" style="left: 0; top: 160px;">
+                        <!-- 1. Mõistmine (All vasakul) -->
+                        <div class="pdf-node bubble-left" style="left: 36px; top: 284px;">
                             <div class="pdf-circle">MÕISTMINE</div>
                             <div class="pdf-bubble">
                                 <div>Teaduskirjanduse analüüs</div>
@@ -363,8 +364,8 @@
                             </div>
                         </div>
 
-                        <!-- 2. Fookuse seadmine -->
-                        <div class="pdf-node bubble-left" style="left: 0; top: 260px;">
+                        <!-- 2. Fookuse seadmine (Keskel vasakul) -->
+                        <div class="pdf-node bubble-left" style="left: 36px; top: 150px;">
                             <div class="pdf-circle">FOOKUSE<br>SEADMINE</div>
                             <div class="pdf-bubble">
                                 <div>Uuringu ulatuse ja piiride määratlemine</div>
@@ -373,8 +374,8 @@
                             </div>
                         </div>
 
-                        <!-- 3. Määratlemine (Matemaatiliselt õige nurk 45 kraadi) -->
-                        <div class="pdf-node bubble-left" style="left: 47px; top: 47px;">
+                        <!-- 3. Määratlemine (Kaare peal vasakul) -->
+                        <div class="pdf-node bubble-left" style="left: 104px; top: 38px;">
                             <div class="pdf-circle">MÄÄRATLEMINE</div>
                             <div class="pdf-bubble">
                                 <div>Uurimisprobleemi täpsustamine</div>
@@ -383,8 +384,8 @@
                             </div>
                         </div>
 
-                        <!-- 4. Lahenduse ideeloome -->
-                        <div class="pdf-node bubble-top" style="left: 160px; top: 0px;">
+                        <!-- 4. Lahenduse ideeloome (Täpselt tipus, MULL ÜLEVAL) -->
+                        <div class="pdf-node bubble-top" style="left: 370px; top: 0px;">
                             <div class="pdf-circle">LAHENDUSE<br>IDEELOOME</div>
                             <div class="pdf-bubble">
                                 <div>Kultuuriinkubaatori kontseptsiooni loomine</div>
@@ -393,8 +394,8 @@
                             </div>
                         </div>
 
-                        <!-- 5. Teostamine -->
-                        <div class="pdf-node bubble-right" style="left: 273px; top: 47px;">
+                        <!-- 5. Teostamine (Kaare peal paremal) -->
+                        <div class="pdf-node bubble-right" style="left: 636px; top: 38px;">
                             <div class="pdf-circle">TEOSTAMINE</div>
                             <div class="pdf-bubble">
                                 <div>V1 tööversiooni koostamine</div>
@@ -404,8 +405,8 @@
                             </div>
                         </div>
 
-                        <!-- 6. Katsetamine ja hindamine -->
-                        <div class="pdf-node bubble-right" style="left: 320px; top: 160px;">
+                        <!-- 6. Katsetamine ja hindamine (Keskel paremal) -->
+                        <div class="pdf-node bubble-right" style="left: 704px; top: 150px;">
                             <div class="pdf-circle">KATSETAMINE<br>JA HINDAMINE</div>
                             <div class="pdf-bubble">
                                 <div>Empiiriline analüüs</div>
@@ -417,8 +418,8 @@
                             </div>
                         </div>
 
-                        <!-- 7. Tulemuste esitamine -->
-                        <div class="pdf-node bubble-right" style="left: 320px; top: 260px;">
+                        <!-- 7. Tulemuste esitamine (All paremal) -->
+                        <div class="pdf-node bubble-right" style="left: 704px; top: 284px;">
                             <div class="pdf-circle">TULEMUSTE<br>ESITAMINE</div>
                             <div class="pdf-bubble">
                                 <div>V2 mudeli kirjeldamine</div>
@@ -427,8 +428,8 @@
                             </div>
                         </div>
 
-                        <!-- Märkuse kast keskel alumises osas -->
-                        <div style="position: absolute; top: 290px; left: 50%; transform: translateX(-50%); width: 440px; background: #cffafe; border-radius: 10px; padding: 10px 14px; text-align: center; border: 1px solid #a5f3fc;">
+                        <!-- Märkuse kast -->
+                        <div style="position: absolute; top: 310px; left: 50%; transform: translateX(-50%); width: 440px; background: #cffafe; border-radius: 10px; padding: 10px 14px; text-align: center; border: 1px solid #a5f3fc;">
                             <strong style="font-size: 11.5px; color: var(--ut-blue);">Märkus.</strong>
                             <p style="font-size: 11px; color: var(--ut-blue); margin: 3px 0 0 0; line-height: 1.35;">Easterday jt (2018) etappe kasutati arendusprotsessi analüütiliseks mõtestamiseks. Käesolevas töös ei käsitleta neid rangelt lineaarse ajajoonena, vaid omavahel seotud ja osaliselt kattuvate tegevustena.</p>
                         </div>
