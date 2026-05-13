@@ -136,6 +136,86 @@
         .accent-box { background: var(--ut-blue); color: white; padding: 25px; border-radius: 20px; }
         .accent-box p, .accent-box strong { color: white; margin: 0; }
 
+        /* Kaares ajajoone eriklassid 5. slaidi jaoks */
+        .arc-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            flex: 7;
+            padding: 5px 0;
+        }
+        .arc-path {
+            position: absolute;
+            top: 20px; /* 40px ringi keskkoht */
+            bottom: 20px; /* 40px ringi keskkoht */
+            left: 18px; /* 40px ringi keskkoht miinus piirjoon */
+            width: 120px;
+            border: 3px dashed #cbd5e1;
+            border-left: none;
+            border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+            z-index: 0;
+        }
+        .arc-item {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+        }
+        /* Kaare loogika CSS transformaatoriga */
+        .arc-item:nth-of-type(1) { transform: translateX(0px); }
+        .arc-item:nth-of-type(2) { transform: translateX(65px); }
+        .arc-item:nth-of-type(3) { transform: translateX(105px); }
+        .arc-item:nth-of-type(4) { transform: translateX(120px); }
+        .arc-item:nth-of-type(5) { transform: translateX(105px); }
+        .arc-item:nth-of-type(6) { transform: translateX(65px); }
+        .arc-item:nth-of-type(7) { transform: translateX(0px); }
+
+        .arc-circle {
+            width: 40px; height: 40px; min-width: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; color: white; font-family: 'Poppins';
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            font-size: 16px;
+        }
+        .arc-bubble {
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-left: 20px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 380px; 
+        }
+        /* Jutumulli saba */
+        .arc-bubble::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 10px 10px 10px 0;
+            border-style: solid;
+        }
+
+        /* Jutumullide värviteemad */
+        .c-blue .arc-circle, .c-blue .arc-bubble { background-color: var(--ut-blue); }
+        .c-blue .arc-bubble::before { border-color: transparent var(--ut-blue) transparent transparent; }
+
+        .c-teal .arc-circle, .c-teal .arc-bubble { background-color: var(--accent-teal); }
+        .c-teal .arc-bubble::before { border-color: transparent var(--accent-teal) transparent transparent; }
+
+        .c-pink .arc-circle, .c-pink .arc-bubble { background-color: var(--accent-pink); }
+        .c-pink .arc-bubble::before { border-color: transparent var(--accent-pink) transparent transparent; }
+
+        .c-purple .arc-circle, .c-purple .arc-bubble { background-color: var(--accent-purple); }
+        .c-purple .arc-bubble::before { border-color: transparent var(--accent-purple) transparent transparent; }
+        
+        .c-yellow .arc-circle, .c-yellow .arc-bubble { background-color: var(--accent-yellow); }
+        .c-yellow .arc-bubble::before { border-color: transparent var(--accent-yellow) transparent transparent; }
+
         #ui-layer { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 5000; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         #dot-nav { display: flex; gap: 8px; background: rgba(255,255,255,0.8); padding: 8px 15px; border-radius: 30px; backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .dot { width: 10px; height: 10px; background: #cbd5e1; border-radius: 50%; cursor: pointer; transition: 0.3s; }
@@ -147,10 +227,6 @@
         .nav-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
         
         #progress-tag { position: fixed; top: 20px; right: 20px; background: rgba(255,255,255,0.85); padding: 6px 18px; border-radius: 20px; font-weight: 700; color: var(--ut-blue); font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 6000; }
-
-        /* Uued lokaalsed klassid 5. slaidi etappide nimekirjadele */
-        .step-list { font-size: 13px; padding-left: 15px; margin: 0; color: var(--text-gray); line-height: 1.35; }
-        .step-list li { font-size: 13px; margin-bottom: 3px; }
     </style>
 </head>
 
@@ -280,127 +356,124 @@
             </div>
         </div>
 
-        <!-- Slaid 5: Metoodika ja valim (Uuendatud vastavalt pildile) -->
+        <!-- Slaid 5: Metoodika ja valim (UUENDATUD KAARES RADA) -->
         <div class="slide" data-x="0" data-y="2400" data-z="-1500" data-rotate-x="-90" data-rotate-y="-270" data-scale="1">
-            <h2 style="margin-bottom: 15px;">METOODIKA</h2>
+            <h2 style="margin-bottom: 10px;">METOODIKA</h2>
 
-            <div style="background-color: #cffafe; padding: 12px 20px; border-radius: 12px; margin-bottom: 20px;">
-                <h3 style="font-size: 18px; margin: 0; color: var(--ut-blue); text-align: center;">Arendusuuringu etapid Easterday et al. (2018) järgi käesolevas magistritöös</h3>
+            <div style="background-color: #cffafe; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px;">
+                <h3 style="font-size: 16px; margin: 0; color: var(--ut-blue); text-align: center;">Arendusuuringu etapid Easterday et al. (2018) järgi käesolevas magistritöös</h3>
             </div>
 
-            <div style="display: flex; gap: 20px; flex-grow: 1;">
+            <div style="display: flex; gap: 40px; flex-grow: 1;">
                 
-                <!-- Vasak pool: Uuringu etapid (70% laiusest) -->
-                <div style="flex: 7; display: flex; flex-direction: column; justify-content: space-between;">
+                <!-- Vasak pool: Kaares ajajoon (70% laiusest) -->
+                <div class="arc-container">
+                    <div class="arc-path"></div>
                     
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-                        
-                        <!-- Etapp 1 -->
-                        <div class="card" style="padding: 12px; border-bottom: 4px solid var(--accent-teal); background: #fff; border: 1px solid #e2e8f0;">
-                            <h4 style="font-size: 14px; margin-bottom: 8px;">MÕISTMINE</h4>
-                            <ul class="step-list">
-                                <li>Teaduskirjanduse analüüs</li>
-                                <li>Olemasolevate lahendustega tutvumine</li>
+                    <div class="arc-item c-blue">
+                        <div class="arc-circle">1</div>
+                        <div class="arc-bubble">
+                            <h4 style="margin: 0 0 2px 0; font-size: 13px; text-transform: uppercase; color: white;">Mõistmine</h4>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 11px; line-height: 1.25; color: rgba(255,255,255,0.95);">
+                                <li>Teaduskirjanduse analüüs ja lahendustega tutvumine</li>
                                 <li>Noorteprogrammi „Noored loojad“ eelsisend</li>
-                                <li>Konteksti ja vajaduste mõistmine</li>
                             </ul>
                         </div>
-
-                        <!-- Etapp 2 -->
-                        <div class="card" style="padding: 12px; border-bottom: 4px solid var(--accent-teal); background: #fff; border: 1px solid #e2e8f0;">
-                            <h4 style="font-size: 14px; margin-bottom: 8px;">FOOKUSE SEADMINE</h4>
-                            <ul class="step-list">
+                    </div>
+                    
+                    <div class="arc-item c-teal">
+                        <div class="arc-circle">2</div>
+                        <div class="arc-bubble">
+                            <h4 style="margin: 0 0 2px 0; font-size: 13px; text-transform: uppercase; color: white;">Fookuse seadmine</h4>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 11px; line-height: 1.25; color: rgba(255,255,255,0.95);">
                                 <li>Uuringu ulatuse ja piiride määratlemine</li>
-                                <li>Probleemi üldine sõnastamine</li>
                                 <li>Huvirühmade kaardistus</li>
                             </ul>
                         </div>
+                    </div>
 
-                        <!-- Etapp 3 -->
-                        <div class="card" style="padding: 12px; border-bottom: 4px solid var(--accent-teal); background: #fff; border: 1px solid #e2e8f0;">
-                            <h4 style="font-size: 14px; margin-bottom: 8px;">MÄÄRATLEMINE</h4>
-                            <ul class="step-list">
-                                <li>Uurimisprobleemi täpsustamine</li>
-                                <li>Eesmärgi sõnastamine</li>
+                    <div class="arc-item c-yellow">
+                        <div class="arc-circle">3</div>
+                        <div class="arc-bubble">
+                            <h4 style="margin: 0 0 2px 0; font-size: 13px; text-transform: uppercase; color: white;">Määratlemine</h4>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 11px; line-height: 1.25; color: rgba(255,255,255,0.95);">
+                                <li>Uurimisprobleemi ja eesmärgi täpsustamine</li>
                                 <li>Uurimisküsimuste sõnastamine</li>
                             </ul>
                         </div>
+                    </div>
 
-                        <!-- Etapp 4 -->
-                        <div class="card" style="padding: 12px; border-bottom: 4px solid var(--accent-yellow); background: #fff; border: 1px solid #e2e8f0;">
-                            <h4 style="font-size: 14px; margin-bottom: 8px;">LAHENDUSE IDEELOOME</h4>
-                            <ul class="step-list">
+                    <div class="arc-item c-pink">
+                        <div class="arc-circle">4</div>
+                        <div class="arc-bubble">
+                            <h4 style="margin: 0 0 2px 0; font-size: 13px; text-transform: uppercase; color: white;">Lahenduse ideeloome</h4>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 11px; line-height: 1.25; color: rgba(255,255,255,0.95);">
                                 <li>Kultuuriinkubaatori kontseptsiooni loomine</li>
                                 <li>Teoreetiline süntees</li>
-                                <li>Mudeli esialgne versioon V1</li>
                             </ul>
                         </div>
+                    </div>
 
-                        <!-- Etapp 5 -->
-                        <div class="card" style="padding: 12px; border-bottom: 4px solid var(--accent-yellow); background: #fff; border: 1px solid #e2e8f0;">
-                            <h4 style="font-size: 14px; margin-bottom: 8px;">TEOSTAMINE</h4>
-                            <ul class="step-list">
+                    <div class="arc-item c-purple">
+                        <div class="arc-circle">5</div>
+                        <div class="arc-bubble">
+                            <h4 style="margin: 0 0 2px 0; font-size: 13px; text-transform: uppercase; color: white;">Teostamine</h4>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 11px; line-height: 1.25; color: rgba(255,255,255,0.95);">
                                 <li>V1 tööversiooni koostamine</li>
-                                <li>Intervjuud kooli võtmeosapooltega</li>
-                                <li>Õpilaste fookusgrupp</li>
-                                <li>Empiirilise sisendi kogumine</li>
+                                <li>Intervjuud kooli osapooltega ja õpilaste fookusgrupp</li>
                             </ul>
                         </div>
-
-                        <!-- Etapp 6 -->
-                        <div class="card" style="padding: 12px; border-bottom: 4px solid var(--accent-pink); background: #fff; border: 1px solid #e2e8f0;">
-                            <h4 style="font-size: 14px; margin-bottom: 8px;">KATSETAMINE JA HINDAMINE</h4>
-                            <ul class="step-list">
-                                <li>Empiiriline analüüs</li>
-                                <li>Disainipõhimõtete sõnastamine</li>
-                                <li>V1 → V2 täpsustamine</li>
-                                <li>1. mooduli „Süüde“ piloteerimine</li>
-                                <li>Eksperthinnang</li>
-                                <li>Mudeli täiendamine</li>
-                            </ul>
-                        </div>
-
                     </div>
 
-                    <!-- Viimane rida: Tulemused ja Märkus -->
-                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-top: 12px;">
-                        
-                        <!-- Etapp 7 -->
-                        <div class="card" style="padding: 12px; border-bottom: 4px solid var(--accent-pink); background: #fff; border: 1px solid #e2e8f0;">
-                            <h4 style="font-size: 14px; margin-bottom: 8px;">TULEMUSTE ESITAMINE</h4>
-                            <ul class="step-list">
+                    <div class="arc-item c-teal">
+                        <div class="arc-circle">6</div>
+                        <div class="arc-bubble">
+                            <h4 style="margin: 0 0 2px 0; font-size: 13px; text-transform: uppercase; color: white;">Katsetamine ja hindamine</h4>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 11px; line-height: 1.25; color: rgba(255,255,255,0.95);">
+                                <li>Empiiriline analüüs ja disainipõhimõtete sõnastamine</li>
+                                <li>1. mooduli piloteerimine ja eksperthinnang</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="arc-item c-blue">
+                        <div class="arc-circle">7</div>
+                        <div class="arc-bubble">
+                            <h4 style="margin: 0 0 2px 0; font-size: 13px; text-transform: uppercase; color: white;">Tulemuste esitamine</h4>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 11px; line-height: 1.25; color: rgba(255,255,255,0.95);">
                                 <li>V2 mudeli kirjeldamine</li>
-                                <li>Tulemused ja järeldused</li>
-                                <li>Rakendusvõimalused</li>
+                                <li>Tulemused, järeldused ja rakendusvõimalused</li>
                             </ul>
                         </div>
-
-                        <!-- Märkuse kast -->
-                        <div style="background-color: #cffafe; padding: 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #a5f3fc;">
-                            <strong style="font-size: 14px; color: var(--ut-blue); margin-bottom: 5px; text-align: center;">Märkus.</strong>
-                            <p style="font-size: 13px; color: var(--ut-blue); margin: 0; line-height: 1.4; text-align: center;">Easterday jt (2018) etappe kasutati arendusprotsessi analüütiliseks mõtestamiseks. Käesolevas töös ei käsitleta neid rangelt lineaarse ajajoonena, vaid omavahel seotud ja osaliselt kattuvate tegevustena.</p>
-                        </div>
-
                     </div>
+
                 </div>
 
-                <!-- Parem pool: VALIM (30% laiusest) -->
-                <div style="flex: 3; background-color: #fef3c7; padding: 25px; border-radius: 20px; box-sizing: border-box; border: 1px solid #fde047;">
-                    <h3 style="font-size: 22px; margin-bottom: 20px; color: var(--ut-blue);">VALIM</h3>
+                <!-- Parem pool: VALIM ja märkus -->
+                <div style="flex: 3; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="background-color: #fef3c7; padding: 25px; border-radius: 20px; box-sizing: border-box; border: 1px solid #fde047;">
+                        <h3 style="font-size: 22px; margin-bottom: 20px; color: var(--ut-blue);">VALIM</h3>
 
-                    <h4 style="font-size: 17px; margin-bottom: 10px; color: var(--text-dark);">Põhivalim</h4>
-                    <ul style="font-size: 15px; padding-left: 0; list-style-type: none; margin: 0 0 20px 0; line-height: 1.5; color: var(--text-gray);">
-                        <li style="margin-bottom: 8px;">– Elva Gümnaasiumi võtmeisikud (n = 3): direktor, huvijuht, kultuurisuuna õpetaja</li>
-                        <li>– Õpilaste fookusgrupp (n = 9)<br>15–18-aastased kultuurisuuna õpilased</li>
-                    </ul>
+                        <h4 style="font-size: 16px; margin-bottom: 10px; color: var(--text-dark);">Põhivalim</h4>
+                        <ul style="font-size: 14px; padding-left: 0; list-style-type: none; margin: 0 0 20px 0; line-height: 1.5; color: var(--text-gray);">
+                            <li style="margin-bottom: 8px;">– Elva Gümnaasiumi võtmeisikud (n = 3): direktor, huvijuht, kultuurisuuna õpetaja</li>
+                            <li>– Õpilaste fookusgrupp (n = 9)<br>15–18-aastased kultuurisuuna õpilased</li>
+                        </ul>
 
-                    <h4 style="font-size: 17px; margin-bottom: 10px; color: var(--text-dark);">Toetav sisend arendamisel</h4>
-                    <ul style="font-size: 15px; padding-left: 0; list-style-type: none; margin: 0; line-height: 1.5; color: var(--text-gray);">
-                        <li style="margin-bottom: 8px;">– Elva valla programmi „Noored Loojad“ eelsisend</li>
-                        <li style="margin-bottom: 8px;">– Eksperthinnang</li>
-                        <li style="margin-bottom: 8px;">– Uurija refleksiivne päevik</li>
-                        <li>– Pilootkatsetuse tagasisid</li>
-                    </ul>
+                        <h4 style="font-size: 16px; margin-bottom: 10px; color: var(--text-dark);">Toetav sisend arendamisel</h4>
+                        <ul style="font-size: 14px; padding-left: 0; list-style-type: none; margin: 0; line-height: 1.5; color: var(--text-gray);">
+                            <li style="margin-bottom: 8px;">– Elva valla programmi „Noored Loojad“ eelsisend</li>
+                            <li style="margin-bottom: 8px;">– Eksperthinnang</li>
+                            <li style="margin-bottom: 8px;">– Uurija refleksiivne päevik</li>
+                            <li>– Pilootkatsetuse tagasiside</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background-color: #f8fafc; padding: 15px; border-radius: 15px; border: 1px dashed #cbd5e1; margin-top: 15px;">
+                        <p style="font-size: 12px; color: var(--text-gray); margin: 0; line-height: 1.4; text-align: left;">
+                            <strong>Märkus.</strong> Easterday jt (2018) etappe kasutati arendusprotsessi analüütiliseks mõtestamiseks. Käesolevas töös ei käsitleta neid rangelt lineaarse ajajoonena, vaid omavahel seotud ja osaliselt kattuvate tegevustena.
+                        </p>
+                    </div>
                 </div>
 
             </div>
