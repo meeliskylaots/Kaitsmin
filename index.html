@@ -130,6 +130,7 @@
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; }
         
         .card { background: #f1f5f9; padding: 20px; border-radius: 20px; border-bottom: 6px solid var(--accent-teal); height: 100%; box-sizing: border-box; }
         .accent-box { background: var(--ut-blue); color: white; padding: 25px; border-radius: 20px; }
@@ -212,30 +213,40 @@
             </div>
         </div>
 
-        <!-- Slaid 3: Uurimisprobleem ja teoreetiline raamistik -->
+        <!-- Slaid 3: Uurimisprobleem ja teoreetiline raamistik (4 SAMBAKS) -->
         <div class="slide" data-x="1500" data-y="1200" data-z="-1500" data-rotate-y="-180" data-scale="1">
             <h2>Teoreetiline raamistik ja uurimisprobleem</h2>
-            <div class="grid-2" style="font-size: 16px;">
-                <div>
-                    <div class="card" style="margin-bottom: 15px; padding: 15px;">
-                        <p><strong>ÕPPIJA AGENTSUS</strong><br>rõhutab õppija aktiivset rolli, vastutust ja mõju oma õpiteekonnale. (Bandura, 2001; Leijen et al., 2020; Schunk, 2012)</p>
-                    </div>
-                    <div class="card" style="padding: 15px;">
-                        <p><strong>LOOV JA KATSETUSPÕHINE ÕPPIMINE</strong><br>toetab ideede loomist, katsetamist ja vigadest õppimist. (Brown, 2008; Kapur, 2008)</p>
-                    </div>
+            
+            <div class="grid-4" style="flex-grow: 1;">
+                <!-- Sammas 1 -->
+                <div class="card" style="border-top: 8px solid var(--ut-blue); border-bottom: none; display: flex; flex-direction: column; padding: 15px;">
+                    <p style="font-weight: 800; color: var(--ut-blue); font-size: 15px; margin-bottom: 10px; line-height: 1.2;">ÕPPIJA AGENTSUS</p>
+                    <p style="font-size: 14px; flex-grow: 1;">rõhutab õppija aktiivset rolli, vastutust ja mõju oma õpiteekonnale.</p>
+                    <p style="font-size: 11px; color: var(--text-gray); font-style: italic; margin-bottom: 0;">(Bandura, 2001; Leijen et al., 2020; Schunk, 2012)</p>
                 </div>
-                <div>
-                    <div class="card" style="margin-bottom: 15px; padding: 15px;">
-                        <p><strong>PROJEKTÕPE JA KOGUKONDLIK MÕÕDE</strong><br>seob õppimise päriselu probleemide ja praktilise väljundiga. (City of Toronto, 2022; ENCC, 2025; Larmer et al., 2015; Thomas, 2000)</p>
-                    </div>
-                    <div class="card" style="padding: 15px;">
-                        <p><strong>SOTSIAAL-EMOTSIONAALNE RAAMISTIK JA KOOSTÖÖKULTUUR</strong><br>võimaldavad õppijal tegutseda koos teistega, võtta vastutust ja liikuda individuaalsest huvist ühise tegutsemiseni. (CASEL, 2020; Edmondson & Lei, 2014)</p>
-                    </div>
+                <!-- Sammas 2 -->
+                <div class="card" style="border-top: 8px solid var(--accent-pink); border-bottom: none; display: flex; flex-direction: column; padding: 15px;">
+                    <p style="font-weight: 800; color: var(--accent-pink); font-size: 15px; margin-bottom: 10px; line-height: 1.2;">LOOV JA KATSETUSPÕHINE ÕPPIMINE</p>
+                    <p style="font-size: 14px; flex-grow: 1;">toetab ideede loomist, katsetamist ja vigadest õppimist.</p>
+                    <p style="font-size: 11px; color: var(--text-gray); font-style: italic; margin-bottom: 0;">(Brown, 2008; Kapur, 2008)</p>
+                </div>
+                <!-- Sammas 3 -->
+                <div class="card" style="border-top: 8px solid var(--accent-yellow); border-bottom: none; display: flex; flex-direction: column; padding: 15px;">
+                    <p style="font-weight: 800; color: var(--accent-yellow); font-size: 15px; margin-bottom: 10px; line-height: 1.2;">PROJEKTÕPE JA KOGUKONDLIK MÕÕDE</p>
+                    <p style="font-size: 14px; flex-grow: 1;">seob õppimise päriselu probleemide ja praktilise väljundiga.</p>
+                    <p style="font-size: 11px; color: var(--text-gray); font-style: italic; margin-bottom: 0;">(City of Toronto, 2022; ENCC, 2025; Larmer et al., 2015; Thomas, 2000)</p>
+                </div>
+                <!-- Sammas 4 -->
+                <div class="card" style="border-top: 8px solid var(--accent-teal); border-bottom: none; display: flex; flex-direction: column; padding: 15px;">
+                    <p style="font-weight: 800; color: var(--accent-teal); font-size: 15px; margin-bottom: 10px; line-height: 1.2;">SOTSIAAL-EMOTSIONAALNE RAAMISTIK JA KOOSTÖÖKULTUUR</p>
+                    <p style="font-size: 14px; flex-grow: 1;">võimaldavad õppijal tegutseda koos teistega, võtta vastutust ja liikuda individuaalsest huvist ühise tegutsemiseni.</p>
+                    <p style="font-size: 11px; color: var(--text-gray); font-style: italic; margin-bottom: 0;">(CASEL, 2020; Edmondson & Lei, 2014)</p>
                 </div>
             </div>
-            <div class="card" style="margin-top: 15px; border-bottom-color: var(--accent-pink); padding: 15px;">
-                <h3 style="font-size: 18px;">Uurimisprobleem</h3>
-                <p>Formaalhariduses puuduvad terviklikud, teoreetiliselt põhjendatud ja praktiliselt rakendatavad mudelid, mis toetaksid süsteemselt õppija agentsuse, loovuse ja tähendusliku õppimise arengut.</p>
+
+            <div class="card" style="margin-top: 20px; border-bottom-color: var(--accent-pink); padding: 20px; background-color: #fff; border: 1px solid #e2e8f0; border-left: 6px solid var(--accent-pink);">
+                <h3 style="font-size: 18px; margin-bottom: 5px;">Uurimisprobleem</h3>
+                <p style="font-size: 16px; margin: 0;">Formaalhariduses puuduvad terviklikud, teoreetiliselt põhjendatud ja praktiliselt rakendatavad mudelid, mis toetaksid süsteemselt õppija agentsuse, loovuse ja tähendusliku õppimise arengut.</p>
             </div>
         </div>
 
@@ -524,3 +535,4 @@
 </script>
 </body>
 </html>
+```
