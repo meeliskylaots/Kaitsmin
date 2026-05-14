@@ -31,7 +31,7 @@
             width: 100%; height: 100%;
             overflow: hidden;
             font-family: 'Montserrat', sans-serif;
-            background-color: white; 
+            background-color: var(--bg-yellow); /* Kogu dokumendi taust on kreemjas */
         }
 
         .preload * { transition: none !important; }
@@ -115,14 +115,18 @@
             padding: 50px 70px;
             box-sizing: border-box;
             display: flex; flex-direction: column;
-            opacity: 0.05;
-            transition: opacity 1.5s ease-in-out;
+            opacity: 0; /* Muudetud: Vaikimisi täiesti läbipaistmatu, et ei kumaks läbi */
+            visibility: hidden; /* Peidame täielikult mitteaktiivsed slaidid */
+            transition: opacity 1.5s ease-in-out, visibility 1.5s ease-in-out;
             border: 1px solid rgba(0,0,0,0.05);
-            backface-visibility: hidden;
+            backface-visibility: hidden; /* Takistab tagantpoolt läbi kumamist */
         }
         
-        .slide.active { opacity: 1; }
-        #cloud-slide { background: transparent; box-shadow: none; border: none; padding: 0; opacity: 1 !important; }
+        .slide.active { 
+            opacity: 1; 
+            visibility: visible;
+        }
+        #cloud-slide { background: transparent; box-shadow: none; border: none; padding: 0; opacity: 1 !important; visibility: visible !important; }
 
         h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--ut-blue); margin: 0; }
         h1 { font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
@@ -313,7 +317,7 @@
 
                 </div>
 
-                <!-- Parem pool: VALIM (Nüüd stiilse helekollase taustaga) -->
+                <!-- Parem pool: VALIM -->
                 <div style="flex: 3; display: flex; flex-direction: column;">
                     <div class="s5-sample-box">
                         <h3>VALIM</h3>
@@ -454,8 +458,8 @@
             </div>
         </div>
 
-        <!-- Slaid 11: Lõpp (Taust kollane) -->
-        <div class="slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="15" style="justify-content: center; align-items: center; border: none; box-shadow: none; background-color: var(--bg-yellow);">
+        <!-- Slaid 11: Lõpp (Taust on nüüd valge nagu teistel) -->
+        <div class="slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="15" style="justify-content: center; align-items: center; border: none; box-shadow: none;">
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
                 <h1 style="font-size: 140px; margin-bottom: 20px; line-height: 1;">AITÄH!</h1>
                 <p style="font-size: 40px; color: var(--accent-teal); font-weight: 700;">Küsimused ja arutelu.</p>
