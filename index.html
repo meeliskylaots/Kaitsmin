@@ -303,36 +303,34 @@
 
         <!-- Slaid 5: Metoodika ja valim -->
         <div class="slide" data-x="0" data-y="2400" data-z="-1500" data-rotate-x="-90" data-rotate-y="-270" data-scale="1">
-            <h2 style="margin-bottom: 5px;">Metoodika</h2>
+            <h2 style="margin-bottom: 10px;">Metoodika</h2>
 
-            <div class="s5-layout">
+            <div class="s5-layout" style="align-items: stretch; height: calc(100% - 60px);">
                 
-                <!-- Vasak pool: SVG joonis -->
-                <div style="flex: 7.8; display: flex; justify-content: flex-start; align-items: flex-start; position: relative; padding-right: 20px;">
-                    
+                <!-- Vasak pool: SVG joonis lukustatud 72% laiusele -->
+                <div style="flex: 0 0 72%; position: relative; padding-right: 20px; box-sizing: border-box;">
                     <img src="metoodika_joonis.svg" 
                          alt="Arendusuuringu etapid" 
                          onerror="this.src='https://placehold.co/800x500/f1f5f9/0b2e59?text=Lae+oma+joonis+nimega+%22metoodika_joonis.svg%22+samasse+kausta'"
-                         style="width: 100%; height: auto; max-height: 600px; object-fit: contain; transform: scale(1.22); transform-origin: top left;">
-
+                         style="width: 100%; height: 100%; object-fit: contain; object-position: top left;">
                 </div>
 
-                <!-- Parem pool: VALIM -->
-                <div style="flex: 2.2; display: flex; flex-direction: column;">
-                    <div class="s5-sample-box">
-                        <h3>VALIM</h3>
+                <!-- Parem pool: VALIM lukustatud 28% laiusele -->
+                <div style="flex: 0 0 28%; display: flex; flex-direction: column;">
+                    <div class="s5-sample-box" style="height: auto; padding: 20px;">
+                        <h3 style="font-size: 19px; margin-bottom: 12px; color: var(--ut-blue);">VALIM</h3>
 
-                        <h4>Põhivalim</h4>
-                        <ul>
-                            <li>– Elva Gümnaasiumi võtmeisikud (n = 3): direktor, huvijuht, kultuurisuuna õpetaja</li>
+                        <h4 style="font-size: 14px; margin-bottom: 6px; color: var(--text-dark);">Põhivalim</h4>
+                        <ul style="font-size: 13.5px; padding-left: 0; list-style-type: none; margin: 0 0 12px 0; line-height: 1.45; color: var(--text-gray);">
+                            <li style="margin-bottom: 5px;">– Elva Gümnaasiumi võtmeisikud (n = 3): direktor, huvijuht, kultuurisuuna õpetaja</li>
                             <li>– Õpilaste fookusgrupp (n = 9)<br>15–18-aastased kultuurisuuna õpilased</li>
                         </ul>
 
-                        <h4>Toetav sisend arendamisel</h4>
-                        <ul>
-                            <li>– Elva valla programmi „Noored Loojad“ eelsisend</li>
-                            <li>– Eksperthinnang</li>
-                            <li>– Uurija päevik</li>
+                        <h4 style="font-size: 14px; margin-bottom: 6px; color: var(--text-dark);">Toetav sisend arendamisel</h4>
+                        <ul style="font-size: 13.5px; padding-left: 0; list-style-type: none; margin: 0; line-height: 1.45; color: var(--text-gray);">
+                            <li style="margin-bottom: 5px;">– Elva valla programmi „Noored Loojad“ eelsisend</li>
+                            <li style="margin-bottom: 5px;">– Eksperthinnang</li>
+                            <li style="margin-bottom: 5px;">– Uurija päevik</li>
                             <li>– Pilootkatsetuse tagasiside</li>
                         </ul>
                     </div>
