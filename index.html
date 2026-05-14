@@ -136,66 +136,66 @@
         .accent-box { background: var(--ut-blue); color: white; padding: 25px; border-radius: 20px; }
         .accent-box p, .accent-box strong { color: white; margin: 0; }
 
-        /* --- 5. SLAIDI METOODIKA LÕPLIK, KATTUMATU JA MATEMAATILINE DISAIN --- */
+        /* --- 5. SLAIDI METOODIKA: TÄIELIKULT PUHAS JA ÜLEKATTUMATU --- */
         .s5-final-layout {
-            display: flex; gap: 25px; width: 100%; flex-grow: 1; margin-top: 5px;
+            display: flex; gap: 20px; width: 100%; flex-grow: 1; margin-top: 5px;
         }
         .s5-left-col {
-            display: flex; flex-direction: column; flex: 1; position: relative;
+            display: flex; flex-direction: column; width: 830px; position: relative; flex-shrink: 0;
         }
         .s5-top-label {
-            background-color: #cffafe; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; text-align: center;
+            background-color: #cffafe; padding: 8px 20px; border-radius: 12px; margin-bottom: 25px; text-align: center; width: 85%; margin-left: auto; margin-right: auto;
         }
         .s5-top-label h3 { font-size: 15px; margin: 0; color: var(--ut-blue); }
 
         .s5-arch-area {
-            position: relative; flex: 1; width: 100%; min-height: 380px;
+            position: relative; width: 100%; height: 350px;
         }
         .s5-arch-svg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
         }
-        .s5-stage {
+        
+        /* Absoluutsed sõlmed ja ringid */
+        .s5-node {
             position: absolute; transform: translate(-50%, -50%); z-index: 5;
+            display: flex; justify-content: center; align-items: center;
+            width: 70px; height: 70px;
         }
-        
-        /* Absoluutselt kindel laius tagab teksti sees püsimise */
-        .s5-circle-wrap {
-            display: flex; flex-direction: column; align-items: center; width: 175px; 
-        }
-        
-        /* Mullide vahelduv üles/alla süsteem välistab külgedelt kokkupõrkamise */
-        .s5-circle-wrap.bubble-up {
-            flex-direction: column-reverse;
-        }
-        
         .s5-stage-circle {
-            width: 68px; height: 68px; border-radius: 50%; background: white; border: 1.5px solid #475569;
+            width: 100%; height: 100%; border-radius: 50%; background: white; border: 1.5px solid #475569;
             display: flex; align-items: center; justify-content: center; text-align: center;
             font-size: 8px; font-weight: 800; line-height: 1.15; color: var(--ut-blue);
-            z-index: 2; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.08); padding: 2px;
+            z-index: 2; padding: 4px; box-sizing: border-box;
         }
         
+        /* Kollased mullid kindla laiuse ja vasakjoondatud tekstiga */
         .s5-info {
-            background: #fef08a; padding: 10px 12px; border-radius: 8px; font-size: 10.5px;
-            line-height: 1.35; text-align: left; color: var(--text-dark); box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-            width: 100%; box-sizing: border-box; margin-top: 6px;
+            position: absolute; width: 180px; background: #fef08a; padding: 10px 12px; border-radius: 8px; 
+            font-size: 10.5px; line-height: 1.35; text-align: left; color: var(--text-dark); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); z-index: 1; box-sizing: border-box;
         }
-        .s5-circle-wrap.bubble-up .s5-info { margin-top: 0; margin-bottom: 6px; }
         .s5-info div { margin-bottom: 3.5px; }
         .s5-info div:last-child { margin-bottom: 0; }
 
-        /* Kaare täpsed matemaatilised positsioonid */
-        .s5-p1 { left: 5%; top: 320px; }
-        .s5-p2 { left: 20%; top: 192px; }
-        .s5-p3 { left: 35%; top: 115px; }
-        .s5-p4 { left: 50%; top: 90px; }
-        .s5-p5 { left: 65%; top: 115px; }
-        .s5-p6 { left: 80%; top: 192px; }
-        .s5-p7 { left: 95%; top: 320px; }
+        /* Mullide suunad */
+        .pos-left .s5-info { right: 45px; top: 50%; transform: translateY(-50%); }
+        .pos-right .s5-info { left: 45px; top: 50%; transform: translateY(-50%); }
+        .pos-top .s5-info { bottom: 45px; left: 50%; transform: translateX(-50%); }
 
+        /* Kaare täpsed matemaatilised koordinaadid, mis vastavad SVG ellipsile */
+        /* Ellipsi keskpunkt: X=415. Raadiused: Rx=185, Ry=220. Baaskõrgus: Y=330. */
+        .s5-p1 { left: 230px; top: 330px; }
+        .s5-p2 { left: 247px; top: 240px; }
+        .s5-p3 { left: 298px; top: 160px; }
+        .s5-p4 { left: 415px; top: 110px; }
+        .s5-p5 { left: 532px; top: 160px; }
+        .s5-p6 { left: 583px; top: 240px; }
+        .s5-p7 { left: 600px; top: 330px; }
+
+        /* Märkuse kast alumises osas, ei takista muid elemente */
         .s5-note-final {
             background: #cffafe; border-radius: 10px; padding: 10px 14px; text-align: center;
-            border: 1px solid #a5f3fc; margin: 15px auto 0 auto; width: 85%; box-sizing: border-box;
+            border: 1px solid #a5f3fc; margin: 0 auto; width: 480px; box-sizing: border-box;
         }
         .s5-note-final strong { font-size: 11.5px; color: var(--ut-blue); }
         .s5-note-final p { font-size: 11px; color: var(--ut-blue); margin: 3px 0 0 0; line-height: 1.35; }
@@ -346,113 +346,98 @@
         </div>
 
         <!-- Slaid 5: Metoodika ja valim -->
-        <div class="slide slide-5-final" data-x="0" data-y="2400" data-z="-1500" data-rotate-x="-90" data-rotate-y="-270" data-scale="1">
-            <h2>METOODIKA</h2>
+        <div class="slide" data-x="0" data-y="2400" data-z="-1500" data-rotate-x="-90" data-rotate-y="-270" data-scale="1">
+            <h2 style="margin-bottom: 10px;">METOODIKA</h2>
 
             <div class="s5-final-layout">
-                
+
                 <!-- Vasak pool (diagramm ja märkus) -->
                 <div class="s5-left-col">
-                    
+
                     <div class="s5-top-label">
                         <h3>Arendusuuringu etapid Easterday <em>et al.</em> (2018) järgi käesolevas magistritöös</h3>
                     </div>
 
                     <div class="s5-arch-area">
-                        <!-- Kaare täpne joonistus -->
-                        <svg class="s5-arch-svg" viewBox="0 0 800 360" preserveAspectRatio="none">
-                            <!-- Q kõver: algus(40, 320), kontrollpunkt(400, -140) kese, lõpp(760, 320) -->
-                            <path d="M 40 320 Q 400 -140 760 320" fill="none" stroke="#475569" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+                        <!-- Täpne matemaatiline kaar, millel ringid asuvad -->
+                        <svg class="s5-arch-svg" viewBox="0 0 830 380" preserveAspectRatio="none">
+                            <path d="M 230 330 A 185 220 0 0 1 600 330" fill="none" stroke="#475569" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
                         </svg>
 
                         <!-- Sõlmed: Parandatud ja loogiline kronoloogiline järjestus! -->
-                        
+
                         <!-- 1. Mõistmine (All vasakul) -->
-                        <div class="s5-stage s5-p1">
-                            <div class="s5-circle-wrap bubble-up">
-                                <div class="s5-stage-circle">MÕISTMINE</div>
-                                <div class="s5-info">
-                                    <div>Teaduskirjanduse analüüs</div>
-                                    <div>Olemasolevate lahendustega tutvumine</div>
-                                    <div>Noorteprogrammi „Noored loojad“ eelsisend</div>
-                                    <div>Konteksti ja vajaduste mõistmine</div>
-                                </div>
+                        <div class="s5-node s5-p1 pos-left">
+                            <div class="s5-stage-circle">MÕISTMINE</div>
+                            <div class="s5-info">
+                                <div>Teaduskirjanduse analüüs</div>
+                                <div>Olemasolevate lahendustega tutvumine</div>
+                                <div>Noorteprogrammi „Noored loojad“ eelsisend</div>
+                                <div>Konteksti ja vajaduste mõistmine</div>
                             </div>
                         </div>
 
                         <!-- 2. Fookuse seadmine (Kesk-vasakul) -->
-                        <div class="s5-stage s5-p2">
-                            <div class="s5-circle-wrap">
-                                <div class="s5-stage-circle">FOOKUSE<br>SEADMINE</div>
-                                <div class="s5-info">
-                                    <div>Uuringu ulatuse ja piiride määratlemine</div>
-                                    <div>Probleemi üldine sõnastamine</div>
-                                    <div>Huvirühmade kaardistus</div>
-                                </div>
+                        <div class="s5-node s5-p2 pos-left">
+                            <div class="s5-stage-circle">FOOKUSE<br>SEADMINE</div>
+                            <div class="s5-info">
+                                <div>Uuringu ulatuse ja piiride määratlemine</div>
+                                <div>Probleemi üldine sõnastamine</div>
+                                <div>Huvirühmade kaardistus</div>
                             </div>
                         </div>
 
                         <!-- 3. Määratlemine (Üleval vasakul) -->
-                        <div class="s5-stage s5-p3">
-                            <div class="s5-circle-wrap bubble-up">
-                                <div class="s5-stage-circle">MÄÄRATLEMINE</div>
-                                <div class="s5-info">
-                                    <div>Uurimisprobleemi täpsustamine</div>
-                                    <div>Eesmärgi sõnastamine</div>
-                                    <div>Uurimisküsimuste sõnastamine</div>
-                                </div>
+                        <div class="s5-node s5-p3 pos-left">
+                            <div class="s5-stage-circle">MÄÄRATLEMINE</div>
+                            <div class="s5-info">
+                                <div>Uurimisprobleemi täpsustamine</div>
+                                <div>Eesmärgi sõnastamine</div>
+                                <div>Uurimisküsimuste sõnastamine</div>
                             </div>
                         </div>
 
                         <!-- 4. Lahenduse ideeloome (Täpselt tipus) -->
-                        <div class="s5-stage s5-p4">
-                            <div class="s5-circle-wrap">
-                                <div class="s5-stage-circle">LAHENDUSE<br>IDEELOOME</div>
-                                <div class="s5-info">
-                                    <div>Kultuuriinkubaatori kontseptsiooni loomine</div>
-                                    <div>Teoreetiline süntees</div>
-                                    <div>Mudeli esialgne versioon V1</div>
-                                </div>
+                        <div class="s5-node s5-p4 pos-top">
+                            <div class="s5-stage-circle">LAHENDUSE<br>IDEELOOME</div>
+                            <div class="s5-info">
+                                <div>Kultuuriinkubaatori kontseptsiooni loomine</div>
+                                <div>Teoreetiline süntees</div>
+                                <div>Mudeli esialgne versioon V1</div>
                             </div>
                         </div>
 
                         <!-- 5. Teostamine (Üleval paremal) -->
-                        <div class="s5-stage s5-p5">
-                            <div class="s5-circle-wrap bubble-up">
-                                <div class="s5-stage-circle">TEOSTAMINE</div>
-                                <div class="s5-info">
-                                    <div>V1 tööversiooni koostamine</div>
-                                    <div>Intervjuud kooli võtmeosapooltega</div>
-                                    <div>Õpilaste fookusgrupp</div>
-                                    <div>Empiirilise sisendi kogumine</div>
-                                </div>
+                        <div class="s5-node s5-p5 pos-right">
+                            <div class="s5-stage-circle">TEOSTAMINE</div>
+                            <div class="s5-info">
+                                <div>V1 tööversiooni koostamine</div>
+                                <div>Intervjuud kooli võtmeosapooltega</div>
+                                <div>Õpilaste fookusgrupp</div>
+                                <div>Empiirilise sisendi kogumine</div>
                             </div>
                         </div>
 
                         <!-- 6. Katsetamine ja hindamine (Kesk-paremal) -->
-                        <div class="s5-stage s5-p6">
-                            <div class="s5-circle-wrap">
-                                <div class="s5-stage-circle">KATSETAMINE<br>JA HINDAMINE</div>
-                                <div class="s5-info">
-                                    <div>Empiiriline analüüs</div>
-                                    <div>Disainipõhimõtete sõnastamine</div>
-                                    <div>V1 ➔ V2 täpsustamine</div>
-                                    <div>1. mooduli „Süüde“ piloteerimine</div>
-                                    <div>Eksperthinnang</div>
-                                    <div>Mudeli täiendamine</div>
-                                </div>
+                        <div class="s5-node s5-p6 pos-right">
+                            <div class="s5-stage-circle">KATSETAMINE<br>JA HINDAMINE</div>
+                            <div class="s5-info">
+                                <div>Empiiriline analüüs</div>
+                                <div>Disainipõhimõtete sõnastamine</div>
+                                <div>V1 ➔ V2 täpsustamine</div>
+                                <div>1. mooduli „Süüde“ piloteerimine</div>
+                                <div>Eksperthinnang</div>
+                                <div>Mudeli täiendamine</div>
                             </div>
                         </div>
 
                         <!-- 7. Tulemuste esitamine (All paremal) -->
-                        <div class="s5-stage s5-p7">
-                            <div class="s5-circle-wrap bubble-up">
-                                <div class="s5-stage-circle">TULEMUSTE<br>ESITAMINE</div>
-                                <div class="s5-info">
-                                    <div>V2 mudeli kirjeldamine</div>
-                                    <div>Tulemused ja järeldused</div>
-                                    <div>Rakendusvõimalused</div>
-                                </div>
+                        <div class="s5-node s5-p7 pos-right">
+                            <div class="s5-stage-circle">TULEMUSTE<br>ESITAMINE</div>
+                            <div class="s5-info">
+                                <div>V2 mudeli kirjeldamine</div>
+                                <div>Tulemused ja järeldused</div>
+                                <div>Rakendusvõimalused</div>
                             </div>
                         </div>
 
