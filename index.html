@@ -73,22 +73,25 @@
         body[data-current-slide="0"]:not(.overview-mode) #fixed-cloud-layer .word {
             transform: translate(-50%, -50%) translateZ(0) scale(1);
             opacity: 1;
-            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease-out;
-            transition-delay: var(--delay, 0s), 0s;
+            visibility: visible;
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease-out, visibility 0s;
+            transition-delay: var(--delay, 0s), 0s, 0s;
         }
 
         body:not([data-current-slide="0"]) #fixed-cloud-layer .word {
-            transform: translate(-50%, -50%) translateZ(1500px) scale(4);
+            transform: translate(-50%, -50%) translateZ(800px) scale(4); /* Z-telg vähendatud, et vältida 3D kaamera läbilõikamise glitche */
             opacity: 0;
-            transition: transform 1.2s ease-in, opacity 0.5s ease-out;
-            transition-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.7s);
+            visibility: hidden; /* Eemaldab elemendi pärast animatsiooni täielikult renderdusest */
+            transition: transform 1.2s ease-in, opacity 0.6s ease-out, visibility 0s;
+            transition-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.6s), calc(var(--delay, 0s) + 1.2s);
         }
 
         body.overview-mode #fixed-cloud-layer .word {
             transform: translate(-50%, -50%) translateZ(0) scale(1) !important;
             opacity: 1 !important;
-            transition: transform 0.8s ease-out, opacity 0.8s ease-out !important;
-            transition-delay: 0s, 0s !important;
+            visibility: visible !important;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out, visibility 0s !important;
+            transition-delay: 0s, 0s, 0s !important;
         }
 
         #canvas {
