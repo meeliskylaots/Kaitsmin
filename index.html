@@ -153,17 +153,17 @@
 
         /* --- 5. SLAIDI (METOODIKA) SVG LAHENDUSE STIILID --- */
         .s5-layout {
-            display: flex; gap: 30px; width: 100%; flex-grow: 1; align-items: flex-start; margin-top: 10px;
+            display: flex; gap: 30px; width: 100%; flex-grow: 1; align-items: flex-start; margin-top: 0px;
         }
         
         .s5-sample-box {
-            background-color: var(--bg-yellow); padding: 25px 20px; border-radius: 15px;
+            background-color: var(--bg-yellow); padding: 20px 18px; border-radius: 15px;
             box-sizing: border-box; border: 2px solid var(--accent-yellow); height: auto; display: flex; flex-direction: column;
         }
-        .s5-sample-box h3 { font-size: 20px; margin-bottom: 15px; color: var(--ut-blue); }
-        .s5-sample-box h4 { font-size: 15px; margin-bottom: 8px; color: var(--text-dark); }
-        .s5-sample-box ul { font-size: 14px; padding-left: 0; list-style-type: none; margin: 0 0 15px 0; line-height: 1.5; color: var(--text-gray); }
-        .s5-sample-box ul li { margin-bottom: 6px; }
+        .s5-sample-box h3 { font-size: 19px; margin-bottom: 12px; color: var(--ut-blue); }
+        .s5-sample-box h4 { font-size: 14px; margin-bottom: 6px; color: var(--text-dark); }
+        .s5-sample-box ul { font-size: 13.5px; padding-left: 0; list-style-type: none; margin: 0 0 12px 0; line-height: 1.45; color: var(--text-gray); }
+        .s5-sample-box ul li { margin-bottom: 5px; }
 
         /* Navigatsioon ja nupud */
         #ui-layer { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 5000; display: flex; flex-direction: column; align-items: center; gap: 10px; }
@@ -303,22 +303,22 @@
 
         <!-- Slaid 5: Metoodika ja valim -->
         <div class="slide" data-x="0" data-y="2400" data-z="-1500" data-rotate-x="-90" data-rotate-y="-270" data-scale="1">
-            <h2>Metoodika</h2>
+            <h2 style="margin-bottom: 5px;">Metoodika</h2>
 
             <div class="s5-layout">
                 
                 <!-- Vasak pool: SVG joonis -->
-                <div style="flex: 7.5; display: flex; justify-content: flex-start; align-items: flex-start; position: relative; padding-right: 15px;">
+                <div style="flex: 7.8; display: flex; justify-content: flex-start; align-items: flex-start; position: relative; padding-right: 20px;">
                     
                     <img src="metoodika_joonis.svg" 
                          alt="Arendusuuringu etapid" 
                          onerror="this.src='https://placehold.co/800x500/f1f5f9/0b2e59?text=Lae+oma+joonis+nimega+%22metoodika_joonis.svg%22+samasse+kausta'"
-                         style="width: 100%; height: auto; max-height: 600px; object-fit: contain; transform: scale(1.15); transform-origin: top left;">
+                         style="width: 100%; height: auto; max-height: 600px; object-fit: contain; transform: scale(1.22); transform-origin: top left;">
 
                 </div>
 
                 <!-- Parem pool: VALIM -->
-                <div style="flex: 2.5; display: flex; flex-direction: column;">
+                <div style="flex: 2.2; display: flex; flex-direction: column;">
                     <div class="s5-sample-box">
                         <h3>VALIM</h3>
 
