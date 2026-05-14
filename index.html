@@ -136,26 +136,26 @@
         .accent-box { background: var(--ut-blue); color: white; padding: 25px; border-radius: 20px; }
         .accent-box p, .accent-box strong { color: white; margin: 0; }
 
-        /* --- 5. SLAIDI METOODIKA: TÄIELIKULT PUHAS JA ÜLEKATTUMATU --- */
+        /* --- 5. SLAIDI METOODIKA: MATEMAATILINE KATTUMATU DISAIN --- */
         .s5-final-layout {
             display: flex; gap: 20px; width: 100%; flex-grow: 1; margin-top: 5px;
         }
         .s5-left-col {
-            display: flex; flex-direction: column; width: 830px; position: relative; flex-shrink: 0;
+            display: flex; flex-direction: column; width: 880px; position: relative; flex-shrink: 0;
         }
         .s5-top-label {
-            background-color: #cffafe; padding: 8px 20px; border-radius: 12px; margin-bottom: 25px; text-align: center; width: 85%; margin-left: auto; margin-right: auto;
+            background-color: #cffafe; padding: 10px 20px; border-radius: 12px; margin-bottom: 25px; text-align: center; width: 85%; margin-left: auto; margin-right: auto;
         }
         .s5-top-label h3 { font-size: 15px; margin: 0; color: var(--ut-blue); }
 
         .s5-arch-area {
-            position: relative; width: 100%; height: 350px;
+            position: relative; width: 100%; height: 440px;
         }
         .s5-arch-svg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
         }
         
-        /* Absoluutsed sõlmed ja ringid */
+        /* Absoluutsed sõlmed, kindel 70x70 keskkoha arvestus */
         .s5-node {
             position: absolute; transform: translate(-50%, -50%); z-index: 5;
             display: flex; justify-content: center; align-items: center;
@@ -164,44 +164,46 @@
         .s5-stage-circle {
             width: 100%; height: 100%; border-radius: 50%; background: white; border: 1.5px solid #475569;
             display: flex; align-items: center; justify-content: center; text-align: center;
-            font-size: 8px; font-weight: 800; line-height: 1.15; color: var(--ut-blue);
+            font-size: 8.5px; font-weight: 800; line-height: 1.15; color: var(--ut-blue);
             z-index: 2; padding: 4px; box-sizing: border-box;
         }
         
-        /* Kollased mullid kindla laiuse ja vasakjoondatud tekstiga */
-        .s5-info {
-            position: absolute; width: 180px; background: #fef08a; padding: 10px 12px; border-radius: 8px; 
-            font-size: 10.5px; line-height: 1.35; text-align: left; color: var(--text-dark); 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06); z-index: 1; box-sizing: border-box;
+        /* Kollased mullid: laiemad (195px), vasakjoondatud, tugev vahe ridade vahel */
+        .s5-bubble {
+            position: absolute; width: 195px; background: #fef08a; padding: 12px 14px; border-radius: 8px; 
+            font-size: 11px; line-height: 1.35; text-align: left; color: var(--text-dark); 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06); z-index: 1; box-sizing: border-box;
         }
-        .s5-info div { margin-bottom: 3.5px; }
-        .s5-info div:last-child { margin-bottom: 0; }
+        .s5-bubble div { margin-bottom: 5px; } 
+        .s5-bubble div:last-child { margin-bottom: 0; }
 
-        /* Mullide suunad */
-        .pos-left .s5-info { right: 45px; top: 50%; transform: translateY(-50%); }
-        .pos-right .s5-info { left: 45px; top: 50%; transform: translateY(-50%); }
-        .pos-top .s5-info { bottom: 45px; left: 50%; transform: translateX(-50%); }
+        /* Mullide suunad: jätab TÄPSELT 10px NÄHTAVA VAHE ringi ja kasti vahele! */
+        /* 100% on kasti 70px. calc(100% + 10px) viib kasti 10px eemale servast. */
+        .pos-left .s5-bubble { right: calc(100% + 10px); top: 50%; transform: translateY(-50%); }
+        .pos-right .s5-bubble { left: calc(100% + 10px); top: 50%; transform: translateY(-50%); }
+        .pos-top .s5-bubble { bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
 
-        /* Kaare täpsed matemaatilised koordinaadid, mis vastavad SVG ellipsile */
-        /* Ellipsi keskpunkt: X=415. Raadiused: Rx=185, Ry=220. Baaskõrgus: Y=330. */
-        .s5-p1 { left: 230px; top: 330px; }
-        .s5-p2 { left: 247px; top: 240px; }
-        .s5-p3 { left: 298px; top: 160px; }
-        .s5-p4 { left: 415px; top: 110px; }
-        .s5-p5 { left: 532px; top: 160px; }
-        .s5-p6 { left: 583px; top: 240px; }
-        .s5-p7 { left: 600px; top: 330px; }
+        /* Kaare täpsed matemaatilised koordinaadid (Garanteerib, et tekstid EI KATTU!) */
+        .s5-p1 { left: 260px; top: 330px; } /* MÕISTMINE */
+        .s5-p2 { left: 275px; top: 210px; } /* FOOKUSE SEADMINE */
+        .s5-p3 { left: 318px; top: 110px; } /* MÄÄRATLEMINE */
+        .s5-p4 { left: 440px; top: 30px; }  /* LAHENDUSE IDEELOOME */
+        .s5-p5 { left: 562px; top: 110px; } /* TEOSTAMINE */
+        .s5-p6 { left: 605px; top: 210px; } /* KATSETAMINE JA HINDAMINE */
+        .s5-p7 { left: 620px; top: 330px; } /* TULEMUSTE ESITAMINE */
 
-        /* Märkuse kast alumises osas, ei takista muid elemente */
+        /* Märkuse kast alumises osas, turvalises tsoonis */
         .s5-note-final {
+            position: absolute; top: 380px; left: 440px; transform: translateX(-50%);
             background: #cffafe; border-radius: 10px; padding: 10px 14px; text-align: center;
-            border: 1px solid #a5f3fc; margin: 0 auto; width: 480px; box-sizing: border-box;
+            border: 1px solid #a5f3fc; width: 440px; box-sizing: border-box;
         }
         .s5-note-final strong { font-size: 11.5px; color: var(--ut-blue); }
         .s5-note-final p { font-size: 11px; color: var(--ut-blue); margin: 3px 0 0 0; line-height: 1.35; }
 
+        /* Parempoolne valimi kast */
         .s5-sample-box {
-            width: 270px; background-color: #fef3c7; padding: 25px 20px; border-radius: 15px;
+            width: 260px; background-color: #fef3c7; padding: 25px 20px; border-radius: 15px;
             box-sizing: border-box; border: 1px solid #fde047; flex-shrink: 0; display: flex; flex-direction: column;
         }
         .s5-sample-box h3 { font-size: 20px; margin-bottom: 15px; color: var(--ut-blue); }
@@ -359,17 +361,17 @@
                     </div>
 
                     <div class="s5-arch-area">
-                        <!-- Täpne matemaatiline kaar, millel ringid asuvad -->
-                        <svg class="s5-arch-svg" viewBox="0 0 830 380" preserveAspectRatio="none">
-                            <path d="M 230 330 A 185 220 0 0 1 600 330" fill="none" stroke="#475569" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+                        <!-- Täpne matemaatiline kaar -->
+                        <svg class="s5-arch-svg" viewBox="0 0 880 440" preserveAspectRatio="none">
+                            <path d="M 260 330 A 180 300 0 0 1 440 30 A 180 300 0 0 1 620 330" fill="none" stroke="#475569" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
                         </svg>
 
-                        <!-- Sõlmed: Parandatud ja loogiline kronoloogiline järjestus! -->
+                        <!-- Sõlmed: Parandatud asukohad ja absoluutne eraldatus -->
 
                         <!-- 1. Mõistmine (All vasakul) -->
                         <div class="s5-node s5-p1 pos-left">
                             <div class="s5-stage-circle">MÕISTMINE</div>
-                            <div class="s5-info">
+                            <div class="s5-bubble">
                                 <div>Teaduskirjanduse analüüs</div>
                                 <div>Olemasolevate lahendustega tutvumine</div>
                                 <div>Noorteprogrammi „Noored loojad“ eelsisend</div>
@@ -380,7 +382,7 @@
                         <!-- 2. Fookuse seadmine (Kesk-vasakul) -->
                         <div class="s5-node s5-p2 pos-left">
                             <div class="s5-stage-circle">FOOKUSE<br>SEADMINE</div>
-                            <div class="s5-info">
+                            <div class="s5-bubble">
                                 <div>Uuringu ulatuse ja piiride määratlemine</div>
                                 <div>Probleemi üldine sõnastamine</div>
                                 <div>Huvirühmade kaardistus</div>
@@ -390,7 +392,7 @@
                         <!-- 3. Määratlemine (Üleval vasakul) -->
                         <div class="s5-node s5-p3 pos-left">
                             <div class="s5-stage-circle">MÄÄRATLEMINE</div>
-                            <div class="s5-info">
+                            <div class="s5-bubble">
                                 <div>Uurimisprobleemi täpsustamine</div>
                                 <div>Eesmärgi sõnastamine</div>
                                 <div>Uurimisküsimuste sõnastamine</div>
@@ -400,7 +402,7 @@
                         <!-- 4. Lahenduse ideeloome (Täpselt tipus) -->
                         <div class="s5-node s5-p4 pos-top">
                             <div class="s5-stage-circle">LAHENDUSE<br>IDEELOOME</div>
-                            <div class="s5-info">
+                            <div class="s5-bubble">
                                 <div>Kultuuriinkubaatori kontseptsiooni loomine</div>
                                 <div>Teoreetiline süntees</div>
                                 <div>Mudeli esialgne versioon V1</div>
@@ -410,7 +412,7 @@
                         <!-- 5. Teostamine (Üleval paremal) -->
                         <div class="s5-node s5-p5 pos-right">
                             <div class="s5-stage-circle">TEOSTAMINE</div>
-                            <div class="s5-info">
+                            <div class="s5-bubble">
                                 <div>V1 tööversiooni koostamine</div>
                                 <div>Intervjuud kooli võtmeosapooltega</div>
                                 <div>Õpilaste fookusgrupp</div>
@@ -421,7 +423,7 @@
                         <!-- 6. Katsetamine ja hindamine (Kesk-paremal) -->
                         <div class="s5-node s5-p6 pos-right">
                             <div class="s5-stage-circle">KATSETAMINE<br>JA HINDAMINE</div>
-                            <div class="s5-info">
+                            <div class="s5-bubble">
                                 <div>Empiiriline analüüs</div>
                                 <div>Disainipõhimõtete sõnastamine</div>
                                 <div>V1 ➔ V2 täpsustamine</div>
@@ -434,18 +436,18 @@
                         <!-- 7. Tulemuste esitamine (All paremal) -->
                         <div class="s5-node s5-p7 pos-right">
                             <div class="s5-stage-circle">TULEMUSTE<br>ESITAMINE</div>
-                            <div class="s5-info">
+                            <div class="s5-bubble">
                                 <div>V2 mudeli kirjeldamine</div>
                                 <div>Tulemused ja järeldused</div>
                                 <div>Rakendusvõimalused</div>
                             </div>
                         </div>
 
-                    </div>
-
-                    <div class="s5-note-final">
-                        <strong>Märkus.</strong>
-                        <p>Easterday jt (2018) etappe kasutati arendusprotsessi analüütiliseks mõtestamiseks. Käesolevas töös ei käsitleta neid rangelt lineaarse ajajoonena, vaid omavahel seotud ja osaliselt kattuvate tegevustena.</p>
+                        <!-- Märkuse kast all keskel, täiesti ohutus tsoonis -->
+                        <div class="s5-note-final">
+                            <strong>Märkus.</strong>
+                            <p>Easterday jt (2018) etappe kasutati arendusprotsessi analüütiliseks mõtestamiseks. Käesolevas töös ei käsitleta neid rangelt lineaarse ajajoonena, vaid omavahel seotud ja osaliselt kattuvate tegevustena.</p>
+                        </div>
                     </div>
 
                 </div>
