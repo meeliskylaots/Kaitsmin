@@ -21,6 +21,7 @@
             --accent-purple: #6a2c70;
             --accent-yellow: #d4a32c;
             --bg-canvas: #f8fafc;
+            --bg-yellow: #fff4ba; /* Ühtne helekollane teemavärv */
             --text-dark: #0f172a;
             --text-gray: #475569;
         }
@@ -79,9 +80,9 @@
         }
 
         body:not([data-current-slide="0"]) #fixed-cloud-layer .word {
-            transform: translate(-50%, -50%) translateZ(800px) scale(4); /* Z-telg vähendatud, et vältida 3D kaamera läbilõikamise glitche */
+            transform: translate(-50%, -50%) translateZ(800px) scale(4); 
             opacity: 0;
-            visibility: hidden; /* Eemaldab elemendi pärast animatsiooni täielikult renderdusest */
+            visibility: hidden; 
             transition: transform 1.2s ease-in, opacity 0.6s ease-out, visibility 0s;
             transition-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.6s), calc(var(--delay, 0s) + 1.2s);
         }
@@ -152,8 +153,8 @@
         }
         
         .s5-sample-box {
-            background-color: #fef3c7; padding: 25px 20px; border-radius: 15px;
-            box-sizing: border-box; border: 1px solid #fde047; height: 100%; display: flex; flex-direction: column;
+            background-color: var(--bg-yellow); padding: 25px 20px; border-radius: 15px;
+            box-sizing: border-box; border: 2px solid var(--accent-yellow); height: 100%; display: flex; flex-direction: column;
         }
         .s5-sample-box h3 { font-size: 20px; margin-bottom: 15px; color: var(--ut-blue); }
         .s5-sample-box h4 { font-size: 15px; margin-bottom: 8px; color: var(--text-dark); }
@@ -228,10 +229,10 @@
             <p style="margin-top: 40px; font-weight: 600; color: var(--ut-blue); font-size: 22px;">Tartu Ülikool, 2026</p>
         </div>
 
-        <!-- Slaid 2: Mõiste -->
-        <div class="slide" data-x="1500" data-y="1200" data-z="0" data-rotate-y="-90" data-scale="1">
+        <!-- Slaid 2: Mõiste (Taust kollane) -->
+        <div class="slide" data-x="1500" data-y="1200" data-z="0" data-rotate-y="-90" data-scale="1" style="background-color: var(--bg-yellow);">
             <div style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
-                <div class="accent-box" style="font-size: 32px; line-height: 1.6; padding: 50px;">
+                <div class="accent-box" style="font-size: 32px; line-height: 1.6; padding: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
                     <p><strong>Kultuuriinkubaator</strong> on formaalhariduses rakendatav mudel, mis seob õppija isikliku huvi, loova katsetamise, koostöise probleemilahenduse ja praktilise väljundi.</p>
                     <p style="margin-top: 30px;">Töö rakendusnimetus koolikontekstis on <strong>Loomelabor</strong>.</p>
                 </div>
@@ -312,7 +313,7 @@
 
                 </div>
 
-                <!-- Parem pool: VALIM -->
+                <!-- Parem pool: VALIM (Nüüd stiilse helekollase taustaga) -->
                 <div style="flex: 3; display: flex; flex-direction: column;">
                     <div class="s5-sample-box">
                         <h3>VALIM</h3>
@@ -355,8 +356,8 @@
             </div>
         </div>
 
-        <!-- Slaid 7: Loomelabori etapid -->
-        <div class="slide" data-x="-1500" data-y="2400" data-z="0" data-rotate-z="90" data-rotate-y="-360" data-scale="1" style="padding: 0; background-color: #fff4ba;">
+        <!-- Slaid 7: Loomelabori etapid (Taust kollane) -->
+        <div class="slide" data-x="-1500" data-y="2400" data-z="0" data-rotate-z="90" data-rotate-y="-360" data-scale="1" style="padding: 0; background-color: var(--bg-yellow);">
             <img src="inkubaatori_skeem.svg" 
                  alt="Loomelabor: Teekond isiklikust huvist päriselulise mõjuni" 
                  style="width: 100%; height: 100%; object-fit: cover; border-radius: 30px;"
@@ -397,8 +398,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="accent-box" style="margin-top: 25px; padding: 25px; text-align: center;">
-                <p style="font-size: 16px;">Tulemused näitasid, et agentsuse toetamine ei tähenda ainult valikuvabadust. Õppijal on vaja tähenduslikku alguspunkti, arusaadavat protsessi, toetavat juhendamist ja võimalust oma ideed praktiliselt proovida.</p>
+            
+            <!-- Helekollane kokkuvõtte kast, mis seob tulemused teemavärviga -->
+            <div style="margin-top: 25px; padding: 25px; text-align: center; background-color: var(--bg-yellow); border-radius: 20px; border: 2px solid var(--accent-yellow);">
+                <p style="font-size: 18px; font-weight: 600; color: var(--ut-blue); margin: 0;">Tulemused näitasid, et agentsuse toetamine ei tähenda ainult valikuvabadust. Õppijal on vaja tähenduslikku alguspunkti, arusaadavat protsessi, toetavat juhendamist ja võimalust oma ideed praktiliselt proovida.</p>
             </div>
         </div>
 
@@ -451,8 +454,8 @@
             </div>
         </div>
 
-        <!-- Slaid 11: Lõpp -->
-        <div class="slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="15" style="justify-content: center; align-items: center; border: none; box-shadow: none;">
+        <!-- Slaid 11: Lõpp (Taust kollane) -->
+        <div class="slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="15" style="justify-content: center; align-items: center; border: none; box-shadow: none; background-color: var(--bg-yellow);">
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
                 <h1 style="font-size: 140px; margin-bottom: 20px; line-height: 1;">AITÄH!</h1>
                 <p style="font-size: 40px; color: var(--accent-teal); font-weight: 700;">Küsimused ja arutelu.</p>
