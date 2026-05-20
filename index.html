@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kultuuriinkubaator | Magistritöö Kaitsmine 2026</title>
     
-    <!-- Fontide laadimine Google Fontsist -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:ital,wght@0,400;0,600;0,800;1,600&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome ikoonide laadimine -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -262,7 +260,6 @@
             margin-bottom: 15px;
         }
 
-        /* --- 5. slaidi metoodikaosa --- */
         .s5-layout {
             display: flex;
             gap: 30px;
@@ -308,41 +305,138 @@
             margin-bottom: 5px;
         }
 
-        .method-zoom-controls {
-            position: absolute;
-            left: 16px;
-            top: 16px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            max-width: calc(100% - 32px);
-            z-index: 20;
+        /* --- Slaid 5: klikitav zoom --- */
+
+        .method-zoom-stage {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: white;
         }
 
-        .method-zoom-btn {
+        .method-img-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            transform: scale(1.08);
+            transform-origin: center center;
+            transition: transform 0.85s ease, transform-origin 0.85s ease, filter 0.4s ease, opacity 0.4s ease;
+        }
+
+        #methodZoomBase.method-focused {
+            filter: blur(7px);
+            opacity: 0.55;
+        }
+
+        #methodZoomSharp {
+            opacity: 0;
+            pointer-events: none;
+            z-index: 4;
+            clip-path: circle(0px at 50% 50%);
+        }
+
+        #methodZoomSharp.active {
+            opacity: 1;
+        }
+
+        .method-hotspots {
+            position: absolute;
+            inset: 0;
+            z-index: 12;
+            transform: scale(1.08);
+            transform-origin: center center;
+            transition: transform 0.85s ease, transform-origin 0.85s ease;
+        }
+
+        .method-hotspot {
+            position: absolute;
+            left: var(--x);
+            top: var(--y);
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 3px solid rgba(216, 17, 89, 0.75);
+            background: rgba(255, 244, 186, 0.22);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            box-shadow: 0 0 0 6px rgba(255, 244, 186, 0.35);
+            transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+        }
+
+        .method-hotspot:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            background: rgba(255, 244, 186, 0.45);
+            border-color: var(--accent-pink);
+        }
+
+        .method-hotspot.active {
+            border-color: var(--accent-pink);
+            background: rgba(216, 17, 89, 0.18);
+            box-shadow: 0 0 0 9px rgba(255, 244, 186, 0.55);
+        }
+
+        .method-zoom-stage.focused .method-hotspot:not(.active) {
+            opacity: 0.18;
+        }
+
+        .method-focus-box {
+            position: absolute;
+            z-index: 30;
+            max-width: 330px;
+            background: var(--bg-yellow);
+            border: 2px solid var(--accent-yellow);
+            border-radius: 18px;
+            padding: 16px 18px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.35s ease, transform 0.35s ease, left 0.35s ease, top 0.35s ease;
+        }
+
+        .method-focus-box.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .method-focus-box h4 {
+            font-size: 16px;
+            color: var(--ut-blue);
+            margin: 0 0 6px 0;
+        }
+
+        .method-focus-box p {
+            font-size: 14px;
+            line-height: 1.38;
+            color: var(--text-gray);
+            margin: 0;
+        }
+
+        .method-reset-btn {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            z-index: 35;
             background: rgba(11, 46, 89, 0.92);
             color: white;
             border: none;
-            padding: 7px 12px;
+            padding: 8px 14px;
             border-radius: 999px;
             font-family: 'Poppins', sans-serif;
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.14);
-            transition: background 0.25s ease, transform 0.25s ease;
         }
 
-        .method-zoom-btn:hover {
+        .method-reset-btn:hover {
             background: var(--accent-teal);
-            transform: translateY(-1px);
         }
 
-        .method-zoom-btn.active {
-            background: var(--accent-pink);
-        }
-
-        /* Navigatsioon ja nupud */
         #ui-layer {
             position: fixed;
             bottom: 20px;
@@ -464,10 +558,8 @@
 
     <div id="canvas">
         
-        <!-- Slaid 0: Nähtamatu kohahoidja sõnapilvele -->
         <div class="slide active" id="cloud-slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1"></div>
 
-        <!-- Slaid 1: Tiitel -->
         <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="0" data-scale="1" style="justify-content: center;">
             <p style="letter-spacing: 2px; color: var(--accent-teal); font-weight: 700; margin-bottom: 20px; font-size: 16px;">
                 TARTU ÜLIKOOL | SOTSIAALTEADUSTE VALDKOND | HARIDUSTEADUSTE INSTITUUT | HARIDUSINNOVATSIOONI ÕPPEKAVA
@@ -482,7 +574,6 @@
             <p style="margin-top: 40px; font-weight: 600; color: var(--ut-blue); font-size: 22px;">Tartu Ülikool, 2026</p>
         </div>
 
-        <!-- Slaid 2: Mõiste -->
         <div class="slide" data-x="1500" data-y="1200" data-z="0" data-rotate-y="-90" data-scale="1" style="background-color: var(--bg-yellow);">
             <div style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
                 <div class="accent-box" style="font-size: 32px; line-height: 1.6; padding: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
@@ -496,7 +587,6 @@
             </div>
         </div>
 
-        <!-- Slaid 3: Uurimisprobleem ja teoreetiline raamistik -->
         <div class="slide" data-x="1500" data-y="1200" data-z="-1500" data-rotate-y="-180" data-scale="1">
             <h2>Teoreetiline raamistik ja uurimisprobleem</h2>
             
@@ -542,7 +632,6 @@
             </div>
         </div>
 
-        <!-- Slaid 4: Eesmärk ja uurimisküsimused -->
         <div class="slide" data-x="1500" data-y="2400" data-z="-1500" data-rotate-x="-90" data-rotate-y="-180" data-scale="1" style="justify-content: center; gap: 30px;">
             <h2>Eesmärk ja uurimisküsimused</h2>
 
@@ -563,35 +652,44 @@
             </div>
         </div>
 
-        <!-- Slaid 5: Metoodika ja valim -->
         <div class="slide" data-x="0" data-y="2400" data-z="-1500" data-rotate-x="-90" data-rotate-y="-270" data-scale="1">
             <h2 style="margin-bottom: 10px;">Metoodika</h2>
 
             <div class="s5-layout" style="align-items: stretch; height: calc(100% - 70px); gap: 18px;">
                 
-                <!-- Vasak pool: metoodikajoonis käsitsi juhitava zoomiga -->
                 <div style="flex: 0 0 76%; position: relative; padding-right: 0; box-sizing: border-box; overflow: hidden;">
-                    <div id="methodZoomStage" style="height: 100%; position: relative; overflow: hidden; border-radius: 20px; background: white;">
+                    <div id="methodZoomStage" class="method-zoom-stage">
                         
-                        <img id="methodZoomImg"
+                        <img id="methodZoomBase"
+                             class="method-img-layer"
                              src="metoodika_joonis.svg" 
                              alt="Arendusuuringu etapid" 
-                             onerror="this.src='https://placehold.co/800x500/f1f5f9/0b2e59?text=Lae+oma+joonis+nimega+%22metoodika_joonis.svg%22+samasse+kausta'"
-                             style="width: 100%; height: 100%; object-fit: contain; object-position: center; transform: scale(1.08); transform-origin: center center; transition: transform 0.75s ease, transform-origin 0.75s ease;">
+                             onerror="this.src='https://placehold.co/800x500/f1f5f9/0b2e59?text=Lae+oma+joonis+nimega+%22metoodika_joonis.svg%22+samasse+kausta'">
 
-                        <div class="method-zoom-controls">
-                            <button class="method-zoom-btn active" onclick="zoomMethod('all', this)">Tervik</button>
-                            <button class="method-zoom-btn" onclick="zoomMethod('focus', this)">Fookus</button>
-                            <button class="method-zoom-btn" onclick="zoomMethod('understand', this)">Mõistmine</button>
-                            <button class="method-zoom-btn" onclick="zoomMethod('define', this)">Määratlemine</button>
-                            <button class="method-zoom-btn" onclick="zoomMethod('ideate', this)">Ideeloome</button>
-                            <button class="method-zoom-btn" onclick="zoomMethod('test', this)">Testimine</button>
-                            <button class="method-zoom-btn" onclick="zoomMethod('results', this)">Tulemused</button>
+                        <img id="methodZoomSharp"
+                             class="method-img-layer"
+                             src="metoodika_joonis.svg" 
+                             alt="Arendusuuringu fookustatud etapp" 
+                             onerror="this.src='https://placehold.co/800x500/f1f5f9/0b2e59?text=Lae+oma+joonis+nimega+%22metoodika_joonis.svg%22+samasse+kausta'">
+
+                        <div id="methodHotspots" class="method-hotspots">
+                            <button class="method-hotspot" style="--x: 18%; --y: 72%;" onclick="focusMethodNode('focus', this)" aria-label="Fookuse seadmine"></button>
+                            <button class="method-hotspot" style="--x: 20%; --y: 55%;" onclick="focusMethodNode('understand', this)" aria-label="Mõistmine"></button>
+                            <button class="method-hotspot" style="--x: 34%; --y: 42%;" onclick="focusMethodNode('define', this)" aria-label="Määratlemine"></button>
+                            <button class="method-hotspot" style="--x: 50%; --y: 34%;" onclick="focusMethodNode('ideate', this)" aria-label="Ideeloome"></button>
+                            <button class="method-hotspot" style="--x: 73%; --y: 42%;" onclick="focusMethodNode('test', this)" aria-label="Testimine"></button>
+                            <button class="method-hotspot" style="--x: 78%; --y: 68%;" onclick="focusMethodNode('results', this)" aria-label="Tulemused"></button>
+                        </div>
+
+                        <button class="method-reset-btn" onclick="resetMethodZoom()">Tervik</button>
+
+                        <div id="methodFocusBox" class="method-focus-box">
+                            <h4 id="methodFocusTitle"></h4>
+                            <p id="methodFocusText"></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Parem pool: uuringu sisend -->
                 <div style="flex: 0 0 24%; display: flex; flex-direction: column;">
                     <div class="s5-sample-box" style="height: 100%; padding: 22px 20px; justify-content: flex-start;">
                         <h3 style="font-size: 21px; margin-bottom: 16px; color: var(--ut-blue);">
@@ -599,18 +697,14 @@
                         </h3>
 
                         <div style="margin-bottom: 18px;">
-                            <h4 style="font-size: 15px; margin-bottom: 7px; color: var(--text-dark);">
-                                Kontekst
-                            </h4>
+                            <h4 style="font-size: 15px; margin-bottom: 7px; color: var(--text-dark);">Kontekst</h4>
                             <p style="font-size: 15px; line-height: 1.35; margin: 0; color: var(--text-gray);">
                                 Elva Gümnaasiumi kultuurisuund
                             </p>
                         </div>
 
                         <div style="margin-bottom: 18px;">
-                            <h4 style="font-size: 15px; margin-bottom: 7px; color: var(--text-dark);">
-                                Põhivalim
-                            </h4>
+                            <h4 style="font-size: 15px; margin-bottom: 7px; color: var(--text-dark);">Põhivalim</h4>
                             <ul style="font-size: 15px; padding-left: 0; list-style-type: none; margin: 0; line-height: 1.38; color: var(--text-gray);">
                                 <li style="margin-bottom: 8px;">– võtmeisikud n = 3</li>
                                 <li style="margin-bottom: 8px;">direktor, huvijuht, kultuurisuuna õpetaja</li>
@@ -619,9 +713,7 @@
                         </div>
 
                         <div>
-                            <h4 style="font-size: 15px; margin-bottom: 7px; color: var(--text-dark);">
-                                Arendussisend
-                            </h4>
+                            <h4 style="font-size: 15px; margin-bottom: 7px; color: var(--text-dark);">Arendussisend</h4>
                             <ul style="font-size: 15px; padding-left: 0; list-style-type: none; margin: 0; line-height: 1.38; color: var(--text-gray);">
                                 <li style="margin-bottom: 7px;">– uurijapäevik</li>
                                 <li style="margin-bottom: 7px;">– piloteerimise tagasiside</li>
@@ -635,7 +727,6 @@
             </div>
         </div>
 
-        <!-- Slaid 6: Andmeanalüüs -->
         <div class="slide" data-x="0" data-y="2400" data-z="0" data-rotate-x="-90" data-rotate-y="-360" data-scale="1" style="background: white;">
             <h2 style="margin-bottom: 24px;">Andmeanalüüs</h2>
 
@@ -677,7 +768,6 @@
             </div>
         </div>
 
-        <!-- Slaid 7: Loomelabori etapid -->
         <div class="slide" data-x="-1500" data-y="2400" data-z="0" data-rotate-z="90" data-rotate-y="-360" data-scale="1" style="padding: 0; background-color: var(--bg-yellow);">
             <img src="inkubaatori_skeem.svg" 
                  alt="Loomelabor: Teekond isiklikust huvist päriselulise mõjuni" 
@@ -685,7 +775,6 @@
                  onerror="this.src='https://placehold.co/1280x720/fff4ba/0b2e59?text=Lae+oma+joonis+nimega+%22inkubaatori_skeem.svg%22+samasse+kausta'">
         </div>
 
-        <!-- Slaid 8: Tulemused -->
         <div class="slide" data-x="-1500" data-y="1200" data-z="0" data-rotate-y="-360" data-scale="1">
             <h2 style="margin-bottom: 15px;">Tulemused</h2>
 
@@ -736,7 +825,6 @@
             </div>
         </div>
 
-        <!-- Slaid 9: Järeldused -->
         <div class="slide" data-x="-1500" data-y="1200" data-z="-1500" data-rotate-x="90" data-scale="1">
             <h2>Järeldused, piirangud ja edasised sammud</h2>
 
@@ -769,7 +857,6 @@
             </div>
         </div>
 
-        <!-- Slaid 10: Kasutatud kirjandus -->
         <div class="slide" data-x="0" data-y="1200" data-z="-1500" data-rotate-x="90" data-rotate-z="-90" data-scale="1">
             <h2>Kasutatud kirjandus</h2>
 
@@ -789,7 +876,6 @@
             </div>
         </div>
 
-        <!-- Slaid 11: Lõpp -->
         <div class="slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="15" style="justify-content: center; align-items: center; border: none; box-shadow: none;">
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
                 <h1 style="font-size: 140px; margin-bottom: 20px; line-height: 1;">AITÄH!</h1>
@@ -887,53 +973,130 @@
         goToSlide(currentIndex - 1);
     }
 
-    function zoomMethod(part, button) {
-        const img = document.getElementById('methodZoomImg');
-        if (!img) return;
+    function focusMethodNode(part, button) {
+        const stage = document.getElementById('methodZoomStage');
+        const baseImg = document.getElementById('methodZoomBase');
+        const sharpImg = document.getElementById('methodZoomSharp');
+        const hotspots = document.getElementById('methodHotspots');
+        const box = document.getElementById('methodFocusBox');
+        const title = document.getElementById('methodFocusTitle');
+        const text = document.getElementById('methodFocusText');
 
-        const views = {
-            all: {
-                origin: 'center center',
-                scale: 1.08
-            },
+        if (!stage || !baseImg || !sharpImg || !hotspots || !box || !title || !text || !button) return;
+
+        const x = button.style.getPropertyValue('--x').trim();
+        const y = button.style.getPropertyValue('--y').trim();
+
+        const content = {
             focus: {
-                origin: '18% 72%',
-                scale: 1.85
+                title: 'Fookuse seadmine',
+                text: 'Teooriast lähtuv probleem ja arenduse lähtekoht. Siin kujunes mudeli esimene fookus.',
+                scale: 2.85,
+                radius: '110px',
+                boxLeft: '30%',
+                boxTop: '62%'
             },
             understand: {
-                origin: '20% 55%',
-                scale: 1.85
+                title: 'Mõistmine',
+                text: 'Koolikonteksti, osalejate kogemuste ja vajaduste mõistmine intervjuude ning fookusgrupi kaudu.',
+                scale: 2.85,
+                radius: '110px',
+                boxLeft: '32%',
+                boxTop: '42%'
             },
             define: {
-                origin: '34% 42%',
-                scale: 1.9
+                title: 'Määratlemine',
+                text: 'Kogutud sisendi põhjal täpsustusid mudeli probleemikohad, rakendustingimused ja arendusvajadused.',
+                scale: 2.9,
+                radius: '110px',
+                boxLeft: '42%',
+                boxTop: '29%'
             },
             ideate: {
-                origin: '50% 34%',
-                scale: 1.9
+                title: 'Ideeloome',
+                text: 'Teoreetiline raamistik ja empiiriline sisend seoti mudeli V2 disainipõhimõtetega.',
+                scale: 2.95,
+                radius: '110px',
+                boxLeft: '53%',
+                boxTop: '24%'
             },
             test: {
-                origin: '73% 42%',
-                scale: 1.9
+                title: 'Testimine',
+                text: 'Piloteerimise ja eksperthinnangu toel kontrolliti tööriistade arusaadavust ja kasutatavust.',
+                scale: 2.9,
+                radius: '110px',
+                boxLeft: '50%',
+                boxTop: '36%'
             },
             results: {
-                origin: '78% 68%',
-                scale: 1.85
+                title: 'Tulemused',
+                text: 'Analüüsi ja arendussisendi põhjal täpsustusid mudeli tööriistad, ülesehitus ja rakendustingimused.',
+                scale: 2.85,
+                radius: '110px',
+                boxLeft: '50%',
+                boxTop: '60%'
             }
         };
 
-        const view = views[part] || views.all;
+        const view = content[part];
+        if (!view) return;
 
-        img.style.transformOrigin = view.origin;
-        img.style.transform = `scale(${view.scale})`;
+        const origin = `${x} ${y}`;
 
-        document.querySelectorAll('.method-zoom-btn').forEach(btn => {
-            btn.classList.remove('active');
+        stage.classList.add('focused');
+        baseImg.classList.add('method-focused');
+        sharpImg.classList.add('active');
+
+        baseImg.style.transformOrigin = origin;
+        sharpImg.style.transformOrigin = origin;
+        hotspots.style.transformOrigin = origin;
+
+        baseImg.style.transform = `scale(${view.scale})`;
+        sharpImg.style.transform = `scale(${view.scale})`;
+        hotspots.style.transform = `scale(${view.scale})`;
+
+        sharpImg.style.clipPath = `circle(${view.radius} at ${x} ${y})`;
+
+        title.textContent = view.title;
+        text.textContent = view.text;
+        box.style.left = view.boxLeft;
+        box.style.top = view.boxTop;
+        box.classList.add('active');
+
+        document.querySelectorAll('.method-hotspot').forEach(hotspot => {
+            hotspot.classList.remove('active');
         });
 
-        if (button) {
-            button.classList.add('active');
-        }
+        button.classList.add('active');
+    }
+
+    function resetMethodZoom() {
+        const stage = document.getElementById('methodZoomStage');
+        const baseImg = document.getElementById('methodZoomBase');
+        const sharpImg = document.getElementById('methodZoomSharp');
+        const hotspots = document.getElementById('methodHotspots');
+        const box = document.getElementById('methodFocusBox');
+
+        if (!stage || !baseImg || !sharpImg || !hotspots || !box) return;
+
+        stage.classList.remove('focused');
+        baseImg.classList.remove('method-focused');
+        sharpImg.classList.remove('active');
+
+        baseImg.style.transformOrigin = 'center center';
+        sharpImg.style.transformOrigin = 'center center';
+        hotspots.style.transformOrigin = 'center center';
+
+        baseImg.style.transform = 'scale(1.08)';
+        sharpImg.style.transform = 'scale(1.08)';
+        hotspots.style.transform = 'scale(1.08)';
+
+        sharpImg.style.clipPath = 'circle(0px at 50% 50%)';
+        box.classList.remove('active');
+
+        document.querySelectorAll('.method-hotspot').forEach(hotspot => {
+            hotspot.classList.remove('active');
+        });
     }
 
     document.addEventListener('keydown', (e) => {
