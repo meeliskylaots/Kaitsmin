@@ -589,6 +589,57 @@
     function nextSlide() { if(isOverview) toggleOverview(); goToSlide(currentIndex + 1); }
     function prevSlide() { if(isOverview) toggleOverview(); goToSlide(currentIndex - 1); }
 
+   }
+
+    function zoomMethod(part, button) {
+        const img = document.getElementById('methodZoomImg');
+        if (!img) return;
+
+        const views = {
+            all: {
+                origin: 'center center',
+                scale: 1.06
+            },
+            focus: {
+                origin: '18% 72%',
+                scale: 1.85
+            },
+            understand: {
+                origin: '20% 55%',
+                scale: 1.85
+            },
+            define: {
+                origin: '34% 42%',
+                scale: 1.9
+            },
+            ideate: {
+                origin: '50% 34%',
+                scale: 1.9
+            },
+            test: {
+                origin: '73% 42%',
+                scale: 1.9
+            },
+            results: {
+                origin: '78% 68%',
+                scale: 1.85
+            }
+        };
+
+        const view = views[part] || views.all;
+
+        img.style.transformOrigin = view.origin;
+        img.style.transform = `scale(${view.scale})`;
+
+        document.querySelectorAll('.method-zoom-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        if (button) {
+            button.classList.add('active');
+        }
+    }
+
     document.addEventListener('keydown', (e) => {
         if (e.key === "ArrowRight" || e.key === " ") nextSlide();
         if (e.key === "ArrowLeft") prevSlide();
