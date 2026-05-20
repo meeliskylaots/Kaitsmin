@@ -399,6 +399,136 @@
         }
 
 
+
+        /* --- FINAL FIX: Slaid 5 zoom originaaljoonisel, ilma lisaringide ja lisakastideta --- */
+
+        .method-zoom-stage {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: white;
+            cursor: grab;
+        }
+
+        .method-zoom-stage.dragging {
+            cursor: grabbing;
+        }
+
+        .method-map {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            transform-origin: top left !important;
+            transform: matrix(1.15, 0, 0, 1.15, 0, 0);
+            transition: transform 0.72s ease, filter 0.35s ease, opacity 0.35s ease !important;
+        }
+
+        .method-map img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .method-map-base {
+            z-index: 1;
+        }
+
+        .method-sharp-window {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            opacity: 0;
+            pointer-events: none;
+            overflow: hidden;
+            clip-path: inset(8% 8% 8% 8% round 18px);
+            transition: opacity 0.25s ease;
+        }
+
+        .method-zoom-stage.focused .method-sharp-window {
+            opacity: 1;
+        }
+
+        .method-zoom-stage.focused .method-map-base {
+            filter: blur(7px);
+            opacity: 0.45;
+        }
+
+        .method-hotspot-layer {
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .method-click-area {
+            position: absolute;
+            left: var(--x);
+            top: var(--y);
+            width: var(--w);
+            height: var(--h);
+            transform: translate(-50%, -50%);
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            cursor: pointer;
+            padding: 0;
+            pointer-events: auto;
+            appearance: none;
+            -webkit-appearance: none;
+            border-radius: 0 !important;
+        }
+
+        .method-click-area:focus,
+        .method-click-area:active,
+        .method-click-area:focus-visible {
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        .method-reset-btn {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            z-index: 40;
+            background: rgba(11, 46, 89, 0.92);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+        }
+
+        .method-reset-btn:hover {
+            background: var(--accent-teal);
+        }
+
+        .method-hint {
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+            z-index: 35;
+            background: rgba(255,255,255,0.88);
+            color: var(--ut-blue);
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 11.5px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+            pointer-events: none;
+        }
+
     </style>
 </head>
 
@@ -529,61 +659,67 @@
 
             <div class="s5-layout" style="align-items: stretch; height: calc(100% - 70px); gap: 18px;">
 
-                <!-- Vasak pool: pildil olevate originaalringide ja kollaste kastide järgi zoomitav joonis -->
+                <!-- Vasak pool: originaaljoonise ringide ja kollaste kastide järgi zoomitav joonis -->
                 <div style="flex: 0 0 76%; position: relative; padding-right: 0; box-sizing: border-box; overflow: hidden;">
                     <div id="methodZoomStage" class="method-zoom-stage">
 
+                        <!-- Udune taustakiht -->
                         <div id="methodMapBase" class="method-map method-map-base">
-                            <img src="metoodika_joonis.svg"
+                            <img id="methodBaseImg"
+                                 src="metoodika_joonis.svg"
                                  alt="Arendusuuringu etapid"
                                  onerror="this.src='https://placehold.co/800x500/f1f5f9/0b2e59?text=Lae+oma+joonis+nimega+%22metoodika_joonis.svg%22+samasse+kausta'">
                         </div>
 
-                        <div id="methodMapSharp" class="method-map method-map-sharp">
-                            <img src="metoodika_joonis.svg"
-                                 alt="Arendusuuringu fookustatud etapp"
-                                 onerror="this.src='https://placehold.co/800x500/f1f5f9/0b2e59?text=Lae+oma+joonis+nimega+%22metoodika_joonis.svg%22+samasse+kausta'">
+                        <!-- Terav aken. Siin sees on sama pilt, aga ainult keskne fookusala jääb nähtavaks. -->
+                        <div id="methodSharpWindow" class="method-sharp-window">
+                            <div id="methodMapSharp" class="method-map">
+                                <img src="metoodika_joonis.svg"
+                                     alt="Arendusuuringu fookustatud etapp"
+                                     onerror="this.src='https://placehold.co/800x500/f1f5f9/0b2e59?text=Lae+oma+joonis+nimega+%22metoodika_joonis.svg%22+samasse+kausta'">
+                            </div>
                         </div>
 
-                        <!-- Nähtamatud klikialad. Iga ala hõlmab originaalringi ja selle juurde kuuluva kollase tekstikasti. -->
+                        <!-- Nähtamatud klikialad. Uusi ringe ega kollaseid lisakaste ei kuvata. -->
                         <div id="methodHotspotLayer" class="method-map method-hotspot-layer">
                             <button class="method-click-area"
-                                    style="--x: 18%; --y: 72%; --w: 33%; --h: 26%;"
+                                    style="--x: 16%; --y: 72%; --w: 34%; --h: 27%;"
                                     onclick="focusMethodNode('focus', event)"
                                     aria-label="Fookuse seadmine"></button>
 
                             <button class="method-click-area"
-                                    style="--x: 20%; --y: 55%; --w: 36%; --h: 28%;"
+                                    style="--x: 18%; --y: 55%; --w: 38%; --h: 30%;"
                                     onclick="focusMethodNode('understand', event)"
                                     aria-label="Mõistmine"></button>
 
                             <button class="method-click-area"
-                                    style="--x: 34%; --y: 42%; --w: 33%; --h: 26%;"
+                                    style="--x: 34%; --y: 43%; --w: 35%; --h: 28%;"
                                     onclick="focusMethodNode('define', event)"
                                     aria-label="Määratlemine"></button>
 
                             <button class="method-click-area"
-                                    style="--x: 50%; --y: 32%; --w: 34%; --h: 27%;"
+                                    style="--x: 50%; --y: 32%; --w: 36%; --h: 29%;"
                                     onclick="focusMethodNode('ideate', event)"
                                     aria-label="Lahenduse ideeloome"></button>
 
                             <button class="method-click-area"
-                                    style="--x: 68%; --y: 42%; --w: 36%; --h: 27%;"
+                                    style="--x: 68%; --y: 43%; --w: 38%; --h: 29%;"
                                     onclick="focusMethodNode('test', event)"
                                     aria-label="Testimine"></button>
 
                             <button class="method-click-area"
-                                    style="--x: 77%; --y: 57%; --w: 36%; --h: 28%;"
+                                    style="--x: 76%; --y: 58%; --w: 38%; --h: 30%;"
                                     onclick="focusMethodNode('evaluate', event)"
                                     aria-label="Katsetamine ja hindamine"></button>
 
                             <button class="method-click-area"
-                                    style="--x: 82%; --y: 73%; --w: 33%; --h: 25%;"
+                                    style="--x: 82%; --y: 73%; --w: 35%; --h: 27%;"
                                     onclick="focusMethodNode('results', event)"
                                     aria-label="Tulemuste esitamine"></button>
                         </div>
 
                         <button class="method-reset-btn" onclick="resetMethodZoom(event)">Tervik</button>
+                        <div class="method-hint">Kliki etappi uuesti, et väljuda. Lohista ja kasuta rullikut kohendamiseks.</div>
                     </div>
                 </div>
 
@@ -630,6 +766,8 @@
 
             </div>
         </div>
+
+
 
 
 
@@ -854,6 +992,7 @@
 
     
     
+    
     function nextSlide() {
         if (isOverview) toggleOverview();
         goToSlide(currentIndex + 1);
@@ -884,13 +1023,56 @@
         ];
     }
 
-    function applyMethodTransform() {
-        const transform = `translate(${methodPanZoom.x}px, ${methodPanZoom.y}px) scale(${methodPanZoom.scale})`;
+    function applyMethodTransform(animate = true) {
+        const transform = `matrix(${methodPanZoom.scale}, 0, 0, ${methodPanZoom.scale}, ${methodPanZoom.x}, ${methodPanZoom.y})`;
 
         getMethodMaps().forEach(map => {
             if (!map) return;
+            map.style.transition = animate ? '' : 'none';
             map.style.transform = transform;
         });
+
+        if (!animate) {
+            requestAnimationFrame(() => {
+                getMethodMaps().forEach(map => {
+                    if (!map) return;
+                    map.style.transition = '';
+                });
+            });
+        }
+    }
+
+    function getMethodImageBox() {
+        const stage = document.getElementById('methodZoomStage');
+        const img = document.getElementById('methodBaseImg');
+
+        if (!stage) return null;
+
+        const rect = stage.getBoundingClientRect();
+        let aspect = 16 / 9;
+
+        if (img && img.naturalWidth && img.naturalHeight) {
+            aspect = img.naturalWidth / img.naturalHeight;
+        }
+
+        let displayW;
+        let displayH;
+        let offsetX;
+        let offsetY;
+
+        if (rect.width / rect.height > aspect) {
+            displayH = rect.height;
+            displayW = displayH * aspect;
+            offsetX = (rect.width - displayW) / 2;
+            offsetY = 0;
+        } else {
+            displayW = rect.width;
+            displayH = displayW / aspect;
+            offsetX = 0;
+            offsetY = (rect.height - displayH) / 2;
+        }
+
+        return { rect, displayW, displayH, offsetX, offsetY };
     }
 
     function focusMethodNode(part, event) {
@@ -900,9 +1082,9 @@
         }
 
         const stage = document.getElementById('methodZoomStage');
-        const sharpMap = document.getElementById('methodMapSharp');
+        const imageBox = getMethodImageBox();
 
-        if (!stage || !sharpMap) return;
+        if (!stage || !imageBox) return;
 
         if (activeMethodPart === part) {
             resetMethodZoom(event);
@@ -910,66 +1092,30 @@
         }
 
         const views = {
-            focus: {
-                centerX: 16,
-                centerY: 70,
-                scale: 2.35,
-                clip: 'inset(52% 50% 0% 0%)'
-            },
-            understand: {
-                centerX: 18,
-                centerY: 53,
-                scale: 2.35,
-                clip: 'inset(34% 48% 18% 0%)'
-            },
-            define: {
-                centerX: 33,
-                centerY: 40,
-                scale: 2.35,
-                clip: 'inset(22% 34% 34% 14%)'
-            },
-            ideate: {
-                centerX: 50,
-                centerY: 30,
-                scale: 2.35,
-                clip: 'inset(6% 20% 42% 30%)'
-            },
-            test: {
-                centerX: 68,
-                centerY: 40,
-                scale: 2.35,
-                clip: 'inset(24% 0% 34% 48%)'
-            },
-            evaluate: {
-                centerX: 76,
-                centerY: 55,
-                scale: 2.35,
-                clip: 'inset(37% 0% 16% 55%)'
-            },
-            results: {
-                centerX: 82,
-                centerY: 70,
-                scale: 2.3,
-                clip: 'inset(55% 0% 2% 59%)'
-            }
+            focus:      { centerX: 16, centerY: 72, scale: 1.95 },
+            understand: { centerX: 18, centerY: 55, scale: 1.95 },
+            define:     { centerX: 34, centerY: 43, scale: 2.00 },
+            ideate:     { centerX: 50, centerY: 32, scale: 2.00 },
+            test:       { centerX: 68, centerY: 43, scale: 2.00 },
+            evaluate:   { centerX: 76, centerY: 58, scale: 1.95 },
+            results:    { centerX: 82, centerY: 73, scale: 1.90 }
         };
 
         const view = views[part];
         if (!view) return;
 
-        const rect = stage.getBoundingClientRect();
+        const pointX = imageBox.offsetX + (view.centerX / 100) * imageBox.displayW;
+        const pointY = imageBox.offsetY + (view.centerY / 100) * imageBox.displayH;
 
         activeMethodPart = part;
         methodPanZoom.scale = view.scale;
 
-        // Need väärtused toovad fookusesse originaaljoonise ringi koos selle juurde kuuluva kollase tekstikastiga.
-        methodPanZoom.x = (50 - view.centerX) / 100 * rect.width * view.scale;
-        methodPanZoom.y = (50 - view.centerY) / 100 * rect.height * view.scale;
+        methodPanZoom.x = (imageBox.rect.width / 2) - (pointX * view.scale);
+        methodPanZoom.y = (imageBox.rect.height / 2) - (pointY * view.scale);
 
         stage.classList.add('focused');
-        sharpMap.style.clipPath = view.clip;
 
-        applyMethodTransform();
+        applyMethodTransform(true);
     }
 
     function resetMethodZoom(event) {
@@ -979,9 +1125,8 @@
         }
 
         const stage = document.getElementById('methodZoomStage');
-        const sharpMap = document.getElementById('methodMapSharp');
 
-        if (!stage || !sharpMap) return;
+        if (!stage) return;
 
         activeMethodPart = null;
         stage.classList.remove('focused');
@@ -990,8 +1135,7 @@
         methodPanZoom.x = 0;
         methodPanZoom.y = 0;
 
-        sharpMap.style.clipPath = 'inset(0 0 0 0)';
-        applyMethodTransform();
+        applyMethodTransform(true);
     }
 
     function enableMethodManualControl() {
@@ -1013,7 +1157,7 @@
             methodPanZoom.x = e.clientX - methodPanZoom.startX;
             methodPanZoom.y = e.clientY - methodPanZoom.startY;
 
-            applyMethodTransform();
+            applyMethodTransform(false);
         });
 
         window.addEventListener('mouseup', () => {
@@ -1024,10 +1168,19 @@
         stage.addEventListener('wheel', (e) => {
             e.preventDefault();
 
-            const zoomStep = e.deltaY < 0 ? 0.12 : -0.12;
-            methodPanZoom.scale = Math.min(4.0, Math.max(1.0, methodPanZoom.scale + zoomStep));
+            const oldScale = methodPanZoom.scale;
+            const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+            const newScale = Math.min(3.6, Math.max(1.0, oldScale * zoomFactor));
 
-            applyMethodTransform();
+            const rect = stage.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            methodPanZoom.x = mouseX - ((mouseX - methodPanZoom.x) * (newScale / oldScale));
+            methodPanZoom.y = mouseY - ((mouseY - methodPanZoom.y) * (newScale / oldScale));
+            methodPanZoom.scale = newScale;
+
+            applyMethodTransform(false);
         }, { passive: false });
 
         stage.addEventListener('dblclick', (e) => {
