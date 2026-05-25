@@ -43,66 +43,6 @@
             perspective: 1000px; 
         }
 
-        #fixed-cloud-layer {
-            position: absolute;
-            width: 1280px; height: 720px;
-            top: 50%; left: 50%;
-            margin-left: -640px; margin-top: -360px;
-            transform-style: preserve-3d;
-            z-index: 2000;
-            pointer-events: none;
-        }
-
-        .word {
-            position: absolute;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            white-space: nowrap;
-            line-height: 1;
-            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease-out;
-            transition-delay: var(--delay, 0s), var(--delay, 0s);
-        }
-        
-        .word.script {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-style: italic;
-            text-transform: none;
-        }
-
-        body[data-current-slide="0"]:not(.overview-mode) #fixed-cloud-layer .word {
-            transform: translate(-50%, -50%) translateZ(0) scale(1);
-            opacity: 1;
-            visibility: visible;
-            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease-out, visibility 0s;
-            transition-delay: var(--delay, 0s), 0s, 0s;
-        }
-
-        body:not([data-current-slide="0"]) #fixed-cloud-layer .word {
-            transform: translate(-50%, -50%) translateZ(800px) scale(4); 
-            opacity: 0;
-            visibility: hidden; 
-            transition: transform 1.2s ease-in, opacity 0.6s ease-out, visibility 0s;
-            transition-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.6s), calc(var(--delay, 0s) + 1.2s);
-        }
-
-        body.overview-mode #fixed-cloud-layer .word {
-            transform: translate(-50%, -50%) translateZ(0) scale(1) !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            transition: transform 0.8s ease-out, opacity 0.8s ease-out, visibility 0s !important;
-            transition-delay: 0s, 0s, 0s !important;
-        }
-
-        #canvas {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 0; height: 0;
-            transform-style: preserve-3d;
-            transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
         body.overview-mode #canvas { opacity: 0; }
 
         .slide {
@@ -126,7 +66,6 @@
             opacity: 1; 
             visibility: visible;
         }
-        #cloud-slide { background: transparent; box-shadow: none; border: none; padding: 0; opacity: 1 !important; visibility: visible !important; }
 
         h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--ut-blue); margin: 0; }
         h1 { font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
@@ -185,45 +124,9 @@
 <div id="progress-tag">1 / 11</div>
 
 <div id="viewport">
-    
-    <div id="fixed-cloud-layer">
-        <div class="word" style="top: 40%; left: 50%; font-size: 170px; color: var(--ut-blue);">AGENTSUS</div>
-        <div class="word" style="top: 60%; left: 50%; font-size: 155px; color: var(--accent-pink);">LOOVUS</div>
-        <div class="word" style="top: 18%; left: 24%; font-size: 80px; color: var(--accent-teal);">AUTONOOMIA</div>
-        <div class="word" style="top: 18%; left: 76%; font-size: 85px; color: var(--accent-teal);">VASTUTUS</div>
-        <div class="word" style="top: 6%; left: 50%; font-size: 40px; color: var(--accent-yellow);">MOTIVATSIOON</div>
-        <div class="word" style="top: 11%; left: 50%; font-size: 45px; color: var(--accent-purple);">ENESETÕHUSUS</div>
-        <div class="word script" style="top: 16%; left: 50%; font-size: 35px; color: var(--accent-teal);">Seotus</div>
-        <div class="word" style="top: 22%; left: 50%; font-size: 40px; color: var(--ut-blue);">TURVALISUS</div>
-        <div class="word" style="top: 28%; left: 36%; font-size: 35px; color: var(--accent-teal);">MENTORLUS</div>
-        <div class="word" style="top: 28%; left: 64%; font-size: 35px; color: var(--accent-teal);">MENTORLUS</div>
-        <div class="word" style="top: 32%; left: 50%; font-size: 35px; color: var(--accent-yellow);">KOGUKOND</div>
-        <div class="word" style="top: 31%; left: 16%; font-size: 40px; color: var(--ut-blue);">VALIK</div>
-        <div class="word" style="top: 38%; left: 14%; font-size: 35px; color: var(--accent-pink);">IDEE</div>
-        <div class="word" style="top: 44%; left: 13%; font-size: 35px; color: var(--ut-blue);">PROBLEEM</div>
-        <div class="word" style="top: 55%; left: 12%; font-size: 70px; color: var(--accent-purple);">LOOMINE</div>
-        <div class="word" style="top: 31%; left: 84%; font-size: 35px; color: var(--ut-blue);">OTSUSTAMINE</div>
-        <div class="word" style="top: 38%; left: 85%; font-size: 40px; color: var(--accent-pink);">LAHENDUS</div>
-        <div class="word" style="top: 44%; left: 85%; font-size: 35px; color: var(--ut-blue);">PROTOTÜÜP</div>
-        <div class="word" style="top: 55%; left: 86%; font-size: 70px; color: var(--accent-purple);">KOOSTÖÖ</div>
-        <div class="word" style="top: 70%; left: 17%; font-size: 35px; color: var(--accent-teal);">TAGASISIDE</div>
-        <div class="word" style="top: 75%; left: 35%; font-size: 40px; color: var(--ut-blue);">REFLEKSIOON</div>
-        <div class="word" style="top: 70%; left: 84%; font-size: 40px; color: var(--accent-teal);">REFLEKSIOON</div>
-        <div class="word" style="top: 81%; left: 22%; font-size: 40px; color: var(--accent-yellow);">KATSETAMINE</div>
-        <div class="word" style="top: 83%; left: 50%; font-size: 110px; color: var(--accent-teal);">MÕJU</div>
-        <div class="word" style="top: 92%; left: 32%; font-size: 40px; color: var(--accent-teal);">PROJEKTÕPE</div>
-        <div class="word" style="top: 75%; left: 63%; font-size: 35px; color: var(--ut-blue);">PROTOTÜÜP</div>
-        <div class="word" style="top: 81%; left: 75%; font-size: 40px; color: var(--accent-purple);">VIGADEST ÕPPIMINE</div>
-        <div class="word" style="top: 92%; left: 65%; font-size: 40px; color: var(--accent-teal);">DISAINMÕTLEMINE</div>
-    </div>
-
-    <div id="canvas">
-        
-        <!-- Slaid 0: Nähtamatu kohahoidja sõnapilvele -->
-        <div class="slide active" id="cloud-slide" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1"></div>
-
-        <!-- Slaid 1: Tiitel -->
-        <div class="slide" data-x="0" data-y="1200" data-z="0" data-rotate="0" data-scale="1" style="justify-content: center;">
+<div id="canvas">
+<!-- Slaid 1: Tiitel -->
+        <div class="slide active" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1" style="justify-content: center;">
             <p style="letter-spacing: 2px; color: var(--accent-teal); font-weight: 700; margin-bottom: 20px; font-size: 16px;">TARTU ÜLIKOOL | SOTSIAALTEADUSTE VALDKOND | HARIDUSTEADUSTE INSTITUUT | HARIDUSINNOVATSIOONI ÕPPEKAVA</p>
             <h1 style="font-size: 54px;">Kultuuriinkubaatori mudeli arendamine õppija agentsuse ja loovuse toetamiseks formaalhariduses</h1>
             <div style="margin-top: 50px;">
@@ -572,8 +475,7 @@
         slidesElements.forEach((el, i) => el.classList.toggle('active', i === currentIndex));
         document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
         
-        let displayIndex = currentIndex === 0 ? 1 : currentIndex;
-        progressTag.innerText = `${displayIndex} / ${slidesData.length - 1}`;
+        progressTag.innerText = `${currentIndex + 1} / ${slidesData.length}`;
         
         btnPrev.disabled = currentIndex === 0;
         btnNext.disabled = currentIndex === slidesData.length - 1;
